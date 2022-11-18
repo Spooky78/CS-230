@@ -1,5 +1,7 @@
 package com.example.cs230;
 
+import java.util.ArrayList;
+import java.util.List;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -21,11 +23,14 @@ public class ViewManager {
     private final Stage mainStage;
     private static final String BACKGROUND_PATH = "treesBackground.png";
     private static VBox buttonPane;
+    private static StackPane subscenePane;
     private MainMenuSubScene creditsSubScene;
     private MainMenuSubScene helpSubScene;
     private MainMenuSubScene scoreSubScene;
     private MainMenuSubScene shipChooserSubScene;
     private MainMenuSubScene sceneToHide;
+    private List<NinjaPicker> ninjaPickerList;
+    private Ninja chosenNinja;
 
     /**
      * Creates a main menu window.
@@ -59,7 +64,7 @@ public class ViewManager {
      * Creates the sub scenes for the main menu.
      */
     private void createSubScenes() {
-        StackPane subscenePane = new StackPane();
+        subscenePane = new StackPane();
         creditsSubScene = new MainMenuSubScene(subscenePane);
         mainPane.getChildren().add(creditsSubScene);
 
@@ -73,6 +78,66 @@ public class ViewManager {
         mainPane.getChildren().add(shipChooserSubScene);
 
         mainPane.setCenter(subscenePane);
+        createPlayerCharacterChooserSubScene();
+    }
+
+    /**
+     * Creates the player character chooser.
+     */
+    private void createPlayerCharacterChooserSubScene() {
+        shipChooserSubScene = new MainMenuSubScene(subscenePane);
+        mainPane.getChildren().add(shipChooserSubScene);
+
+        //InfoLabel chooseShipLabel = new InfoLabel("Choose your ship!");
+        //chooseShipLabel.setLayoutX(POSITION_X);
+        //chooseShipLabel.setLayoutY(POSITION_Y);
+        //shipChooserSubScene.getPane().getChildren().add(chooseShipLabel);
+        shipChooserSubScene.getPane().getChildren().add(createPlayerCharacterToChoose());
+        shipChooserSubScene.getPane().getChildren().add(createButtonToStart());
+    }
+
+    /**
+     * Creates the start button.
+     * @return The start button.
+     */
+    private MainMenuButton createButtonToStart() {
+        MainMenuButton startButton = new MainMenuButton("START");
+        startButton.setLayoutX(125);
+        startButton.setLayoutY(300);
+
+        startButton.setOnAction(actionEvent -> {
+            if (chosenNinja != null) {
+                GameViewManager gameManager = new GameViewManager();
+                gameManager.createNewGame(mainStage, chosenNinja);
+            }
+        });
+
+        return startButton;
+    }
+
+    /**
+     * Creates the player character to choose.
+     * @return The HBox of the player character.
+     */
+    private HBox createPlayerCharacterToChoose() {
+        HBox box = new HBox();
+        box.setSpacing(20);
+        ninjaPickerList = new ArrayList<>();
+        for (Ninja ninja: Ninja.values()) {
+            NinjaPicker shipToPick = new NinjaPicker(ninja);
+            ninjaPickerList.add(shipToPick);
+            box.getChildren().add(shipToPick);
+            shipToPick.setOnMouseClicked(mouseEvent -> {
+                for (NinjaPicker ship1 : ninjaPickerList) {
+                    ship1.setIsBoxChosen(false);
+                }
+                shipToPick.setIsBoxChosen(true);
+                chosenNinja = shipToPick.getNinja();
+            });
+        }
+        box.setLayoutX(100);
+        box.setLayoutY(125);
+        return box;
     }
 
 
