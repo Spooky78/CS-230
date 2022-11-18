@@ -12,22 +12,22 @@ import javafx.util.Duration;
  */
 public class MainMenuSubScene extends SubScene {
 
-    private static final String BACKGROUND_IMAGE = "yellow_panel.png";
+    private static final String BACKGROUND_IMAGE = "paperPanel.png";
     private static final int PREF_WIDTH = 450;
     private static final int PREF_HEIGHT = 400;
     private static final int POSITION_X = 800;
     private static final int POSITION_Y = 150;
-    private static final int MOVE_X_OFFSCREEN = -500;
-    private static final double TRANSITION_TIME = 0.3;
     private boolean isHidden;
+    private StackPane parentPane;
 
     /**
      * Creates a main menu sub scene off-screen to the right.
      */
-    public MainMenuSubScene() {
+    public MainMenuSubScene(StackPane pane) {
         super(new AnchorPane(), PREF_WIDTH, PREF_HEIGHT);
-        prefWidth(PREF_WIDTH);
-        prefHeight(PREF_HEIGHT);
+        parentPane = pane;
+        //prefWidth(PREF_WIDTH);
+        //prefHeight(PREF_HEIGHT);
 
         BackgroundImage image = new BackgroundImage(new Image(BACKGROUND_IMAGE, PREF_WIDTH,
             PREF_HEIGHT, false, true),
@@ -37,9 +37,10 @@ public class MainMenuSubScene extends SubScene {
         AnchorPane root2 = (AnchorPane) this.getRoot();
         root2.setBackground(new Background(image));
 
+
         isHidden = true;
-        setLayoutX(POSITION_X);
-        setLayoutY(POSITION_Y);
+        setLayoutX(-500);
+        setLayoutY(-500);
     }
 
     /**
@@ -47,18 +48,14 @@ public class MainMenuSubScene extends SubScene {
      * off-screen.
      */
     public void moveSubScene() {
-        TranslateTransition transition = new TranslateTransition();
-        transition.setDuration(Duration.seconds(TRANSITION_TIME));
-        transition.setNode(this);
 
         if (isHidden) {
-            transition.setToX(MOVE_X_OFFSCREEN);
+            parentPane.getChildren().add(this);
             isHidden = false;
         } else {
-            transition.setToX(0);
+            parentPane.getChildren().remove(this);
             isHidden = true;
         }
-        transition.play();
     }
 
     /**

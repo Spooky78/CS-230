@@ -8,7 +8,6 @@ import javafx.scene.text.Font;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.net.URI;
 import java.net.URISyntaxException;
 
 /**
@@ -24,34 +23,18 @@ public class MainMenuButton extends Button {
             throw new RuntimeException(e);
         }
     }
-    private final URI BUTTON_PRESSED_PATH;
-    {
-        try {
-            BUTTON_PRESSED_PATH = new File(ClassLoader.getSystemResource(
-                "yellow_button_pressed.png").toURI()).toURI();
-        } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
-        }
-    }
-    private final URI BUTTON_FREE_PATH;
-    {
-        try {
-            BUTTON_FREE_PATH = new File(ClassLoader.getSystemResource(
-                "yellow_button.png").toURI()).toURI();
-        } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
-        }
-    }
+    private static final String BUTTON_FREE_PATH = "paperButton.png";
+    private static final String BUTTON_PRESSED_PATH = "paperButtonPressed.png";
     private final String BUTTON_PRESSED_STYLE =
         "-fx-background-color: transparent; -fx-background-image: url('"
             + BUTTON_PRESSED_PATH + "');";
     private final String BUTTON_FREE_STYLE =
         "-fx-background-color: transparent; -fx-background-image: url('"
             + BUTTON_FREE_PATH + "');";
-    private static final int PREF_WIDTH = 190;
+    private static final int PREF_WIDTH = 182;
     private static final int PREF_HEIGHT = 45;
-    private static final int PRESSED_PREF_HEIGHT = 49;
-    private static final int PRESSED_HEIGHT_OFFSET = 4;
+    private static final int PRESSED_PREF_HEIGHT = 50;
+    private static final int PRESSED_HEIGHT_OFFSET = 5;
     private static final int FONT_SIZE = 23;
 
     /**

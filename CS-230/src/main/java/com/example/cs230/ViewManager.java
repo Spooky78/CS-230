@@ -59,17 +59,20 @@ public class ViewManager {
      * Creates the sub scenes for the main menu.
      */
     private void createSubScenes() {
-        creditsSubScene = new MainMenuSubScene();
+        StackPane subscenePane = new StackPane();
+        creditsSubScene = new MainMenuSubScene(subscenePane);
         mainPane.getChildren().add(creditsSubScene);
 
-        helpSubScene = new MainMenuSubScene();
+        helpSubScene = new MainMenuSubScene(subscenePane);
         mainPane.getChildren().add(helpSubScene);
 
-        scoreSubScene = new MainMenuSubScene();
+        scoreSubScene = new MainMenuSubScene(subscenePane);
         mainPane.getChildren().add(scoreSubScene);
 
-        shipChooserSubScene = new MainMenuSubScene();
+        shipChooserSubScene = new MainMenuSubScene(subscenePane);
         mainPane.getChildren().add(shipChooserSubScene);
+
+        mainPane.setCenter(subscenePane);
     }
 
 
