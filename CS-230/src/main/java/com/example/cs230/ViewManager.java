@@ -135,7 +135,8 @@ public class ViewManager {
                 chosenNinja = shipToPick.getNinja();
             });
         }
-        box.setLayoutX(100);
+        box.setPadding(new Insets(25));
+        box.setLayoutX(Pos.CENTER.ordinal());
         box.setLayoutY(125);
         return box;
     }
