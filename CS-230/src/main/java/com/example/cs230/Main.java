@@ -5,6 +5,7 @@ import javafx.stage.Stage;
 
 /**
  * The main class which contains main method to run application.
+ * Test Comment
  * @author Spooky78
  */
 
