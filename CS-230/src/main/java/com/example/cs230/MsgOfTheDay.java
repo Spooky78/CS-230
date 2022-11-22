@@ -6,16 +6,10 @@ import java.net.*;
 
 /**
  * Responsible for message of the day.
- * @author Rex
+ * @author Everybody.
  */
 
 public class MsgOfTheDay {
-    /*
-    public static void main(String[] args) {
-        MsgOfTheDay.getRequest();
-        MsgOfTheDay.encode(inputS);
-        }
-     */
     private String outputS;
     private String msgOfTheDay = "Error, the message is not displayed.";
     // MsgOfTheDay is the stored output.
@@ -24,6 +18,7 @@ public class MsgOfTheDay {
      * Encode the puzzle into the solution of the message of the day.
      *
      * @param str the code from API.
+     * @return encoded puzzle.
      */
     public String encode(String str) {
         final int STRING_LENGTH = 100;
@@ -74,7 +69,7 @@ public class MsgOfTheDay {
             //change the value from integers to string
             out[i] = String.valueOf(letters[shiftingVal]);
             //put the results into outputS String.
-            outputS += out[i];
+            outputS = outputS + out[i];
         }
         outputS += CS230;
         //outputS would be number of characters + encoded puzzle + CS-230
@@ -84,6 +79,7 @@ public class MsgOfTheDay {
 
     /**
      * Get the puzzle code from the API.
+     * @return The puzzle from API.
      */
     public String getRequest() {
         String inputS;
@@ -93,7 +89,7 @@ public class MsgOfTheDay {
             URL url = new URL("http://cswebcat.swansea.ac.uk/puzzle");
             HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
             httpURLConnection.setRequestMethod("GET");
-            String line = "";
+            String line;
             InputStreamReader inputStreamReader =
                 new InputStreamReader(httpURLConnection.getInputStream());
             BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
@@ -113,6 +109,7 @@ public class MsgOfTheDay {
 
     /**
      * Return the solution to the API and then get the message of the day.
+     * @return The message of the day.
      */
 
     public String sendSol() {
@@ -122,7 +119,7 @@ public class MsgOfTheDay {
             URL url = new URL(htmlLink);
             HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
             httpURLConnection.setRequestMethod("GET");
-            String line = "";
+            String line;
             InputStreamReader inputStreamReader =
                 new InputStreamReader(httpURLConnection.getInputStream());
             BufferedReader bufferedReader = new BufferedReader(inputStreamReader);

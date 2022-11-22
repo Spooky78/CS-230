@@ -14,7 +14,7 @@ import javafx.stage.Stage;
 
 /**
  * Responsible for the main menu window.
- * @author Spooky78
+ * @author Everybody
  */
 public class ViewManager {
     private static final int WIDTH = 800;

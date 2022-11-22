@@ -9,10 +9,6 @@ import javafx.stage.Stage;
  * @author Spooky78
  */
 
-//TODO: (during meeting) created all base classes. DONE!!
-//TODO: (during meeting) Board class basic variables (including tile pane).
-//TODO: (during meeting) draw player to screen & make basic move.
-
 //TODO: frame rate cap for NPC animation???
 //TODO: finish sprite design.
 //TODO: player profile ask to select in menu

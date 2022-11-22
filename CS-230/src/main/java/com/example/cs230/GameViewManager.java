@@ -7,8 +7,10 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
@@ -20,6 +22,7 @@ public class GameViewManager {
     private static final int GAME_WIDTH = 1200;
     private static final int GAME_HEIGHT = 800;
     private BorderPane gamePane;
+    private VBox topBorderPane = new VBox();
     private Scene gameScene;
     private Stage gameStage;
     private Stage menuStage;
@@ -42,6 +45,7 @@ public class GameViewManager {
         this.menuStage = stage;
         this.menuStage.hide();
         createBackground();
+        createButtons();
         createBoard();
         createPlayer(chosenNinja);
         gameStage.show();
@@ -60,8 +64,9 @@ public class GameViewManager {
     private void createPlayer(Ninja chosenNinja){
         Player currentPlayer = new Player(menuStage, gameScene, chosenNinja);
         StackPane currentPlayerStack = currentPlayer.getPlayerStack();
-        currentPlayerStack.setLayoutX(100);
-        currentPlayerStack.setLayoutY(100);
+        currentPlayerStack.setLayoutX(200);
+        currentPlayerStack.setLayoutY(200);
+        //gamePane.setCenter(currentPlayerStack);
         gamePane.getChildren().add(currentPlayerStack);
     }
 
@@ -71,6 +76,18 @@ public class GameViewManager {
         TilePane boardPane = new TilePane(testTile.getTile());
         boardPane.getChildren().add(testTile2.getTile());
         gamePane.setCenter(boardPane);
+    }
+
+    private void createButtons(){
+        MainMenuButton pauseButton = new MainMenuButton("Pause");
+        MainMenuButton saveButton = new MainMenuButton("Save");
+
+        topBorderPane.getChildren().add(pauseButton);
+        topBorderPane.getChildren().add(saveButton);
+        topBorderPane.setPadding(new Insets(50, 50,0,50));
+        topBorderPane.setSpacing(20);
+
+        gamePane.setRight(topBorderPane);
     }
 
     /**
