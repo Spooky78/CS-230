@@ -65,6 +65,7 @@ public class ViewManager {
 
         mainPane.setCenter(subscenePane);
         createPlayerCharacterChooserSubScene();
+        createHelpText();
     }
 
     /**
@@ -143,6 +144,15 @@ public class ViewManager {
         ninjaPickerBox.setPadding(new Insets(50));
         ninjaPickerBox.setAlignment(Pos.CENTER);
         return ninjaPickerBox;
+    }
+
+    //TODO: format better & add instructions
+    //TODO: createCreditsText(){}
+    private void createHelpText(){
+        Text howToPlayTitle = new Text("How to play");
+        HBox instructions = new HBox();
+        instructions.getChildren().add(howToPlayTitle);
+        helpSubScene.getPane().getChildren().add(instructions);
     }
 
 
