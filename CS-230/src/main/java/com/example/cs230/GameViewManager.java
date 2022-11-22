@@ -15,7 +15,7 @@ import javafx.stage.Stage;
  * @author Spooky78
  */
 public class GameViewManager {
-    private static final int GAME_WIDTH = 600;
+    private static final int GAME_WIDTH = 1200;
     private static final int GAME_HEIGHT = 800;
     private AnchorPane gamePane;
     private Scene gameScene;
@@ -40,6 +40,7 @@ public class GameViewManager {
         this.menuStage = stage;
         this.menuStage.hide();
         createBackground();
+        createBoard();
         gameStage.show();
     }
 
@@ -53,12 +54,17 @@ public class GameViewManager {
         gameStage.setScene(gameScene);
     }
 
+    private void createBoard(){
+        Tile testTile = new Tile('A','B','C','D');
+        gamePane.getChildren().add(testTile.getTile());
+    }
+
     /**
-     * Creates the background (Default DOGERBLUE).
+     * Creates the background.
      */
     private void createBackground() {
         Background background = new Background(new BackgroundFill(
-            Color.DODGERBLUE, CornerRadii.EMPTY, Insets.EMPTY));
+            Color.LIGHTBLUE, CornerRadii.EMPTY, Insets.EMPTY));
         gamePane.setBackground(background);
     }
 
