@@ -9,6 +9,7 @@ import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 /**
@@ -23,6 +24,7 @@ public class ViewManager {
     private final Stage mainStage;
     private static final String BACKGROUND_PATH = "treesBackground.png";
     private static VBox buttonPane;
+    private static VBox logoPane;
     private static StackPane subscenePane;
     private MainMenuSubScene creditsSubScene;
     private MainMenuSubScene helpSubScene;
@@ -43,6 +45,7 @@ public class ViewManager {
         createSubScenes();
         createBackground();
         createLogo();
+        createMsgOfTheDay();
         createButtons();
 
     }
@@ -232,10 +235,19 @@ public class ViewManager {
         logo.setOnMouseEntered(mouseEvent -> logo.setEffect(new DropShadow()));
         logo.setOnMouseExited(mouseEvent -> logo.setEffect(null));
 
-        VBox logoPane = new VBox();
+        logoPane = new VBox();
         logoPane.getChildren().add(logo);
         logoPane.setAlignment(Pos.TOP_CENTER);
         logoPane.setPadding(new Insets(30,0,0,0));
         mainPane.setTop(logoPane);
+    }
+//TODO: format msg text.
+    private void createMsgOfTheDay() {
+        String msg;
+        MsgOfTheDay m = new MsgOfTheDay();
+        msg = m.getRequest();
+        Text msgOfTheDay = new Text(msg);
+
+        logoPane.getChildren().add(msgOfTheDay);
     }
 }

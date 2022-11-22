@@ -8,32 +8,38 @@ import java.net.*;
  * Responsible for message of the day.
  * @author Rex
  */
-public class MsgOfTheDay {
-    public static void main(String[] args) {
-        getRequest();
-        shifting(inputS);
-    }
 
-    private static final int STRING_LENGTH = 100;
-    private static final int ALPHABET_LENGTH = 26;
-    private static String inputS;
-    private static String outputS;
-    private static final String CS230 = "CS-230";
-    private static String msgOfTheDay;
+public class MsgOfTheDay {
+    /*
+    public static void main(String[] args) {
+        MsgOfTheDay.getRequest();
+        MsgOfTheDay.encode(inputS);
+        }
+     */
+    private String outputS;
+    private String msgOfTheDay = "Error, the message is not displayed.";
     // MsgOfTheDay is the stored output.
 
-    public static void shifting(String str) {
+    /**
+     * Encode the puzzle into the solution of the message of the day.
+     *
+     * @param str the code from API.
+     */
+    public String encode(String str) {
+        final int STRING_LENGTH = 100;
+        final int ALPHABET_LENGTH = 26;
+        final String CS230 = "CS-230";
+
         //get the number of characters in the final result. And put it to outputS(String).
         outputS = Integer.toString(CS230.length() + str.length());
 
         String[] out = new String[STRING_LENGTH];
         char[] letters = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I',
-                'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q',
-                'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
+            'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q',
+            'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
 
         //put the string into a character array
-        char[] ch = new char[STRING_LENGTH];
-        ch = str.toCharArray();
+        char[] ch = str.toCharArray();
         for (int i = 0; i < str.length(); i++) {
             int characterVal = 0;
 
@@ -45,7 +51,7 @@ public class MsgOfTheDay {
             }
 
             int characterPla = i + 1;
-            int shiftingVal = 0;
+            int shiftingVal;
 
             // to prevent overflowing past 25
             if (characterPla > ALPHABET_LENGTH) {
@@ -65,20 +71,23 @@ public class MsgOfTheDay {
             } else if (shiftingVal == ALPHABET_LENGTH) {
                 shiftingVal = 0;
             }
-                //change the value from integers to string
-                out[i] = String.valueOf(letters[shiftingVal]);
-                //System.out.print(out[i]);
-
-                //put the results into outputS String.
-                outputS += out[i];
-
+            //change the value from integers to string
+            out[i] = String.valueOf(letters[shiftingVal]);
+            //put the results into outputS String.
+            outputS += out[i];
         }
         outputS += CS230;
         //outputS would be number of characters + encoded puzzle + CS-230
-        sendSol();
+        return sendSol();
     }
 
-    public static void getRequest() {
+
+    /**
+     * Get the puzzle code from the API.
+     */
+    public String getRequest() {
+        String inputS;
+
         //get string from html to java
         try {
             URL url = new URL("http://cswebcat.swansea.ac.uk/puzzle");
@@ -96,12 +105,17 @@ public class MsgOfTheDay {
             inputS = response.toString();
 
         } catch (Exception e) {
-            System.out.print("Error");
+            inputS = "";
+            System.out.println("Fuck");
         }
+        return encode(inputS);
     }
 
+    /**
+     * Return the solution to the API and then get the message of the day.
+     */
 
-    public static void sendSol() {
+    public String sendSol() {
         //send the solution to the html URL and gets the message of the day string.
         try {
             String htmlLink = "http://cswebcat.swansea.ac.uk/message?solution=" + outputS;
@@ -118,12 +132,10 @@ public class MsgOfTheDay {
             }
             bufferedReader.close();
             msgOfTheDay = response.toString();
-            System.out.println(msgOfTheDay); //current output method
-            //return MsgOfTheDay
 
         } catch (Exception e) {
-            System.out.print("Error");
+            System.out.println("Fuck");
         }
+        return msgOfTheDay;
     }
-
 }

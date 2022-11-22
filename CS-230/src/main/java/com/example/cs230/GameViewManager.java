@@ -7,6 +7,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -42,6 +43,7 @@ public class GameViewManager {
         this.menuStage.hide();
         createBackground();
         createBoard();
+        createPlayer(chosenNinja);
         gameStage.show();
     }
 
@@ -53,6 +55,14 @@ public class GameViewManager {
         gameScene = new Scene(gamePane, GAME_WIDTH, GAME_HEIGHT);
         gameStage = new Stage();
         gameStage.setScene(gameScene);
+    }
+
+    private void createPlayer(Ninja chosenNinja){
+        Player currentPlayer = new Player(menuStage, gameScene, chosenNinja);
+        StackPane currentPlayerStack = currentPlayer.getPlayerStack();
+        currentPlayerStack.setLayoutX(100);
+        currentPlayerStack.setLayoutY(100);
+        gamePane.getChildren().add(currentPlayerStack);
     }
 
     private void createBoard(){
