@@ -17,8 +17,8 @@ import javafx.stage.Stage;
  * @author Everybody
  */
 public class ViewManager {
-    private static final int WIDTH = 800;
-    private static final int HEIGHT = 600;
+    private static final int WIDTH = 1000;
+    private static final int HEIGHT = 800;
     private final BorderPane mainPane;
     private final Scene mainScene;
     private final Stage mainStage;
@@ -29,10 +29,11 @@ public class ViewManager {
     private MainMenuSubScene creditsSubScene;
     private MainMenuSubScene helpSubScene;
     private MainMenuSubScene scoreSubScene;
-    private MainMenuSubScene shipChooserSubScene;
+    private MainMenuSubScene ninjaChooserSubScene;
     private MainMenuSubScene sceneToHide;
     private List<NinjaPicker> ninjaPickerList;
     private Ninja chosenNinja;
+    private boolean isHidden = true;
 
     /**
      * Creates a main menu window.
@@ -51,52 +52,55 @@ public class ViewManager {
     }
 
     /**
-     * If sub scene is hidden then move it.
-     * @param subScene The sub scene to be moved.
-     */
-    private void showSubScene(MainMenuSubScene subScene) {
-        if (sceneToHide != null) {
-            sceneToHide.moveSubScene();
-        }
-
-        subScene.moveSubScene();
-        sceneToHide = subScene;
-    }
-
-    /**
      * Creates the sub scenes for the main menu.
      */
     private void createSubScenes() {
         subscenePane = new StackPane();
-        creditsSubScene = new MainMenuSubScene(subscenePane);
-        mainPane.getChildren().add(creditsSubScene);
+        subscenePane.setPadding(new Insets(50));
 
-        helpSubScene = new MainMenuSubScene(subscenePane);
-        mainPane.getChildren().add(helpSubScene);
-
-        scoreSubScene = new MainMenuSubScene(subscenePane);
-        mainPane.getChildren().add(scoreSubScene);
-
-        shipChooserSubScene = new MainMenuSubScene(subscenePane);
-        mainPane.getChildren().add(shipChooserSubScene);
+        creditsSubScene = new MainMenuSubScene();
+        helpSubScene = new MainMenuSubScene();
+        scoreSubScene = new MainMenuSubScene();;
+        ninjaChooserSubScene = new MainMenuSubScene();
 
         mainPane.setCenter(subscenePane);
         createPlayerCharacterChooserSubScene();
     }
 
     /**
+     * Moves sub scene to new position. If off-screen move to on-screen. If on-screen moves
+     * off-screen.
+     */
+    private void addRemoveSubScene(MainMenuSubScene currentScene) {
+        if (isHidden) {
+            subscenePane.getChildren().add(currentScene.getPane());
+            isHidden = false;
+        } else {
+            subscenePane.getChildren().remove(currentScene.getPane());
+            isHidden = true;
+        }
+    }
+
+    /**
+     * If sub scene is hidden then move it.
+     * @param subScene The sub scene to be moved.
+     */
+    private void showSubScene(MainMenuSubScene subScene) {
+        if (sceneToHide != null) {
+            addRemoveSubScene(subScene);
+        }
+
+        addRemoveSubScene(subScene);
+        sceneToHide = subScene;
+    }
+
+
+    /**
      * Creates the player character chooser.
      */
     private void createPlayerCharacterChooserSubScene() {
-        shipChooserSubScene = new MainMenuSubScene(subscenePane);
-        mainPane.getChildren().add(shipChooserSubScene);
-
-        //InfoLabel chooseShipLabel = new InfoLabel("Choose your ship!");
-        //chooseShipLabel.setLayoutX(POSITION_X);
-        //chooseShipLabel.setLayoutY(POSITION_Y);
-        //shipChooserSubScene.getPane().getChildren().add(chooseShipLabel);
-        shipChooserSubScene.getPane().getChildren().add(createPlayerCharacterToChoose());
-        shipChooserSubScene.getPane().getChildren().add(createButtonToStart());
+        ninjaChooserSubScene.getPane().getChildren().add(createPlayerCharacterToChoose());
+        ninjaChooserSubScene.getPane().getChildren().add(createButtonToStart());
     }
 
     /**
@@ -105,8 +109,6 @@ public class ViewManager {
      */
     private MainMenuButton createButtonToStart() {
         MainMenuButton startButton = new MainMenuButton("START");
-        startButton.setLayoutX(125);
-        startButton.setLayoutY(300);
 
         startButton.setOnAction(actionEvent -> {
             if (chosenNinja != null) {
@@ -123,13 +125,13 @@ public class ViewManager {
      * @return The HBox of the player character.
      */
     private HBox createPlayerCharacterToChoose() {
-        HBox box = new HBox();
-        box.setSpacing(20);
+        HBox ninjaPickerBox = new HBox();
+        ninjaPickerBox.setSpacing(20);
         ninjaPickerList = new ArrayList<>();
         for (Ninja ninja: Ninja.values()) {
             NinjaPicker shipToPick = new NinjaPicker(ninja);
             ninjaPickerList.add(shipToPick);
-            box.getChildren().add(shipToPick);
+            ninjaPickerBox.getChildren().add(shipToPick);
             shipToPick.setOnMouseClicked(mouseEvent -> {
                 for (NinjaPicker ship1 : ninjaPickerList) {
                     ship1.setIsBoxChosen(false);
@@ -138,10 +140,9 @@ public class ViewManager {
                 chosenNinja = shipToPick.getNinja();
             });
         }
-        box.setPadding(new Insets(25));
-        box.setLayoutX(Pos.CENTER.ordinal());
-        box.setLayoutY(125);
-        return box;
+        ninjaPickerBox.setPadding(new Insets(50));
+        ninjaPickerBox.setAlignment(Pos.CENTER);
+        return ninjaPickerBox;
     }
 
 
@@ -175,7 +176,7 @@ public class ViewManager {
     private void createStartButton() {
         MainMenuButton startButton = new MainMenuButton("PLAY");
         buttonPane.getChildren().add(startButton);
-        startButton.setOnAction(actionEvent -> showSubScene(shipChooserSubScene));
+        startButton.setOnAction(actionEvent -> showSubScene(ninjaChooserSubScene));
     }
 
     /**

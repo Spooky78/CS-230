@@ -66,7 +66,6 @@ public class GameViewManager {
         StackPane currentPlayerStack = currentPlayer.getPlayerStack();
         currentPlayerStack.setLayoutX(200);
         currentPlayerStack.setLayoutY(200);
-        //gamePane.setCenter(currentPlayerStack);
         gamePane.getChildren().add(currentPlayerStack);
     }
 
