@@ -12,7 +12,6 @@ public class Tile {
     private char[] tileIds = new char[4];
     private String[] tilePaths = new String[4];
 
-    //TODO: make sure that parameters passed are A,B,C, OR D
     public Tile(char topLeft, char topRight, char bottomLeft, char bottomRight){
         tilePane.setPrefColumns(2);
 

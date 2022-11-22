@@ -3,11 +3,15 @@ package com.example.cs230;
 import java.util.Random;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.TilePane;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 
 /**
@@ -17,7 +21,7 @@ import javafx.stage.Stage;
 public class GameViewManager {
     private static final int GAME_WIDTH = 1200;
     private static final int GAME_HEIGHT = 800;
-    private AnchorPane gamePane;
+    private BorderPane gamePane;
     private Scene gameScene;
     private Stage gameStage;
     private Stage menuStage;
@@ -48,7 +52,7 @@ public class GameViewManager {
      * Initializes the stage, scene, & pane.
      */
     private void initializeStage() {
-        gamePane = new AnchorPane();
+        gamePane = new BorderPane();
         gameScene = new Scene(gamePane, GAME_WIDTH, GAME_HEIGHT);
         gameStage = new Stage();
         gameStage.setScene(gameScene);
@@ -56,7 +60,10 @@ public class GameViewManager {
 
     private void createBoard(){
         Tile testTile = new Tile('A','B','C','D');
-        gamePane.getChildren().add(testTile.getTile());
+        Tile testTile2 = new Tile('A','B','A','B');
+        TilePane boardPane = new TilePane(testTile.getTile());
+        boardPane.getChildren().add(testTile2.getTile());
+        gamePane.setCenter(boardPane);
     }
 
     /**
@@ -64,7 +71,7 @@ public class GameViewManager {
      */
     private void createBackground() {
         Background background = new Background(new BackgroundFill(
-            Color.LIGHTBLUE, CornerRadii.EMPTY, Insets.EMPTY));
+            Color.SANDYBROWN, CornerRadii.EMPTY, Insets.EMPTY));
         gamePane.setBackground(background);
     }
 
