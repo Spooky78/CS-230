@@ -9,26 +9,8 @@
       <list>
         <ConfigurationLocation id="bundled-sun-checks" type="BUNDLED" scope="All" description="Sun Checks">(bundled)</ConfigurationLocation>
         <ConfigurationLocation id="bundled-google-checks" type="BUNDLED" scope="All" description="Google Checks">(bundled)</ConfigurationLocation>
-        <ConfigurationLocation id="c7ec9814-0e25-48da-afe4-1de08fe84f57" type="PROJECT_RELATIVE" scope="All" description="CS-230">
+        <ConfigurationLocation id="264d8ff7-1b10-437a-bef4-28477e6e4421" type="PROJECT_RELATIVE" scope="All" description="CS-230Checks">
           $PROJECT_DIR$/../CheckStyle.xml
-          <option name="properties">
-            <map>
-              <entry key="org.checkstyle.sun.suppressionfilter.config" value="" />
-              <entry key="org.checkstyle.sun.suppressionxpathfilter.config" value="" />
-            </map>
-          </option>
-        </ConfigurationLocation>
-        <ConfigurationLocation id="29276367-4222-4744-84c7-324cc9cb29b7" type="PROJECT_RELATIVE" scope="All" description="Local">
-          $PROJECT_DIR$/../../../CheckStyle.xml
-          <option name="properties">
-            <map>
-              <entry key="org.checkstyle.sun.suppressionfilter.config" value="" />
-              <entry key="org.checkstyle.sun.suppressionxpathfilter.config" value="" />
-            </map>
-          </option>
-        </ConfigurationLocation>
-        <ConfigurationLocation id="379c683c-0adb-4729-bc41-6231caa96951" type="LOCAL_FILE" scope="All" description="Spooky'sChecks">
-          $PROJECT_DIR$/CheckStyle.xml
           <option name="properties">
             <map>
               <entry key="org.checkstyle.sun.suppressionfilter.config" value="" />
