@@ -9,7 +9,10 @@ import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
 /**
@@ -60,7 +63,7 @@ public class ViewManager {
 
         creditsSubScene = new MainMenuSubScene();
         helpSubScene = new MainMenuSubScene();
-        scoreSubScene = new MainMenuSubScene();;
+        scoreSubScene = new MainMenuSubScene();
         ninjaChooserSubScene = new MainMenuSubScene();
 
         mainPane.setCenter(subscenePane);
@@ -252,13 +255,13 @@ public class ViewManager {
         logoPane.setPadding(new Insets(30,0,0,0));
         mainPane.setTop(logoPane);
     }
-//TODO: format msg text.
-    private void createMsgOfTheDay() {
-        String msg;
-        MsgOfTheDay m = new MsgOfTheDay();
-        msg = m.getRequest();
-        Text msgOfTheDay = new Text(msg);
 
+    private void createMsgOfTheDay() {
+        MsgOfTheDay m = new MsgOfTheDay();
+        Text msgOfTheDay = new Text(m.getRequest());
+        msgOfTheDay.setFont(Font.font("Arial", FontPosture.ITALIC,18));
+        msgOfTheDay.setTextAlignment(TextAlignment.CENTER);
+        msgOfTheDay.setWrappingWidth(600);
         logoPane.getChildren().add(msgOfTheDay);
     }
 }

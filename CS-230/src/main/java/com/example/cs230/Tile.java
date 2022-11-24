@@ -20,8 +20,29 @@ public class Tile {
         tileIds[2] = bottomLeft;
         tileIds[3] = bottomRight;
 
-        for (int i=0; i< tileIds.length;i++){
-            if (tileIds[i] == 'A'){
+        for(int i = 0; i < tileIds.length; i++) {
+            switch (tileIds[i]) {
+                case 'A':
+                    tilePaths[i] = A_TILE_PATH;
+                    break;
+                case 'B':
+                    tilePaths[i] = B_TILE_PATH;
+                    break;
+                case 'C':
+                    tilePaths[i] = C_TILE_PATH;
+                    break;
+                case 'D':
+                    tilePaths[i] = D_TILE_PATH;
+                    break;
+                default:
+                    throw new IllegalArgumentException (
+                            "Invalid tiles ID: " + tileIds[i]);
+            }
+        }
+
+        /*
+        for (int i=0; i< tileIds.length;i++) {
+            if (tileIds[i] == 'A') {
                 tilePaths[i] = A_TILE_PATH;
             } else if (tileIds[i] == 'B') {
                 tilePaths[i] = B_TILE_PATH;
@@ -31,8 +52,9 @@ public class Tile {
                 tilePaths[i] = D_TILE_PATH;
             }
         }
+         */
 
-        for (int i=0; i< tileIds.length;i++){
+        for (int i=0; i< tileIds.length; i++) {
             ImageView currentTile = new ImageView(tilePaths[i]);
             tilePane.getChildren().add(currentTile);
         }
