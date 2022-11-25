@@ -40,20 +40,6 @@ public class Tile {
             }
         }
 
-        /*
-        for (int i=0; i< tileIds.length;i++) {
-            if (tileIds[i] == 'A') {
-                tilePaths[i] = A_TILE_PATH;
-            } else if (tileIds[i] == 'B') {
-                tilePaths[i] = B_TILE_PATH;
-            } else if (tileIds[i] == 'C') {
-                tilePaths[i] = C_TILE_PATH;
-            } else {
-                tilePaths[i] = D_TILE_PATH;
-            }
-        }
-         */
-
         for (int i=0; i< tileIds.length; i++) {
             ImageView currentTile = new ImageView(tilePaths[i]);
             tilePane.getChildren().add(currentTile);

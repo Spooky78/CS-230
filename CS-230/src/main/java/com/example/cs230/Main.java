@@ -3,6 +3,8 @@ package com.example.cs230;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
+import java.io.FileNotFoundException;
+
 /**
  * The main class which contains main method to run application.
  * Test Comment
@@ -11,7 +13,6 @@ import javafx.stage.Stage;
 
 //TODO: finish sprite design.
 //TODO: player profile ask to select in menu
-
 //TODO: rest of player movement.
 //TODO: text for help and credits.
 //TODO: read in level file in Board class.
@@ -21,7 +22,7 @@ import javafx.stage.Stage;
 //TODO: Game window top of border pane make buttons (pause, save, ect) no function
 public class Main extends Application {
     @Override
-    public void start(Stage primaryStage) {
+    public void start(Stage primaryStage) throws FileNotFoundException {
         ViewManager manager = new ViewManager();
         primaryStage = manager.getMainStage();
         primaryStage.show();

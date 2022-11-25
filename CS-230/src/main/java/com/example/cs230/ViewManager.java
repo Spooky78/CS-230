@@ -1,5 +1,9 @@
 package com.example.cs230;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.geometry.Insets;
@@ -9,10 +13,7 @@ import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontPosture;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
+import javafx.scene.text.*;
 import javafx.stage.Stage;
 
 /**
@@ -41,7 +42,7 @@ public class ViewManager {
     /**
      * Creates a main menu window.
      */
-    public ViewManager() {
+    public ViewManager() throws FileNotFoundException {
         mainPane = new BorderPane();
         mainScene = new Scene(mainPane, WIDTH, HEIGHT);
         mainStage = new Stage();
@@ -57,7 +58,7 @@ public class ViewManager {
     /**
      * Creates the sub scenes for the main menu.
      */
-    private void createSubScenes() {
+    private void createSubScenes() throws FileNotFoundException {
         subscenePane = new StackPane();
         subscenePane.setPadding(new Insets(50));
 
@@ -69,6 +70,7 @@ public class ViewManager {
         mainPane.setCenter(subscenePane);
         createPlayerCharacterChooserSubScene();
         createHelpText();
+        createCreditsText();
     }
 
     /**
@@ -149,12 +151,86 @@ public class ViewManager {
         return ninjaPickerBox;
     }
 
-    //TODO: format better & add instructions
+    private final String FONT_PATH;
+    {
+        try {
+            FONT_PATH = String.valueOf(new File(ClassLoader.getSystemResource(
+                    "kenvector_future.ttf").toURI()));
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     //TODO: createCreditsText(){}
-    private void createHelpText(){
+
+    private  void createCreditsText() throws FileNotFoundException{
+        Text creditTitle = new Text("Credits");
+        try {
+            creditTitle.setFont(Font.loadFont(new FileInputStream(FONT_PATH), 40));
+        } catch (FileNotFoundException e) {
+            creditTitle.setFont(Font.font("Arial", 40));
+        }
+        Text members = new Text("\n Ziming Dong, 2013509 \n Rex Lam, 2035415 \n Arran Pearce, 2010120 " +
+                "\n Omar Sufer, 2123959 \n Dimitrios Koumaris, 2269609 \n Vic Lismanovica, 2108255 " +
+                "\n Chrysis Pitsillides, 2009555");
+        VBox credit = new VBox();
+        credit.getChildren().add(creditTitle);
+        credit.getChildren().add(members);
+        creditsSubScene.getPane().getChildren().add(credit);
+
+    }
+    private void createHelpText() throws FileNotFoundException {
         Text howToPlayTitle = new Text("How to play");
-        HBox instructions = new HBox();
+        try {
+            howToPlayTitle.setFont(Font.loadFont(new FileInputStream(FONT_PATH), 40));
+        } catch (FileNotFoundException e) {
+            howToPlayTitle.setFont(Font.font("Arial", 40));
+        }
+        VBox instructions = new VBox();
+        Text objective = new Text("\nObjective: \n" );
+        Text objInstruction = new Text(
+                "Use the arrow keys to move around the room and collect all the variables, " +
+                        "then escape  through the red door to the next level. \n\n"
+        );
+        Text how2Play = new Text("\nHow to play: \n" );
+        Text playInstruction = new Text(
+                "You can only move to tiles that are the same color as the tile you are on." +
+                        "If you are blocked by a different color. You automatically jump" +
+                        "to the next same-color tile. To move to a new color, go to a multicolored tile. \n"
+        );
+        Text items = new Text("\nItems: \n" );
+        Text itemsInstruction = new Text(
+                "Keys, bombs and levers open locked doors. \n" +
+                        "Coins get more score dependent on remaining time \n" +
+                        "Clocks add time to the countdown timer. \n"
+        );
+        Text thieves = new Text("\nThieves: \n" );
+        Text thievesInstruction = new Text(
+                "Floor following thieves follows the colored edge of the floor. \n" +
+                "Smart Thieves collects the loot and reach the exit of the level before the player. " +
+                        "When the Smart Thieves arrived first, you lost the game."
+        );
+        objective.setFont(Font.font("Arial",FontWeight.BOLD, FontPosture.ITALIC,15));
+        objective.setUnderline(true);
+        how2Play.setFont(Font.font("Arial",FontWeight.BOLD, FontPosture.ITALIC,15));
+        how2Play.setUnderline(true);
+        items.setFont(Font.font("Arial",FontWeight.BOLD, FontPosture.ITALIC,15));
+        items.setUnderline(true);
+        thieves.setFont(Font.font("Arial",FontWeight.BOLD, FontPosture.ITALIC,15));
+        thieves.setUnderline(true);
+        objInstruction.setWrappingWidth(400);
+        playInstruction.setWrappingWidth(400);
+        itemsInstruction.setWrappingWidth(400);
+        thievesInstruction.setWrappingWidth(400);
         instructions.getChildren().add(howToPlayTitle);
+        instructions.getChildren().add(objective);
+        instructions.getChildren().add(objInstruction);
+        instructions.getChildren().add(how2Play);
+        instructions.getChildren().add(playInstruction);
+        instructions.getChildren().add(items);
+        instructions.getChildren().add(itemsInstruction);
+        instructions.getChildren().add(thieves);
+        instructions.getChildren().add(thievesInstruction);
         helpSubScene.getPane().getChildren().add(instructions);
     }
 
