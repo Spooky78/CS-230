@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="70b5a907-3c6f-42e6-9f64-1720237bb43d" name="Changes" comment="Left &amp; right movement by Omar. Commented out not working, need error checking.">
+      <change beforePath="$PROJECT_DIR$/.idea/checkstyle-idea.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/checkstyle-idea.xml" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Enum" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RESET_MODE" value="HARD" />
+  </component>
+  <component name="GitToolBoxStore">
+    <option name="projectConfigVersion" value="5" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2HiXYGgMNCut6gvFEV1xdQ2l12K" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+    <option name="showMembers" value="true" />
+    <option name="showVisibilityIcons" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "last_opened_file_path": "/home/spooky/Desktop/CS-230/.idea",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.32410714",
+    "settings.editor.selected.configurable": "reference.settings.project.maven.repository.indices"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/.idea" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="Unnamed" type="Application" factoryName="Application" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.example.cs230.Main" />
+      <module name="CS-230" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="70b5a907-3c6f-42e6-9f64-1720237bb43d" name="Changes" comment="" />
+      <created>1668768924704</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1668768924704</updated>
+    </task>
+    <task id="LOCAL-00001" summary="Change main menu ui look. As well as function of how hide/show works.">
+      <created>1668772310298</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1668772310298</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Character Picker made.">
+      <created>1668784591043</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1668784591043</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Made NCP class.">
+      <created>1668787522494</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1668787522494</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Image files uploaded.">
+      <created>1668788706456</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1668788706456</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Image files uploaded.">
+      <created>1668789184065</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1668789184065</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Test Commit.">
+      <created>1668791472810</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1668791472810</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Draft Tile class.">
+      <created>1669114852755</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1669114852755</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Added todo list.">
+      <created>1669117873718</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1669117873718</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Test.">
+      <created>1669118270241</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1669118270241</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Change directory of gitignore.">
+      <created>1669118418396</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1669118418396</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Made basic classes.">
+      <created>1669123216780</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1669123216780</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Player left movement and message of the day display to main menu.">
+      <created>1669129089888</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1669129089888</updated>
+    </task>
+    <task id="LOCAL-00013" summary="Added buttons to gameWindow.">
+      <created>1669138976870</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1669138976870</updated>
+    </task>
+    <task id="LOCAL-00014" summary="Resizable menu sub scenes.">
+      <created>1669143226225</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1669143226225</updated>
+    </task>
+    <task id="LOCAL-00015" summary="Basic help text added.">
+      <created>1669143646576</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1669143646576</updated>
+    </task>
+    <task id="LOCAL-00016" summary="Left &amp; right movement by Omar. Commented out not working, need error checking.">
+      <created>1669372320604</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1669372320604</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="RECENT_FILTERS">
+      <map>
+        <entry key="Branch">
+          <value>
+            <list>
+              <RecentGroup>
+                <option name="FILTER_VALUES">
+                  <option value="main" />
+                </option>
+              </RecentGroup>
+            </list>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Change main menu ui look. As well as function of how hide/show works." />
+    <MESSAGE value="Character Picker made." />
+    <MESSAGE value="Made NCP class." />
+    <MESSAGE value="Image files uploaded." />
+    <MESSAGE value="Test Commit." />
+    <MESSAGE value="Draft Tile class." />
+    <MESSAGE value="Added todo list." />
+    <MESSAGE value="Test." />
+    <MESSAGE value="Change directory of gitignore." />
+    <MESSAGE value="Made basic classes." />
+    <MESSAGE value="Player left movement and message of the day display to main menu." />
+    <MESSAGE value="Added buttons to gameWindow." />
+    <MESSAGE value="Resizable menu sub scenes." />
+    <MESSAGE value="Basic help text added." />
+    <MESSAGE value="Left &amp; right movement by Omar. Commented out not working, need error checking." />
+    <option name="LAST_COMMIT_MESSAGE" value="Left &amp; right movement by Omar. Commented out not working, need error checking." />
+  </component>
+</project>

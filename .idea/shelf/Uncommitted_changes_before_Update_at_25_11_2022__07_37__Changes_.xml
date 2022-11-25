@@ -1,0 +1,19 @@
+<changelist name="Uncommitted_changes_before_Update_at_25_11_2022,_07_37_[Changes]" date="1669361839254" recycled="true" deleted="true">
+  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_25_11_2022,_07_37_[Changes]/shelved.patch" />
+  <option name="DESCRIPTION" value="Uncommitted changes before Update at 25/11/2022, 07:37 [Changes]" />
+  <binary>
+    <option name="BEFORE_PATH" value="CS-230/target/classes/com/example/cs230/MainMenuButton.class" />
+    <option name="AFTER_PATH" value="CS-230/target/classes/com/example/cs230/MainMenuButton.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_25_11_2022,_07_37_[Changes]/MainMenuButton.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="CS-230/target/classes/com/example/cs230/MainMenuSubScene.class" />
+    <option name="AFTER_PATH" value="CS-230/target/classes/com/example/cs230/MainMenuSubScene.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_25_11_2022,_07_37_[Changes]/MainMenuSubScene.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="CS-230/target/classes/com/example/cs230/ViewManager.class" />
+    <option name="AFTER_PATH" value="CS-230/target/classes/com/example/cs230/ViewManager.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_25_11_2022,_07_37_[Changes]/ViewManager.class" />
+  </binary>
+</changelist>
