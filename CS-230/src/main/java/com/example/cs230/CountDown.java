@@ -1,3 +1,4 @@
+package com.example.cs230;
 
 public class CountDown implements Runnable {
     private final Object lock = new Object();
@@ -24,7 +25,7 @@ public class CountDown implements Runnable {
             countdown--;
             if (countdown < 0) {
                 runningCountdown = false;
-                System.out.println("You've lost");
+                System.out.println("You have lost");
                 System.exit(0);
             }
         }

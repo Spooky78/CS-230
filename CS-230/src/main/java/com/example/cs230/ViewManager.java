@@ -66,7 +66,7 @@ public class ViewManager {
         helpSubScene = new MainMenuSubScene();
         scoreSubScene = new MainMenuSubScene();
         ninjaChooserSubScene = new MainMenuSubScene();
-
+        creditsSubScene.getPane().setAlignment(Pos.TOP_CENTER);
         mainPane.setCenter(subscenePane);
         createPlayerCharacterChooserSubScene();
         createHelpText();
@@ -160,16 +160,14 @@ public class ViewManager {
             throw new RuntimeException(e);
         }
     }
-
-    //TODO: createCreditsText(){}
-
-    private  void createCreditsText() throws FileNotFoundException{
+    private  void createCreditsText() {
         Text creditTitle = new Text("Credits");
         try {
-            creditTitle.setFont(Font.loadFont(new FileInputStream(FONT_PATH), 40));
+            creditTitle.setFont(Font.loadFont(new FileInputStream(FONT_PATH),40));
         } catch (FileNotFoundException e) {
             creditTitle.setFont(Font.font("Arial", 40));
         }
+
         Text members = new Text("\n Ziming Dong, 2013509 \n Rex Lam, 2035415 \n Arran Pearce, 2010120 " +
                 "\n Omar Sufer, 2123959 \n Dimitrios Koumaris, 2269609 \n Vic Lismanovica, 2108255 " +
                 "\n Chrysis Pitsillides, 2009555");
@@ -179,7 +177,7 @@ public class ViewManager {
         creditsSubScene.getPane().getChildren().add(credit);
 
     }
-    private void createHelpText() throws FileNotFoundException {
+    private void createHelpText() {
         Text howToPlayTitle = new Text("How to play");
         try {
             howToPlayTitle.setFont(Font.loadFont(new FileInputStream(FONT_PATH), 40));
