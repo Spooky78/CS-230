@@ -48,6 +48,7 @@ public class GameViewManager {
         //createButtons();
         createBoard();
         createPlayer(chosenNinja);
+        createAssassin();
         gameStage.show();
     }
 
@@ -67,6 +68,16 @@ public class GameViewManager {
         currentPlayerStack.setLayoutX(200);
         currentPlayerStack.setLayoutY(200);
         gamePane.getChildren().add(currentPlayerStack);
+    }
+
+    private void createAssassin(){
+        FlyingAssassin currentAssassin = new FlyingAssassin();
+        StackPane currentStackPane = new StackPane();
+        currentStackPane.getChildren().add(currentAssassin.getAssassin());
+        currentStackPane.setLayoutX(400);
+        currentStackPane.setLayoutY(400);
+
+        gamePane.getChildren().add(currentStackPane);
     }
 
     private void createBoard(){
