@@ -61,16 +61,18 @@ public class ViewManager {
     private void createSubScenes() throws FileNotFoundException {
         subscenePane = new StackPane();
         subscenePane.setPadding(new Insets(50));
-
         creditsSubScene = new MainMenuSubScene();
         helpSubScene = new MainMenuSubScene();
         scoreSubScene = new MainMenuSubScene();
         ninjaChooserSubScene = new MainMenuSubScene();
         creditsSubScene.getPane().setAlignment(Pos.TOP_CENTER);
+        helpSubScene.getPane().setAlignment(Pos.TOP_CENTER);
+        scoreSubScene.getPane().setAlignment(Pos.TOP_CENTER);
         mainPane.setCenter(subscenePane);
         createPlayerCharacterChooserSubScene();
         createHelpText();
         createCreditsText();
+        createScoresText();
     }
 
     /**
@@ -160,25 +162,53 @@ public class ViewManager {
             throw new RuntimeException(e);
         }
     }
+
+    private void createScoresText() {
+        Text scoreTitle = new Text("Score");
+        try {
+            scoreTitle.setFont(Font.loadFont(new FileInputStream(FONT_PATH), 60));
+        } catch (FileNotFoundException e) {
+            scoreTitle.setFont(Font.font("Arial", 60));
+        }
+        Text fuck = new Text("Fuck, no score!");
+        VBox scoreTit = new VBox();
+        scoreTit.setAlignment(Pos.CENTER);
+        scoreTit.getChildren().add(scoreTitle);
+        VBox score = new VBox();
+        score.getChildren().add(fuck);
+        scoreSubScene.getPane().getChildren().add(scoreTit);
+        scoreSubScene.getPane().getChildren().add(score);
+    }
+
+    /**
+     * Creates credits of who created the game.
+     */
     private  void createCreditsText() {
         Text creditTitle = new Text("Credits");
         try {
-            creditTitle.setFont(Font.loadFont(new FileInputStream(FONT_PATH),40));
+            creditTitle.setFont(Font.loadFont(new FileInputStream(FONT_PATH),60));
         } catch (FileNotFoundException e) {
-            creditTitle.setFont(Font.font("Arial", 40));
+            creditTitle.setFont(Font.font("Arial", 60));
         }
-
         Text members = new Text("\n Ziming Dong, 2013509 \n Rex Lam, 2035415 \n Arran Pearce, 2010120 " +
                 "\n Omar Sufer, 2123959 \n Dimitrios Koumaris, 2269609 \n Vic Lismanovica, 2108255 " +
                 "\n Chrysis Pitsillides, 2009555");
+        members.setFont(Font.font("Arial",25));
+        VBox creditTit = new VBox();
+        creditTit.getChildren().add(creditTitle);
+        creditTit.setAlignment(Pos.CENTER);
         VBox credit = new VBox();
-        credit.getChildren().add(creditTitle);
         credit.getChildren().add(members);
+        creditsSubScene.getPane().getChildren().add(creditTit);
         creditsSubScene.getPane().getChildren().add(credit);
-
     }
+
+    /**
+     * Creates messages of how to play the game.
+     */
     private void createHelpText() {
         Text howToPlayTitle = new Text("How to play");
+        VBox helpTitle = new VBox();
         try {
             howToPlayTitle.setFont(Font.loadFont(new FileInputStream(FONT_PATH), 40));
         } catch (FileNotFoundException e) {
@@ -208,6 +238,8 @@ public class ViewManager {
                 "Smart Thieves collects the loot and reach the exit of the level before the player. " +
                         "When the Smart Thieves arrived first, you lost the game."
         );
+        helpTitle.getChildren().add(howToPlayTitle);
+        helpTitle.setAlignment(Pos.CENTER);
         objective.setFont(Font.font("Arial",FontWeight.BOLD, FontPosture.ITALIC,15));
         objective.setUnderline(true);
         how2Play.setFont(Font.font("Arial",FontWeight.BOLD, FontPosture.ITALIC,15));
@@ -220,7 +252,6 @@ public class ViewManager {
         playInstruction.setWrappingWidth(400);
         itemsInstruction.setWrappingWidth(400);
         thievesInstruction.setWrappingWidth(400);
-        instructions.getChildren().add(howToPlayTitle);
         instructions.getChildren().add(objective);
         instructions.getChildren().add(objInstruction);
         instructions.getChildren().add(how2Play);
@@ -229,6 +260,7 @@ public class ViewManager {
         instructions.getChildren().add(itemsInstruction);
         instructions.getChildren().add(thieves);
         instructions.getChildren().add(thievesInstruction);
+        helpSubScene.getPane().getChildren().add(helpTitle);
         helpSubScene.getPane().getChildren().add(instructions);
     }
 

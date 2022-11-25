@@ -6,14 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="70b5a907-3c6f-42e6-9f64-1720237bb43d" name="Changes" comment="help and credit text done">
       <change beforePath="$PROJECT_DIR$/.idea/checkstyle-idea.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/checkstyle-idea.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_25_11_2022__07_37__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_25_11_2022__07_37__Changes_.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CS-230/src/main/java/com/example/cs230/CountDown.java" beforeDir="false" afterPath="$PROJECT_DIR$/CS-230/src/main/java/com/example/cs230/CountDown.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CS-230/src/main/java/com/example/cs230/ViewManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/CS-230/src/main/java/com/example/cs230/ViewManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CS-230/target/classes/com/example/cs230/FlyingAssassin.class" beforeDir="false" afterPath="$PROJECT_DIR$/CS-230/target/classes/com/example/cs230/FlyingAssassin.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CS-230/target/classes/com/example/cs230/GameViewManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/CS-230/target/classes/com/example/cs230/GameViewManager.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CS-230/target/classes/com/example/cs230/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/CS-230/target/classes/com/example/cs230/Main.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CS-230/target/classes/com/example/cs230/NPC.class" beforeDir="false" afterPath="$PROJECT_DIR$/CS-230/target/classes/com/example/cs230/NPC.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CS-230/target/classes/com/example/cs230/Tile.class" beforeDir="false" afterPath="$PROJECT_DIR$/CS-230/target/classes/com/example/cs230/Tile.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CS-230/target/classes/com/example/cs230/ViewManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/CS-230/target/classes/com/example/cs230/ViewManager.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -200,7 +195,14 @@
       <option name="project" value="LOCAL" />
       <updated>1669397784729</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="help and credit text done">
+      <created>1669398677879</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1669398677879</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
