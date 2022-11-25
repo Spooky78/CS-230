@@ -11,6 +11,8 @@ public class Player {
     private AnimationTimer gameTimer;
     private boolean isLeftKeyPressed = false;
     private boolean isRightKeyPressed = false;
+    private boolean isUpKeyPressed = false;
+    private boolean isDownKeyPressed = false;
     private StackPane playerStackPane = new StackPane();
     private ImageView player;
 
@@ -44,6 +46,10 @@ public class Player {
                 isLeftKeyPressed = true;
             } else if (keyEvent.getCode() == KeyCode.RIGHT) {
                 isRightKeyPressed = true;
+            } else if (keyEvent.getCode() == KeyCode.UP) {
+                isUpKeyPressed = true;
+            } else if (keyEvent.getCode() == KeyCode.DOWN) {
+                isDownKeyPressed = true;
             }
         });
 
@@ -52,16 +58,40 @@ public class Player {
                 isLeftKeyPressed = false;
             } else if (keyEvent.getCode() == KeyCode.RIGHT) {
                 isRightKeyPressed = false;
+            } else if (keyEvent.getCode() == KeyCode.UP) {
+                isUpKeyPressed = false;
+            } else if (keyEvent.getCode() == KeyCode.DOWN) {
+                isDownKeyPressed = false;
             }
         });
     }
 
     private void movePlayer() {
-        if (isLeftKeyPressed && !isRightKeyPressed) {
-            playerStackPane.setLayoutX(playerStackPane.getLayoutX() - 5);
-
+        if (isLeftKeyPressed && !isRightKeyPressed && !isDownKeyPressed && !isUpKeyPressed) {
+            playerStackPane.setLayoutX(playerStackPane.getLayoutX() - 2);
         }
+
+        if (isRightKeyPressed && !isLeftKeyPressed && !isDownKeyPressed && !isUpKeyPressed) {
+            playerStackPane.setLayoutX(playerStackPane.getLayoutX() + 2);
+        }
+/*
+        if (isRightKeyPressed && isLeftKeyPressed || isDownKeyPressed || isUpKeyPressed) {
+            playerStackPane.setLayoutX(playerStackPane.getLayoutX() + 0);
+        }
+
+        if (isLeftKeyPressed && isRightKeyPressed || isDownKeyPressed || isUpKeyPressed) {
+            playerStackPane.setLayoutX(playerStackPane.getLayoutX() + 0);
+        }
+
+        if (isDownKeyPressed && isRightKeyPressed || isLeftKeyPressed || isUpKeyPressed) {
+            playerStackPane.setLayoutX(playerStackPane.getLayoutX() + 0);
+        }
+
+        if (isUpKeyPressed && isRightKeyPressed || isLeftKeyPressed || isDownKeyPressed) {
+            playerStackPane.setLayoutX(playerStackPane.getLayoutX() + 0);
+        }*/
     }
+
 
     public StackPane getPlayerStack(){
         return playerStackPane;

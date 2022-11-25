@@ -9,13 +9,11 @@ import javafx.stage.Stage;
  * @author Spooky78
  */
 
-//TODO: frame rate cap for NPC animation???
 //TODO: finish sprite design.
 //TODO: player profile ask to select in menu
 
 //TODO: rest of player movement.
 //TODO: text for help and credits.
-//TODO: in Tile class make sure that parameters can only be passed are A,B,C, OR D.
 //TODO: read in level file in Board class.
 //TODO: draw board to screen using tile pane in Board class.
 //TODO: crop sprites (make sure as close to image as possible).

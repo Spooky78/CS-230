@@ -45,7 +45,7 @@ public class GameViewManager {
         this.menuStage = stage;
         this.menuStage.hide();
         createBackground();
-        createButtons();
+        //createButtons();
         createBoard();
         createPlayer(chosenNinja);
         gameStage.show();
@@ -86,7 +86,7 @@ public class GameViewManager {
         topBorderPane.setPadding(new Insets(50, 50,0,50));
         topBorderPane.setSpacing(20);
 
-        gamePane.setRight(topBorderPane);
+        gamePane.setTop(topBorderPane);
     }
 
     /**
