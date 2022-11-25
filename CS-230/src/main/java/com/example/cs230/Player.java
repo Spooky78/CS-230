@@ -74,7 +74,15 @@ public class Player {
         if (isRightKeyPressed && !isLeftKeyPressed && !isDownKeyPressed && !isUpKeyPressed) {
             playerStackPane.setLayoutX(playerStackPane.getLayoutX() + 2);
         }
-/*
+
+        if (isUpKeyPressed && !isLeftKeyPressed && !isDownKeyPressed && !isRightKeyPressed) {
+            playerStackPane.setLayoutY(playerStackPane.getLayoutY() - 2);
+        }
+
+        if (isDownKeyPressed && !isLeftKeyPressed && !isRightKeyPressed && !isUpKeyPressed) {
+            playerStackPane.setLayoutY(playerStackPane.getLayoutY() + 2);
+        }
+
         if (isRightKeyPressed && isLeftKeyPressed || isDownKeyPressed || isUpKeyPressed) {
             playerStackPane.setLayoutX(playerStackPane.getLayoutX() + 0);
         }
@@ -84,12 +92,17 @@ public class Player {
         }
 
         if (isDownKeyPressed && isRightKeyPressed || isLeftKeyPressed || isUpKeyPressed) {
-            playerStackPane.setLayoutX(playerStackPane.getLayoutX() + 0);
+            playerStackPane.setLayoutY(playerStackPane.getLayoutY() + 0);
         }
-
+        if (isLeftKeyPressed && isDownKeyPressed || isRightKeyPressed || isUpKeyPressed) {
+            playerStackPane.setLayoutY(playerStackPane.getLayoutY() + 0);
+        }
         if (isUpKeyPressed && isRightKeyPressed || isLeftKeyPressed || isDownKeyPressed) {
-            playerStackPane.setLayoutX(playerStackPane.getLayoutX() + 0);
-        }*/
+            playerStackPane.setLayoutY(playerStackPane.getLayoutY() + 0);
+        }
+        if (isUpKeyPressed && isDownKeyPressed || isLeftKeyPressed || isRightKeyPressed) {
+            playerStackPane.setLayoutY(playerStackPane.getLayoutY() + 0);
+        }
     }
 
 
