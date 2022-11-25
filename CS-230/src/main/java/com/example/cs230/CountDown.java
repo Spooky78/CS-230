@@ -1,30 +1,57 @@
-package com.example.cs230; /**
- * @author Lewis Dong
- * @date 2022/11/25 12:26
- * @version V1.0
- * <p>
- * Description: using java.util.Timer to achieve timer countdown
- * @see
- */
-import java.util.*;
-import java.util.concurrent.TimeUnit;
-public class CountDown {
-    private int curSec;
-    public CountDown(int limitSec) throws InterruptedException {
-        this.curSec = limitSec;
-        System.out.println("" + limitSec + "s");
-        Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
-            public void run() {
-                System.out.println("" + --curSec + "s");
-            }
-        }, 0, 1000);
-        TimeUnit.SECONDS.sleep(limitSec);
-        timer.cancel();
-        System.out.println("Time out!");
+
+public class CountDown implements Runnable {
+    private final Object lock = new Object();
+    private Thread thread;
+    private int countdown;
+    private boolean runningCountdown = true;
+    private boolean pause = false;
+
+    public CountDown(int times) {
+        countdown = times;
     }
-    //Test method
-    public static void main(String[] args) throws InterruptedException {
-        new CountDown(10);
+
+    public void run() {
+        while (runningCountdown && countdown > 0) {
+            if (!pause) {
+                pause();
+            } else {
+                resume();
+            }
+            try {
+                Thread.sleep(1000);
+            } catch (Exception ignored) {
+            }
+            countdown--;
+            if (countdown < 0) {
+                runningCountdown = false;
+                System.out.println("You've lost");
+                System.exit(0);
+            }
+        }
+    }
+
+    public void start() {
+        run();
+        if (thread == null) {
+            thread = new Thread(this);
+            thread.start();
+        }
+    }
+
+    public void pause() {
+        pause = true;
+        synchronized (lock) {
+            try {
+                lock.wait();
+            } catch (Exception ignored) {
+            }
+        }
+    }
+
+    public void resume() {
+        pause = false;
+        synchronized (lock) {
+            lock.notify();
+        }
     }
 }
