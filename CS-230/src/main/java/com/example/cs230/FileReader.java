@@ -9,13 +9,14 @@ import java.util.Scanner;
 public class FileReader {
     private static int boardSizeX;
     private static int boardSizeY;
+    private Tile[][] boardTiles;
+    private int[] playerStartCoords;
+    private int[] assassinStartCoords;
+    private int[] smartThiefStartCoords;
+    private int[] floorFollowingThiefStartCoords;
 
 
     private static void readLineByLine(Scanner in) {
-        // Queue<ClosedShape> shapeQueue = new Queue<ClosedShape>();
-		/*  reads the first value in each line in order to know what shape is being constructed
-			then it enques that shape do shapeQueue
-		 */
         while(in.hasNextLine()) {
             String scannerVariable = in.nextLine();
             String[] params = scannerVariable.split(" ");
@@ -44,7 +45,7 @@ public class FileReader {
     }
 
     private static void boardLineReader(String[] params){
-
+        //TODO read in the tiles, then make tiles and put into boardTiles[][] in correct place.
     }
 
 

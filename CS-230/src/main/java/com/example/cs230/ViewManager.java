@@ -227,7 +227,7 @@ public class ViewManager {
         MainMenuButton startButton = new MainMenuButton("START");
 
         startButton.setOnAction(actionEvent -> {
-            if (chosenNinja != null) {
+            if (chosenNinja != null && currentPlayerProfile != null) {
                 GameViewManager gameManager = new GameViewManager();
                 gameManager.createNewGame(mainStage, chosenNinja);
             }
