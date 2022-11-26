@@ -5,11 +5,13 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
@@ -40,6 +42,9 @@ public class ViewManager {
     private MainMenuSubScene sceneToHide;
     private List<NinjaPicker> ninjaPickerList;
     private Ninja chosenNinja;
+    private PlayerProfile currentPlayerProfile;
+    private String currentProfileName = "None";
+    private Text currentProfileText;
     private boolean isHidden = true;
 
     /**
@@ -107,12 +112,70 @@ public class ViewManager {
      * Creates the player character chooser.
      */
     private void createPlayerCharacterChooserSubScene() {
+        ninjaChooserSubScene.getPane().getChildren().add(createCurrentProfile());
         ninjaChooserSubScene.getPane().getChildren().add(createPlayerProfilePicker());
         ninjaChooserSubScene.getPane().getChildren().add(createPlayerCharacterToChoose());
         ninjaChooserSubScene.getPane().getChildren().add(createButtonToStart());
     }
 
-    private VBox createPlayerProfilePicker(){
+    private Text createCurrentProfile(){
+        currentProfileText = new Text("Please Select Profile");
+        if (currentPlayerProfile != null){
+            currentProfileText = new Text("Profile: " + currentPlayerProfile.getName());
+        }
+        return currentProfileText;
+    }
+
+    private HBox createPlayerProfilePicker(){
+        MainMenuButton newProfileButton = createNewProfileButton();
+        MainMenuButton chooseProfileButton = chooseProfileButton();
+
+        HBox profilePrickerPane = new HBox(newProfileButton);
+        profilePrickerPane.getChildren().add(chooseProfileButton);
+
+        profilePrickerPane.setSpacing(20);
+        profilePrickerPane.setAlignment(Pos.CENTER);
+        return  profilePrickerPane;
+    }
+
+    private MainMenuButton chooseProfileButton(){
+        MainMenuButton chooseProfileButton = new MainMenuButton("Choose\n Profile");
+        chooseProfileButton.setOnAction(e -> {
+            if (allProfiles.size() == 0){
+                Text error = new Text("Error no profiles have been made");
+                ninjaChooserSubScene.getPane().getChildren()
+                    .set(0, error);
+            } else {
+                String[] arrayData = new String[allProfiles.size()];
+                for (int i = 0; i < allProfiles.size(); i++) {
+                    arrayData[i] = (allProfiles.get(i).getName());
+                }
+
+                List<String> dialogData;
+                dialogData = Arrays.asList(arrayData);
+
+                ChoiceDialog<String> dialog = new ChoiceDialog(dialogData.get(0), dialogData);
+                dialog.setTitle("Select Profile");
+                dialog.setHeaderText("Select your choice");
+                Optional<String> result = dialog.showAndWait();
+                String selected;
+                if (result.isPresent()) {
+                    selected = result.get();
+                    for (int i = 0; i < allProfiles.size(); i++) {
+                        if (selected.equals(allProfiles.get(i).getName())) {
+                            currentPlayerProfile = allProfiles.get(i);
+                            ninjaChooserSubScene.getPane().getChildren()
+                                .set(0, createCurrentProfile());
+                        }
+                    }
+                }
+                System.out.println("Selection: " + currentPlayerProfile.getName());
+            }
+        });
+        return chooseProfileButton;
+    }
+
+    private MainMenuButton createNewProfileButton(){
         TextInputDialog nameInputDialog = new TextInputDialog("Enter a name");
         nameInputDialog.setContentText("Name: ");
         nameInputDialog.setHeaderText("Create New Player Profile!");
@@ -123,17 +186,13 @@ public class ViewManager {
             Optional<String> result = nameInputDialog.showAndWait();
             String newProfileName = "none";
             if (result.isPresent()) {
-
                 newProfileName = result.get();
+                PlayerProfile newProfile = new PlayerProfile(newProfileName);
+                allProfiles.add(newProfile);
             }
-            PlayerProfile newProfile = new PlayerProfile(newProfileName);
-            allProfiles.add(newProfile);
             System.out.println(newProfileName);
         });
-
-        VBox layout = new VBox(newProfileButton);
-        layout.setMargin(newProfileButton, new Insets(20,20,20,20));
-        return  layout;
+        return newProfileButton;
     }
 
     /**

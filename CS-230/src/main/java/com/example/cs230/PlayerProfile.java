@@ -15,4 +15,8 @@ public class PlayerProfile {
     public String getName(){
         return name;
     }
+
+    public PlayerProfile getProfile(){
+        return this;
+    }
 }
