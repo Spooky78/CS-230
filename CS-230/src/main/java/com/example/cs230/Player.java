@@ -56,19 +56,19 @@ public class Player {
 
     private void movePlayer() {
         if (isLeftKeyPressed && (!isRightKeyPressed && !isDownKeyPressed && !isUpKeyPressed)) {
-            playerStackPane.setLayoutX(playerStackPane.getLayoutX() - 50);
+            playerStackPane.setLayoutX(playerStackPane.getLayoutX() - 200);
         }
 
         if (isRightKeyPressed && (!isLeftKeyPressed && !isDownKeyPressed && !isUpKeyPressed)) {
-            playerStackPane.setLayoutX(playerStackPane.getLayoutX() + 50);
+            playerStackPane.setLayoutX(playerStackPane.getLayoutX() + 200);
         }
 
         if (isUpKeyPressed && (!isLeftKeyPressed && !isDownKeyPressed && !isRightKeyPressed)) {
-            playerStackPane.setLayoutY(playerStackPane.getLayoutY() - 50);
+            playerStackPane.setLayoutY(playerStackPane.getLayoutY() - 200);
         }
 
         if (isDownKeyPressed && (!isLeftKeyPressed && !isRightKeyPressed && !isUpKeyPressed)) {
-            playerStackPane.setLayoutY(playerStackPane.getLayoutY() + 50);
+            playerStackPane.setLayoutY(playerStackPane.getLayoutY() + 200);
         }
 
         if (isRightKeyPressed && (isLeftKeyPressed || isDownKeyPressed || isUpKeyPressed)) {

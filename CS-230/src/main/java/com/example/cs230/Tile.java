@@ -21,6 +21,7 @@ public class Tile {
      */
     public Tile(char topLeft, char topRight, char bottomLeft, char bottomRight){
         tilePane.setPrefColumns(2);
+        tilePane.setPrefRows(2);
 
         tileIds[0] = topLeft;
         tileIds[1] = topRight;
@@ -48,6 +49,8 @@ public class Tile {
         }
         for (int i=0; i< tileIds.length; i++) {
             ImageView currentTile = new ImageView(tilePaths[i]);
+            currentTile.setFitHeight(100);
+            currentTile.setFitWidth(100);
             tilePane.getChildren().add(currentTile);
         }
     }
