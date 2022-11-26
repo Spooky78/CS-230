@@ -1,21 +1,22 @@
 package com.example.cs230;
 
-import javafx.animation.AnimationTimer;
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.StackPane;
-import javafx.stage.Stage;
 
 public class Player {
+    private static final int DEFAULT_MOVEMENT_OFFSET = 100;
     private boolean isLeftKeyPressed = false;
     private boolean isRightKeyPressed = false;
     private boolean isUpKeyPressed = false;
     private boolean isDownKeyPressed = false;
+    private int movementOffset;
     private StackPane playerStackPane = new StackPane();
     private ImageView player;
 
     public Player(Scene gameScene, Ninja chosenNinja){
+        movementOffset = DEFAULT_MOVEMENT_OFFSET;
         createKeyListeners(gameScene);
         createPlayer(chosenNinja);
     }
@@ -56,19 +57,19 @@ public class Player {
 
     private void movePlayer() {
         if (isLeftKeyPressed && (!isRightKeyPressed && !isDownKeyPressed && !isUpKeyPressed)) {
-            playerStackPane.setLayoutX(playerStackPane.getLayoutX() - 200);
+            playerStackPane.setLayoutX(playerStackPane.getLayoutX() - movementOffset);
         }
 
         if (isRightKeyPressed && (!isLeftKeyPressed && !isDownKeyPressed && !isUpKeyPressed)) {
-            playerStackPane.setLayoutX(playerStackPane.getLayoutX() + 200);
+            playerStackPane.setLayoutX(playerStackPane.getLayoutX() + movementOffset);
         }
 
         if (isUpKeyPressed && (!isLeftKeyPressed && !isDownKeyPressed && !isRightKeyPressed)) {
-            playerStackPane.setLayoutY(playerStackPane.getLayoutY() - 200);
+            playerStackPane.setLayoutY(playerStackPane.getLayoutY() - movementOffset);
         }
 
         if (isDownKeyPressed && (!isLeftKeyPressed && !isRightKeyPressed && !isUpKeyPressed)) {
-            playerStackPane.setLayoutY(playerStackPane.getLayoutY() + 200);
+            playerStackPane.setLayoutY(playerStackPane.getLayoutY() + movementOffset);
         }
 
         if (isRightKeyPressed && (isLeftKeyPressed || isDownKeyPressed || isUpKeyPressed)) {
@@ -94,6 +95,9 @@ public class Player {
         }
     }
 
+    public void setMovementOffset(int newOffset){
+        movementOffset = newOffset;
+    }
 
     public StackPane getPlayerStack(){
         return playerStackPane;

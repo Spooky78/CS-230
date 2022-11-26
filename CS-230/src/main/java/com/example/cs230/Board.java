@@ -6,7 +6,7 @@ import javafx.scene.layout.TilePane;
 
 public class Board {
     private TilePane boardPane;
-    private int boardX;
+    private int boardWidth = 4;
     private int boardY;
     private int currentLevelID;
     //TODO: add item coord variables.
@@ -34,11 +34,15 @@ public class Board {
         //boardPane.setPadding(new Insets(50));
         boardPane.getChildren().addAll(testTile0.getTile(),testTile1.getTile(), testTile2.getTile(), testTile3.getTile());
         boardPane.getChildren().addAll(testTile4.getTile(),testTile5.getTile(),testTile6.getTile(),testTile7.getTile());
-        boardPane.setPrefColumns(4);
+        boardPane.setPrefColumns(boardWidth);
         //boardPane.setPrefRows(2);
     }
 
     public TilePane getBoardPane(){
         return boardPane;
+    }
+
+    public int getBoardWidth(){
+        return boardWidth;
     }
 }
