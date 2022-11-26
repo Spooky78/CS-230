@@ -5,12 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="70b5a907-3c6f-42e6-9f64-1720237bb43d" name="Changes" comment="help and credit text done">
-      <change beforePath="$PROJECT_DIR$/.idea/checkstyle-idea.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/checkstyle-idea.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_25_11_2022__07_37__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_25_11_2022__07_37__Changes_.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CS-230/src/main/java/com/example/cs230/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/CS-230/src/main/java/com/example/cs230/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CS-230/src/main/java/com/example/cs230/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/CS-230/src/main/java/com/example/cs230/Player.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CS-230/src/main/java/com/example/cs230/Tile.java" beforeDir="false" afterPath="$PROJECT_DIR$/CS-230/src/main/java/com/example/cs230/Tile.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CS-230/src/main/java/com/example/cs230/ViewManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/CS-230/src/main/java/com/example/cs230/ViewManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CS-230/src/main/java/com/example/cs230/FileReader.java" beforeDir="false" afterPath="$PROJECT_DIR$/CS-230/src/main/java/com/example/cs230/FileReader.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CS-230/src/main/resources/GoldKey.png" beforeDir="false" afterPath="$PROJECT_DIR$/CS-230/src/main/resources/GoldKey.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CS-230/src/main/resources/Level00.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CS-230/src/main/resources/Level00.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CS-230/src/main/resources/SilverKey.png" beforeDir="false" afterPath="$PROJECT_DIR$/CS-230/src/main/resources/SilverKey.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CS-230/target/classes/GoldKey.png" beforeDir="false" afterPath="$PROJECT_DIR$/CS-230/target/classes/GoldKey.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CS-230/target/classes/SilverKey.png" beforeDir="false" afterPath="$PROJECT_DIR$/CS-230/target/classes/SilverKey.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CS-230/target/classes/com/example/cs230/MainMenuButton.class" beforeDir="false" afterPath="$PROJECT_DIR$/CS-230/target/classes/com/example/cs230/MainMenuButton.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CS-230/target/classes/com/example/cs230/Player.class" beforeDir="false" afterPath="$PROJECT_DIR$/CS-230/target/classes/com/example/cs230/Player.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CS-230/target/classes/com/example/cs230/ViewManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/CS-230/target/classes/com/example/cs230/ViewManager.class" afterDir="false" />
     </list>
