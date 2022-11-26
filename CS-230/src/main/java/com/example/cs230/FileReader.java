@@ -48,12 +48,6 @@ public class FileReader {
         //TODO read in the tiles, then make tiles and put into boardTiles[][] in correct place.
     }
 
-
-
-
-
-
-
     public static void readDataFile(String filename) {
 
         try {

@@ -11,10 +11,6 @@ import java.io.FileNotFoundException;
  * @author Spooky78
  */
 
-//TODO: finish sprite design.
-//TODO: player profile ask to select in menu
-//TODO: rest of player movement.
-//TODO: text for help and credits.(Rex: DONE)
 //TODO: read in level file in Board class.
 //TODO: draw board to screen using tile pane in Board class.
 //TODO: crop sprites (make sure as close to image as possible).

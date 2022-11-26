@@ -1,6 +1,5 @@
 package com.example.cs230;
 
-import java.util.Random;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
@@ -9,8 +8,6 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.TilePane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
@@ -19,21 +16,21 @@ import javafx.stage.Stage;
  * @author Spooky78
  */
 public class GameViewManager {
-    private static final int GAME_WIDTH = 1200;
-    private static final int GAME_HEIGHT = 800;
+    private static final int GAME_WIDTH = 800;
+    private static final int GAME_HEIGHT = 600;
     private BorderPane gamePane;
-    private VBox topBorderPane = new VBox();
+    private HBox topBorderPane = new HBox();
+
+    private StackPane gamePlayPane = new StackPane();
     private Scene gameScene;
     private Stage gameStage;
     private Stage menuStage;
-    private final Random randomPositionGenerator;
 
     /**
      * Creates a GameViewManager.
      */
     public GameViewManager() {
         initializeStage();
-        randomPositionGenerator = new Random();
     }
 
     /**
@@ -47,8 +44,8 @@ public class GameViewManager {
         createBackground();
         //createButtons();
         createBoard();
-        createPlayer(chosenNinja);
         createAssassin();
+        createPlayer(chosenNinja);
         gameStage.show();
     }
 
@@ -65,8 +62,9 @@ public class GameViewManager {
     private void createPlayer(Ninja chosenNinja){
         Player currentPlayer = new Player(gameScene, chosenNinja);
         StackPane currentPlayerStack = currentPlayer.getPlayerStack();
-        currentPlayerStack.setLayoutX(200);
-        currentPlayerStack.setLayoutY(200);
+        currentPlayerStack.setLayoutX(100);
+        currentPlayerStack.setLayoutY(100);
+        //gamePlayPane.getChildren().add(currentPlayerStack);
         gamePane.getChildren().add(currentPlayerStack);
     }
 
@@ -75,17 +73,16 @@ public class GameViewManager {
         StackPane currentStackPane = new StackPane();
         currentStackPane.getChildren().add(currentAssassin.getAssassin());
         currentStackPane.setLayoutX(400);
-        currentStackPane.setLayoutY(400);
+        currentStackPane.setLayoutY(200);
 
         gamePane.getChildren().add(currentStackPane);
     }
 
     private void createBoard(){
-        Tile testTile = new Tile('A','B','C','D');
-        Tile testTile2 = new Tile('A','B','A','B');
-        TilePane boardPane = new TilePane(testTile.getTile());
-        boardPane.getChildren().add(testTile2.getTile());
-        gamePane.setCenter(boardPane);
+        Board testBoard = new Board(0);
+
+        gamePane.setCenter(testBoard.getBoardPane());
+        //gamePlayPane.getChildren().add(testBoard.getBoardPane());
     }
 
     private void createButtons(){
