@@ -256,7 +256,7 @@ public class ViewManager {
                 chosenNinja = shipToPick.getNinja();
             });
         }
-        ninjaPickerBox.setPadding(new Insets(50));
+        ninjaPickerBox.setPadding(new Insets(20));
         ninjaPickerBox.setAlignment(Pos.CENTER);
         return ninjaPickerBox;
     }
