@@ -18,7 +18,7 @@ public class FileReader {
     /**
      * Reads the level file and extracts the starting coordinates
      * or other relevant information of the entities.
-     * @author user6078
+     * @author user6073
      * @param args
      */
     public static void main(String[] args) {
