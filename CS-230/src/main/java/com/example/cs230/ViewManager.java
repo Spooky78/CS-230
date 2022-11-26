@@ -97,11 +97,9 @@ public class ViewManager {
         if (sceneToHide != null) {
             addRemoveSubScene(subScene);
         }
-
         addRemoveSubScene(subScene);
         sceneToHide = subScene;
     }
-
 
     /**
      * Creates the player character chooser.
@@ -153,6 +151,9 @@ public class ViewManager {
         return ninjaPickerBox;
     }
 
+    /**
+     * get font from font file(.ttf)
+     */
     private final String FONT_PATH;
     {
         try {
@@ -163,6 +164,9 @@ public class ViewManager {
         }
     }
 
+    /**
+     * Titles of score and only return when there is no score.
+     */
     private void createScoresText() {
         Text scoreTitle = new Text("Score");
         try {
@@ -362,6 +366,11 @@ public class ViewManager {
         mainPane.setTop(logoPane);
     }
 
+
+    /**
+     * Displays message of the day and well-fitted under the game title
+     * word size stays the same when resizing the game.
+     */
     private void createMsgOfTheDay() {
         MsgOfTheDay m = new MsgOfTheDay();
         Text msgOfTheDay = new Text(m.getRequest());

@@ -67,40 +67,40 @@ public class Player {
     }
 
     private void movePlayer() {
-        if (isLeftKeyPressed && !isRightKeyPressed && !isDownKeyPressed && !isUpKeyPressed) {
+        if (isLeftKeyPressed && (!isRightKeyPressed || !isDownKeyPressed || !isUpKeyPressed)) {
             playerStackPane.setLayoutX(playerStackPane.getLayoutX() - 2);
         }
 
-        if (isRightKeyPressed && !isLeftKeyPressed && !isDownKeyPressed && !isUpKeyPressed) {
+        if (isRightKeyPressed && (!isLeftKeyPressed || !isDownKeyPressed || !isUpKeyPressed)) {
             playerStackPane.setLayoutX(playerStackPane.getLayoutX() + 2);
         }
 
-        if (isUpKeyPressed && !isLeftKeyPressed && !isDownKeyPressed && !isRightKeyPressed) {
+        if (isUpKeyPressed && (!isLeftKeyPressed || !isDownKeyPressed || !isRightKeyPressed)) {
             playerStackPane.setLayoutY(playerStackPane.getLayoutY() - 2);
         }
 
-        if (isDownKeyPressed && !isLeftKeyPressed && !isRightKeyPressed && !isUpKeyPressed) {
+        if (isDownKeyPressed && (!isLeftKeyPressed || !isRightKeyPressed || !isUpKeyPressed)) {
             playerStackPane.setLayoutY(playerStackPane.getLayoutY() + 2);
         }
 
-        if (isRightKeyPressed && isLeftKeyPressed || isDownKeyPressed || isUpKeyPressed) {
+        if (isRightKeyPressed && (isLeftKeyPressed || isDownKeyPressed || isUpKeyPressed)) {
             playerStackPane.setLayoutX(playerStackPane.getLayoutX() + 0);
         }
 
-        if (isLeftKeyPressed && isRightKeyPressed || isDownKeyPressed || isUpKeyPressed) {
+        if (isLeftKeyPressed && (isRightKeyPressed || isDownKeyPressed || isUpKeyPressed)) {
             playerStackPane.setLayoutX(playerStackPane.getLayoutX() + 0);
         }
 
-        if (isDownKeyPressed && isRightKeyPressed || isLeftKeyPressed || isUpKeyPressed) {
+        if (isDownKeyPressed && (isRightKeyPressed || isLeftKeyPressed || isUpKeyPressed)) {
             playerStackPane.setLayoutY(playerStackPane.getLayoutY() + 0);
         }
-        if (isLeftKeyPressed && isDownKeyPressed || isRightKeyPressed || isUpKeyPressed) {
+        if (isLeftKeyPressed && (isDownKeyPressed || isRightKeyPressed || isUpKeyPressed)) {
             playerStackPane.setLayoutY(playerStackPane.getLayoutY() + 0);
         }
-        if (isUpKeyPressed && isRightKeyPressed || isLeftKeyPressed || isDownKeyPressed) {
+        if (isUpKeyPressed && (isRightKeyPressed || isLeftKeyPressed || isDownKeyPressed)) {
             playerStackPane.setLayoutY(playerStackPane.getLayoutY() + 0);
         }
-        if (isUpKeyPressed && isDownKeyPressed || isLeftKeyPressed || isRightKeyPressed) {
+        if (isUpKeyPressed && (isDownKeyPressed || isLeftKeyPressed || isRightKeyPressed)) {
             playerStackPane.setLayoutY(playerStackPane.getLayoutY() + 0);
         }
     }

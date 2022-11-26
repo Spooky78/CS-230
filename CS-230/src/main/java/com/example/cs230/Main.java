@@ -14,12 +14,15 @@ import java.io.FileNotFoundException;
 //TODO: finish sprite design.
 //TODO: player profile ask to select in menu
 //TODO: rest of player movement.
-//TODO: text for help and credits.
+//TODO: text for help and credits.(Rex: DONE)
 //TODO: read in level file in Board class.
 //TODO: draw board to screen using tile pane in Board class.
 //TODO: crop sprites (make sure as close to image as possible).
-    //TODO: draw NPCs to screen (any where).
+//TODO: draw NPCs to screen (any where).
 //TODO: Game window top of border pane make buttons (pause, save, ect) no function
+//If spare time
+//TODO: Resume and Start New Game
+//TODO: Text font, Text boxes will resize when the game window is resized
 public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws FileNotFoundException {

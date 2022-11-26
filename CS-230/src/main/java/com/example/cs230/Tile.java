@@ -12,6 +12,13 @@ public class Tile {
     private char[] tileIds = new char[4];
     private String[] tilePaths = new String[4];
 
+    /**
+     * get from file reader and change the representing code to the image of tiles.
+     * @param topLeft returns green image
+     * @param topRight returns orange image
+     * @param bottomLeft returns yellow imagine
+     * @param bottomRight returns pink imagine
+     */
     public Tile(char topLeft, char topRight, char bottomLeft, char bottomRight){
         tilePane.setPrefColumns(2);
 
@@ -39,13 +46,16 @@ public class Tile {
                             "Invalid tiles ID: " + tileIds[i]);
             }
         }
-
         for (int i=0; i< tileIds.length; i++) {
             ImageView currentTile = new ImageView(tilePaths[i]);
             tilePane.getChildren().add(currentTile);
         }
     }
 
+    /**
+     * called from the game
+     * @return the colour(s) of the tile
+     */
     public TilePane getTile(){
         return tilePane;
     }
