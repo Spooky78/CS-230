@@ -8,9 +8,8 @@ public class Tile {
     private static final String B_TILE_PATH = "Tile2.png";
     private static final String C_TILE_PATH = "Tile3.png";
     private static final String D_TILE_PATH = "Tile4.png";
-    private TilePane tilePane = new TilePane();
-    private char[] tileIds = new char[4];
-    private String[] tilePaths = new String[4];
+    private final TilePane tilePane = new TilePane();
+    private final char[] tileIds = new char[4];
 
     /**
      * get from file reader and change the representing code to the image of tiles.
@@ -28,23 +27,15 @@ public class Tile {
         tileIds[2] = bottomLeft;
         tileIds[3] = bottomRight;
 
+        String[] tilePaths = new String[4];
         for(int i = 0; i < tileIds.length; i++) {
             switch (tileIds[i]) {
-                case 'A':
-                    tilePaths[i] = A_TILE_PATH;
-                    break;
-                case 'B':
-                    tilePaths[i] = B_TILE_PATH;
-                    break;
-                case 'C':
-                    tilePaths[i] = C_TILE_PATH;
-                    break;
-                case 'D':
-                    tilePaths[i] = D_TILE_PATH;
-                    break;
-                default:
-                    throw new IllegalArgumentException (
-                            "Invalid tiles ID: " + tileIds[i]);
+                case 'A' -> tilePaths[i] = A_TILE_PATH;
+                case 'B' -> tilePaths[i] = B_TILE_PATH;
+                case 'C' -> tilePaths[i] = C_TILE_PATH;
+                case 'D' -> tilePaths[i] = D_TILE_PATH;
+                default -> throw new IllegalArgumentException(
+                    "Invalid tiles ID: " + tileIds[i]);
             }
         }
         for (int i=0; i< tileIds.length; i++) {
@@ -55,11 +46,27 @@ public class Tile {
         }
     }
 
+    public boolean hasSubTile(char[] newIds){
+        for (char newId : newIds) {
+            for (char tileId : tileIds) {
+                if (tileId == newId) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+
     /**
      * called from the game
      * @return the colour(s) of the tile
      */
     public TilePane getTile(){
         return tilePane;
+    }
+
+    public char[] getTileIds(){
+        return tileIds;
     }
 }

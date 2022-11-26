@@ -26,7 +26,9 @@ public class GameViewManager {
     private Stage gameStage;
     private Stage menuStage;
     private Player currentPlayer;
-    private Board testBoard;
+    private int playerCurrentX;
+    private int playerCurrentY;
+    private Board currentBoard;
 
     /**
      * Creates a GameViewManager.
@@ -62,15 +64,19 @@ public class GameViewManager {
     }
 
     private void createPlayer(Ninja chosenNinja){
-        currentPlayer = new Player(gameScene, chosenNinja);
+        currentPlayer = new Player(gameScene, chosenNinja, currentBoard);
         StackPane currentPlayerStack = currentPlayer.getPlayerStack();
-        currentPlayerStack.setLayoutX(100);
-        currentPlayerStack.setLayoutY(100);
 
-        int boardColumns = testBoard.getBoardWidth();
+        int boardColumns = currentBoard.getBoardWidth();
         int tileSize = GAME_WIDTH/ boardColumns;
         currentPlayer.setMovementOffset(tileSize);
-        //gamePlayPane.getChildren().add(currentPlayerStack);
+
+        int[] playerStart = currentBoard.getStartCharacterPosition();
+        int playerStartX = playerStart[0];
+        int playerStartY = playerStart[1];
+        currentPlayerStack.setLayoutX(playerStartX * tileSize + (tileSize / 2));
+        currentPlayerStack.setLayoutY(playerStartY * tileSize + (tileSize / 2));
+
         gamePane.getChildren().add(currentPlayerStack);
     }
 
@@ -85,9 +91,9 @@ public class GameViewManager {
     }
 
     private void createBoard(){
-        testBoard = new Board(0);
+        currentBoard = new Board(0);
 
-        gamePane.setCenter(testBoard.getBoardPane());
+        gamePane.setCenter(currentBoard.getBoardPane());
         //gamePlayPane.getChildren().add(testBoard.getBoardPane());
     }
 
@@ -112,4 +118,7 @@ public class GameViewManager {
         gamePane.setBackground(background);
     }
 
+    public Board getCurrentBoard(){
+        return currentBoard;
+    }
 }

@@ -10,7 +10,7 @@ public class FileReader {
     private static int boardSizeX;
     private static int boardSizeY;
     private Tile[][] boardTiles;
-    private int[] playerStartCoords;
+    private static int[] playerStartCoords = new int[2];
     private int[] assassinStartCoords;
     private int[] smartThiefStartCoords;
     private int[] floorFollowingThiefStartCoords;
@@ -60,6 +60,11 @@ public class FileReader {
             System.out.println("Could not find " + filename);
             System.exit(0);
         }
+    }
 
+    public int[] getPlayerStartCoords(){
+        //temp:
+        playerStartCoords = new int[] {1, 0};
+        return playerStartCoords;
     }
 }
