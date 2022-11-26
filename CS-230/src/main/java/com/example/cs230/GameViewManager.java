@@ -63,7 +63,7 @@ public class GameViewManager {
     }
 
     private void createPlayer(Ninja chosenNinja){
-        Player currentPlayer = new Player(menuStage, gameScene, chosenNinja);
+        Player currentPlayer = new Player(gameScene, chosenNinja);
         StackPane currentPlayerStack = currentPlayer.getPlayerStack();
         currentPlayerStack.setLayoutX(200);
         currentPlayerStack.setLayoutY(200);

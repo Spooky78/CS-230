@@ -8,7 +8,6 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 public class Player {
-    private AnimationTimer gameTimer;
     private boolean isLeftKeyPressed = false;
     private boolean isRightKeyPressed = false;
     private boolean isUpKeyPressed = false;
@@ -16,21 +15,9 @@ public class Player {
     private StackPane playerStackPane = new StackPane();
     private ImageView player;
 
-    public Player(Stage menuStage, Scene gameScene, Ninja chosenNinja){
+    public Player(Scene gameScene, Ninja chosenNinja){
         createKeyListeners(gameScene);
         createPlayer(chosenNinja);
-        createGameLoop();
-    }
-
-    private void createGameLoop(){
-        gameTimer = new AnimationTimer() {
-            @Override
-            public void handle(long l) {
-                movePlayer();
-            }
-        };
-
-        gameTimer.start();
     }
 
     private void createPlayer(Ninja chosenNinja){
@@ -51,6 +38,7 @@ public class Player {
             } else if (keyEvent.getCode() == KeyCode.DOWN) {
                 isDownKeyPressed = true;
             }
+            movePlayer();
         });
 
         gameScene.setOnKeyReleased(keyEvent -> {
@@ -67,20 +55,20 @@ public class Player {
     }
 
     private void movePlayer() {
-        if (isLeftKeyPressed && (!isRightKeyPressed || !isDownKeyPressed || !isUpKeyPressed)) {
-            playerStackPane.setLayoutX(playerStackPane.getLayoutX() - 2);
+        if (isLeftKeyPressed && (!isRightKeyPressed && !isDownKeyPressed && !isUpKeyPressed)) {
+            playerStackPane.setLayoutX(playerStackPane.getLayoutX() - 50);
         }
 
-        if (isRightKeyPressed && (!isLeftKeyPressed || !isDownKeyPressed || !isUpKeyPressed)) {
-            playerStackPane.setLayoutX(playerStackPane.getLayoutX() + 2);
+        if (isRightKeyPressed && (!isLeftKeyPressed && !isDownKeyPressed && !isUpKeyPressed)) {
+            playerStackPane.setLayoutX(playerStackPane.getLayoutX() + 50);
         }
 
-        if (isUpKeyPressed && (!isLeftKeyPressed || !isDownKeyPressed || !isRightKeyPressed)) {
-            playerStackPane.setLayoutY(playerStackPane.getLayoutY() - 2);
+        if (isUpKeyPressed && (!isLeftKeyPressed && !isDownKeyPressed && !isRightKeyPressed)) {
+            playerStackPane.setLayoutY(playerStackPane.getLayoutY() - 50);
         }
 
-        if (isDownKeyPressed && (!isLeftKeyPressed || !isRightKeyPressed || !isUpKeyPressed)) {
-            playerStackPane.setLayoutY(playerStackPane.getLayoutY() + 2);
+        if (isDownKeyPressed && (!isLeftKeyPressed && !isRightKeyPressed && !isUpKeyPressed)) {
+            playerStackPane.setLayoutY(playerStackPane.getLayoutY() + 50);
         }
 
         if (isRightKeyPressed && (isLeftKeyPressed || isDownKeyPressed || isUpKeyPressed)) {
@@ -94,6 +82,7 @@ public class Player {
         if (isDownKeyPressed && (isRightKeyPressed || isLeftKeyPressed || isUpKeyPressed)) {
             playerStackPane.setLayoutY(playerStackPane.getLayoutY() + 0);
         }
+
         if (isLeftKeyPressed && (isDownKeyPressed || isRightKeyPressed || isUpKeyPressed)) {
             playerStackPane.setLayoutY(playerStackPane.getLayoutY() + 0);
         }
