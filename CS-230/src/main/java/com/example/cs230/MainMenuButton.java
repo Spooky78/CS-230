@@ -2,7 +2,13 @@ package com.example.cs230;
 
 import javafx.scene.control.Button;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseButton;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
 import javafx.scene.text.Font;
 
 import java.io.File;
@@ -25,16 +31,8 @@ public class MainMenuButton extends Button {
     }
     private static final String BUTTON_FREE_PATH = "paperButton.png";
     private static final String BUTTON_PRESSED_PATH = "paperButtonPressed.png";
-    private final String BUTTON_PRESSED_STYLE =
-        "-fx-background-color: transparent; -fx-background-image: url('"
-            + BUTTON_PRESSED_PATH + "');";
-    private final String BUTTON_FREE_STYLE =
-        "-fx-background-color: transparent; -fx-background-image: url('"
-            + BUTTON_FREE_PATH + "');";
     private static final int PREF_WIDTH = 182;
     private static final int PREF_HEIGHT = 45;
-    private static final int PRESSED_PREF_HEIGHT = 50;
-    private static final int PRESSED_HEIGHT_OFFSET = 5;
     private static final int FONT_SIZE = 23;
 
     /**
@@ -45,8 +43,7 @@ public class MainMenuButton extends Button {
         setText(text);
         setButtonFont();
         setPrefWidth(PREF_WIDTH);
-        setPrefHeight(PREF_HEIGHT);
-        setStyle(BUTTON_FREE_STYLE);
+        setButtonReleasedStyle();
         initializeButtonListener();
     }
 
@@ -65,18 +62,23 @@ public class MainMenuButton extends Button {
      * Sets button pressed style.
      */
     private void setButtonPressedStyle() {
-        setStyle(BUTTON_PRESSED_STYLE);
-        setPrefHeight(PRESSED_PREF_HEIGHT);
-        setLayoutY(getLayoutY() + PRESSED_HEIGHT_OFFSET);
+
+        Image backgroundImage = new Image(BUTTON_PRESSED_PATH, PREF_WIDTH, PREF_HEIGHT, false, false);
+        BackgroundImage background = new BackgroundImage(backgroundImage, BackgroundRepeat.NO_REPEAT,
+            BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, new BackgroundSize(100, 100,
+            true, true, true, true));
+        setBackground(new Background(background));
     }
 
     /**
      * Sets button released style.
      */
     private void setButtonReleasedStyle() {
-        setStyle(BUTTON_FREE_STYLE);
-        setPrefHeight(PREF_HEIGHT);
-        setLayoutY(getLayoutY() - PRESSED_HEIGHT_OFFSET);
+        Image backgroundImage = new Image(BUTTON_FREE_PATH, PREF_WIDTH, PREF_HEIGHT, false, false);
+        BackgroundImage background = new BackgroundImage(backgroundImage, BackgroundRepeat.NO_REPEAT,
+            BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, new BackgroundSize(100, 100,
+            true, true, true, true));
+        setBackground(new Background(background));
     }
 
     /**

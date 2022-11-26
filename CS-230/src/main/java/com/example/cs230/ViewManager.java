@@ -6,9 +6,11 @@ import java.io.FileNotFoundException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -23,10 +25,11 @@ import javafx.stage.Stage;
 public class ViewManager {
     private static final int WIDTH = 1000;
     private static final int HEIGHT = 800;
+    private static final String BACKGROUND_PATH = "treesBackground.png";
     private final BorderPane mainPane;
     private final Scene mainScene;
     private final Stage mainStage;
-    private static final String BACKGROUND_PATH = "treesBackground.png";
+    private static ArrayList<PlayerProfile> allProfiles = new ArrayList<>();
     private static VBox buttonPane;
     private static VBox logoPane;
     private static StackPane subscenePane;
@@ -104,8 +107,33 @@ public class ViewManager {
      * Creates the player character chooser.
      */
     private void createPlayerCharacterChooserSubScene() {
+        ninjaChooserSubScene.getPane().getChildren().add(createPlayerProfilePicker());
         ninjaChooserSubScene.getPane().getChildren().add(createPlayerCharacterToChoose());
         ninjaChooserSubScene.getPane().getChildren().add(createButtonToStart());
+    }
+
+    private VBox createPlayerProfilePicker(){
+        TextInputDialog nameInputDialog = new TextInputDialog("Enter a name");
+        nameInputDialog.setContentText("Name: ");
+        nameInputDialog.setHeaderText("Create New Player Profile!");
+
+        MainMenuButton newProfileButton = new MainMenuButton("New\n Profile");
+
+        newProfileButton.setOnAction(e -> {
+            Optional<String> result = nameInputDialog.showAndWait();
+            String newProfileName = "none";
+            if (result.isPresent()) {
+
+                newProfileName = result.get();
+            }
+            PlayerProfile newProfile = new PlayerProfile(newProfileName);
+            allProfiles.add(newProfile);
+            System.out.println(newProfileName);
+        });
+
+        VBox layout = new VBox(newProfileButton);
+        layout.setMargin(newProfileButton, new Insets(20,20,20,20));
+        return  layout;
     }
 
     /**
