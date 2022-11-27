@@ -1,6 +1,7 @@
 package com.example.cs230;
 
 import javafx.geometry.Insets;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
 

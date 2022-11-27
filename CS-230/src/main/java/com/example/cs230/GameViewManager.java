@@ -1,6 +1,7 @@
 package com.example.cs230;
 
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Background;
@@ -8,7 +9,11 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
 /**
@@ -18,16 +23,14 @@ import javafx.stage.Stage;
 public class GameViewManager {
     private static final int GAME_WIDTH = 800;
     private static final int GAME_HEIGHT = 600;
-    private BorderPane gamePane;
-    private HBox topBorderPane = new HBox();
+    private VBox gamePane;
+    private HBox topRow = new HBox();
 
-    private StackPane gamePlayPane = new StackPane();
+    private BorderPane gamePlayPane = new BorderPane();
     private Scene gameScene;
     private Stage gameStage;
     private Stage menuStage;
     private Player currentPlayer;
-    private int playerCurrentX;
-    private int playerCurrentY;
     private Board currentBoard;
 
     /**
@@ -46,10 +49,14 @@ public class GameViewManager {
         this.menuStage = stage;
         this.menuStage.hide();
         createBackground();
-        //createButtons();
+        createTopRow();
         createBoard();
         createAssassin();
         createPlayer(chosenNinja);
+
+        gamePane.getChildren().add(gamePlayPane);
+
+
         gameStage.show();
     }
 
@@ -57,7 +64,7 @@ public class GameViewManager {
      * Initializes the stage, scene, & pane.
      */
     private void initializeStage() {
-        gamePane = new BorderPane();
+        gamePane = new VBox();
         gameScene = new Scene(gamePane, GAME_WIDTH, GAME_HEIGHT);
         gameStage = new Stage();
         gameStage.setScene(gameScene);
@@ -74,10 +81,10 @@ public class GameViewManager {
         int[] playerStart = currentBoard.getStartCharacterPosition();
         int playerStartX = playerStart[0];
         int playerStartY = playerStart[1];
-        currentPlayerStack.setLayoutX(playerStartX * tileSize + (tileSize / 2));
-        currentPlayerStack.setLayoutY(playerStartY * tileSize + (tileSize / 2));
+        currentPlayerStack.setLayoutX(playerStartX * tileSize + (tileSize / 2.0));
+        currentPlayerStack.setLayoutY(playerStartY * tileSize + (tileSize / 2.0));
 
-        gamePane.getChildren().add(currentPlayerStack);
+        gamePlayPane.getChildren().add(currentPlayerStack);
     }
 
     private void createAssassin(){
@@ -87,26 +94,28 @@ public class GameViewManager {
         currentStackPane.setLayoutX(400);
         currentStackPane.setLayoutY(200);
 
-        gamePane.getChildren().add(currentStackPane);
+        gamePlayPane.getChildren().add(currentStackPane);
     }
 
     private void createBoard(){
         currentBoard = new Board(0);
 
-        gamePane.setCenter(currentBoard.getBoardPane());
+        gamePlayPane.setCenter(currentBoard.getBoardPane());
         //gamePlayPane.getChildren().add(testBoard.getBoardPane());
     }
 
-    private void createButtons(){
-        MainMenuButton pauseButton = new MainMenuButton("Pause");
-        MainMenuButton saveButton = new MainMenuButton("Save");
+    /**
+     * Creates top row of game window, which contains time left.
+     */
+    private void createTopRow(){
+        topRow.setPadding(new Insets(20));
+        topRow.setSpacing(20);
 
-        topBorderPane.getChildren().add(pauseButton);
-        topBorderPane.getChildren().add(saveButton);
-        topBorderPane.setPadding(new Insets(50, 50,0,50));
-        topBorderPane.setSpacing(20);
-
-        gamePane.setTop(topBorderPane);
+        Text timeCounter = new Text("Time Left:");
+        timeCounter.setFont(Font.font("Arial", 20));
+        topRow.getChildren().add(timeCounter);
+        topRow.setAlignment(Pos.CENTER_RIGHT);
+        gamePane.getChildren().add(topRow);
     }
 
     /**

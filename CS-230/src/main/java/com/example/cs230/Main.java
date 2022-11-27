@@ -11,6 +11,10 @@ import java.io.FileNotFoundException;
  * @author Spooky78
  */
 
+//TODO: game window need to have bar of info/buttons (maybe VBox?)
+//TODO: maybe combine Board and FileReader Classes, as redundent to get coords fron file reader, pass to board and then pass to where it is relevant
+//TODO: can start assigning item classes to make
+
 //TODO: read in level file in Board class.
 //TODO: draw board to screen using tile pane in Board class.
 //TODO: crop sprites (make sure as close to image as possible).
