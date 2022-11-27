@@ -4,9 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="70b5a907-3c6f-42e6-9f64-1720237bb43d" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/checkstyle-idea.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/checkstyle-idea.xml" afterDir="false" />
+    <list default="true" id="70b5a907-3c6f-42e6-9f64-1720237bb43d" name="Changes" comment="Added UP/DOWN movements + some extra cases">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CS-230/src/main/java/com/example/cs230/FileReader.java" beforeDir="false" afterPath="$PROJECT_DIR$/CS-230/src/main/java/com/example/cs230/FileReader.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CS-230/src/main/java/com/example/cs230/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/CS-230/src/main/java/com/example/cs230/Player.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CS-230/src/main/resources/GoldKey.png" beforeDir="false" afterPath="$PROJECT_DIR$/CS-230/src/main/resources/GoldKey.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CS-230/src/main/resources/SilverKey.png" beforeDir="false" afterPath="$PROJECT_DIR$/CS-230/src/main/resources/SilverKey.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CS-230/target/classes/GoldKey.png" beforeDir="false" afterPath="$PROJECT_DIR$/CS-230/target/classes/GoldKey.png" afterDir="false" />

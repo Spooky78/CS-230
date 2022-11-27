@@ -17,14 +17,14 @@ public class Player {
     private Board board;
     private int[] playerCoords = new int[2];
 
-    public Player(Scene gameScene, Ninja chosenNinja, Board currentBoard){
+    public Player(Scene gameScene, Ninja chosenNinja, Board currentBoard) {
         movementOffset = DEFAULT_MOVEMENT_OFFSET;
         board = currentBoard;
         createKeyListeners(gameScene);
         createPlayer(chosenNinja);
     }
 
-    private void createPlayer(Ninja chosenNinja){
+    private void createPlayer(Ninja chosenNinja) {
         player = new ImageView(chosenNinja.getUrlNinja());
         player.setFitWidth(100);
         player.setFitHeight(100);
@@ -34,9 +34,9 @@ public class Player {
         playerStackPane.getChildren().add(player);
     }
 
-    private void createKeyListeners(Scene gameScene){
+    private void createKeyListeners(Scene gameScene) {
         gameScene.setOnKeyPressed(keyEvent -> {
-            if(keyEvent.getCode() == KeyCode.LEFT){
+            if (keyEvent.getCode() == KeyCode.LEFT) {
                 isLeftKeyPressed = true;
             } else if (keyEvent.getCode() == KeyCode.RIGHT) {
                 isRightKeyPressed = true;
@@ -49,7 +49,7 @@ public class Player {
         });
 
         gameScene.setOnKeyReleased(keyEvent -> {
-            if(keyEvent.getCode() == KeyCode.LEFT){
+            if (keyEvent.getCode() == KeyCode.LEFT) {
                 isLeftKeyPressed = false;
             } else if (keyEvent.getCode() == KeyCode.RIGHT) {
                 isRightKeyPressed = false;
@@ -63,28 +63,28 @@ public class Player {
 
     private void movePlayer() {
         if (isLeftKeyPressed && (!isRightKeyPressed && !isDownKeyPressed && !isUpKeyPressed)) {
-            if(board.canMove(playerCoords, new int[] {playerCoords[0] - 1, playerCoords[1]})){
+            if (board.canMove(playerCoords, new int[] {playerCoords[0] - 1, playerCoords[1]})) {
                 playerStackPane.setLayoutX(playerStackPane.getLayoutX() - movementOffset);
                 playerCoords[0] = playerCoords[0] - 1;
             }
         }
 
         if (isRightKeyPressed && (!isLeftKeyPressed && !isDownKeyPressed && !isUpKeyPressed)) {
-            if(board.canMove(playerCoords, new int[] {playerCoords[0] + 1, playerCoords[1]})){
+            if (board.canMove(playerCoords, new int[] {playerCoords[0] + 1, playerCoords[1]})) {
                 playerStackPane.setLayoutX(playerStackPane.getLayoutX() + movementOffset);
                 playerCoords[0] = playerCoords[0] + 1;
             }
         }
 
         if (isUpKeyPressed && (!isLeftKeyPressed && !isDownKeyPressed && !isRightKeyPressed)) {
-            if(board.canMove(playerCoords, new int[] {playerCoords[0], playerCoords[1]+-1})) {
+            if (board.canMove(playerCoords, new int[] {playerCoords[0], playerCoords[1] + -1})) {
                 playerStackPane.setLayoutY(playerStackPane.getLayoutY() - movementOffset);
                 playerCoords[1] = playerCoords[1] - 1;
             }
         }
 
         if (isDownKeyPressed && (!isLeftKeyPressed && !isRightKeyPressed && !isUpKeyPressed)) {
-            if(board.canMove(playerCoords, new int[] {playerCoords[0], playerCoords[1]+1})) {
+            if (board.canMove(playerCoords, new int[] {playerCoords[0], playerCoords[1] + 1})) {
                 playerStackPane.setLayoutY(playerStackPane.getLayoutY() + movementOffset);
                 playerCoords[1] = playerCoords[1] + 1;
             }
@@ -113,11 +113,11 @@ public class Player {
         }
     }
 
-    public void setMovementOffset(int newOffset){
+    public void setMovementOffset(int newOffset) {
         movementOffset = newOffset;
     }
 
-    public StackPane getPlayerStack(){
+    public StackPane getPlayerStack() {
         return playerStackPane;
     }
 }
