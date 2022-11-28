@@ -17,8 +17,8 @@ public class FlyingAssassin extends NPC{
     @Override
     protected void createNPC(){
         assassin = new ImageView(ASSASSIN_PATH);
-        assassin.setFitWidth(100);
-        assassin.setFitHeight(100);
+        assassin.setFitWidth(50);
+        assassin.setFitHeight(50);
         //assassinStack.getChildren().add(assassin);
     }
 

@@ -23,7 +23,7 @@ public class Board {
     private static ArrayList<Integer> coin3Coords = new ArrayList<>();
     private static ArrayList<Integer> coin4Coords = new ArrayList<>();
     private static ArrayList<Integer> clockCoords = new ArrayList<>();
-    private static ArrayList<Integer> doorCoords = new ArrayList<>();
+    private static int[] doorCoords = new int[2];
     private static ArrayList<Integer> leverCoords = new ArrayList<>();
     private static ArrayList<Integer> gateCoords = new ArrayList<>();
     private static ArrayList<Integer> bombCoords = new ArrayList<>();
@@ -156,8 +156,8 @@ public class Board {
     }
 
     private static void doorCoordsReader(String[] params){
-        doorCoords.add(Integer.parseInt(params[1]));
-        doorCoords.add(Integer.parseInt(params[2]));
+        doorCoords[0] = Integer.parseInt(params[1]);
+        doorCoords[1] = Integer.parseInt(params[2]);
     }
 
     private static void leverCoordsReader(String[] params){
@@ -240,6 +240,10 @@ public class Board {
 
     public static ArrayList<Integer> getFloorFollowingThiefStartCoords() {
         return floorFollowingThiefStartCoords;
+    }
+
+    public static int[] getDoorCoords() {
+        return doorCoords;
     }
 
     public static int getBoardSizeX() {

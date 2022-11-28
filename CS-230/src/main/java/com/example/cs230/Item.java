@@ -1,4 +1,6 @@
 package com.example.cs230;
 
-public class Item {
+abstract public class Item {
+    protected abstract void createItem();
+
 }

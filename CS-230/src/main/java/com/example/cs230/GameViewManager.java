@@ -51,6 +51,7 @@ public class GameViewManager {
         createBackground();
         createTopRow();
         createBoard();
+        createDoor();
         createAssassin();
         createPlayer(chosenNinja);
 
@@ -94,6 +95,17 @@ public class GameViewManager {
         currentStackPane.setLayoutY(200);
 
         gamePlayPane.getChildren().add(currentStackPane);
+    }
+
+    private void createDoor(){
+        Door door = new Door();
+        StackPane doorPane = new StackPane();
+        doorPane.getChildren().add(door.getDoor());
+        int[] positionCoords = currentBoard.getDoorCoords();
+        int tileSize = currentBoard.getTileSize();
+        doorPane.setLayoutX((positionCoords[0]*tileSize) - (tileSize/2));
+        doorPane.setLayoutY((positionCoords[1]*tileSize) - (tileSize/2));
+        gamePlayPane.getChildren().add(doorPane);
     }
 
     private void createBoard(){
