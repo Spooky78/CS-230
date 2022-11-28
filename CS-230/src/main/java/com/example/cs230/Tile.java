@@ -18,7 +18,7 @@ public class Tile {
      * @param bottomLeft returns yellow imagine
      * @param bottomRight returns pink imagine
      */
-    public Tile(char topLeft, char topRight, char bottomLeft, char bottomRight){
+    public Tile(char topLeft, char topRight, char bottomLeft, char bottomRight, int tileSize){
         tilePane.setPrefColumns(2);
         tilePane.setPrefRows(2);
 
@@ -40,8 +40,8 @@ public class Tile {
         }
         for (int i=0; i< tileIds.length; i++) {
             ImageView currentTile = new ImageView(tilePaths[i]);
-            currentTile.setFitHeight(100);
-            currentTile.setFitWidth(100);
+            currentTile.setFitHeight(tileSize/2);
+            currentTile.setFitWidth(tileSize/2);
             tilePane.getChildren().add(currentTile);
         }
     }
@@ -56,6 +56,7 @@ public class Tile {
         }
         return false;
     }
+
 
 
     /**

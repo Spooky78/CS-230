@@ -1,135 +1,45 @@
 package com.example.cs230;
 
+import java.util.ArrayList;
 import javafx.scene.paint.Color;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
+/**
+ * Reads in the level file and stores information into variables
+ * @author Omar, Vic, user6073
+ */
 public class FileReader {
     private static int boardSizeX;
     private static int boardSizeY;
-    private Tile[][] boardTiles;
+    private static Tile[][] boardTile;
     private static int[] playerStartCoords = new int[2];
-    private int[] assassinStartCoords;
-    private int[] smartThiefStartCoords;
-    private int[] floorFollowingThiefStartCoords;
+    private static ArrayList<Integer> assassinStartCoords = new ArrayList<>();
+    private static ArrayList<Integer> smartThiefStartCoords = new ArrayList<>();
+    private static ArrayList<Integer> floorFollowingThiefStartCoords = new ArrayList<>();
+    private static ArrayList<Integer> coin1Coords = new ArrayList<>();
+    private static ArrayList<Integer> coin2Coords = new ArrayList<>();
+    private static ArrayList<Integer> coin3Coords = new ArrayList<>();
+    private static ArrayList<Integer> coin4Coords = new ArrayList<>();
+    private static ArrayList<Integer> clockCoords = new ArrayList<>();
+    private static ArrayList<Integer> doorCoords = new ArrayList<>();
+    private static ArrayList<Integer> leverCoords = new ArrayList<>();
+    private static ArrayList<Integer> gateCoords = new ArrayList<>();
+    private static ArrayList<Integer> bombCoords = new ArrayList<>();
+    private static int seconds;
 
-    /**
-     * Reads the level file and extracts the starting coordinates
-     * or other relevant information of the entities.
-     * @author user6073
-     * @param args
-     */
-    public static void main(String[] args) {
+    public FileReader(String filename){
         try {
-            File levelFile = new File("CS-230/src/main/resources/Level00.txt");
-            Scanner levelFileReader = new Scanner(levelFile);
-            while (levelFileReader.hasNextLine()) {
-                String data = levelFileReader.nextLine();
-                //System.out.println(data);
+            File circles = new File(filename);
+            Scanner in = new Scanner(circles);
+            readLineByLine(in);
+        }
 
-                if (data.contains("PLAYER")) {
-                    String startCoordsString = data.substring(7);
-                    startCoordsString.split(" ");
-                    System.out.println("Player coordinates: " + startCoordsString);
-                }
-
-                else if (data.contains("ASSASSIN")) {
-                    String startCoordsString = data.substring(9);
-                    startCoordsString.split(" ");
-                    System.out.println("Assassin coordinates: " + startCoordsString);
-                }
-
-                else if (data.contains("STHIEF")) {
-                    String startCoordsString = data.substring(7);
-                    startCoordsString.split(" ");
-                    System.out.println("Smart Thief coordinates: " + startCoordsString);
-                }
-
-                else if (data.contains("FFTHIEF")) {
-                    String startCoordsString = data.substring(8);
-                    startCoordsString.split(" ");
-                    System.out.println("Floor Following Thief coordinates and direction: " + startCoordsString);
-                }
-
-                else if (data.contains("COIN1")) {
-                    String startCoordsString = data.substring(6);
-                    startCoordsString.split(" ");
-                    System.out.println("Coin 1 coordinates: " + startCoordsString);
-                }
-
-                else if (data.contains("COIN2")) {
-                    String startCoordsString = data.substring(6);
-                    startCoordsString.split(" ");
-                    System.out.println("Coin 2 coordinates: " + startCoordsString);
-                }
-
-                else if (data.contains("COIN3")) {
-                    String startCoordsString = data.substring(6);
-                    startCoordsString.split(" ");
-                    System.out.println("Coin 3 coordinates: " + startCoordsString);
-                }
-
-                else if (data.contains("COIN4")) {
-                    String startCoordsString = data.substring(6);
-                    startCoordsString.split(" ");
-                    System.out.println("Coin 4 coordinates: " + startCoordsString);
-                }
-
-                else if (data.contains("CLOCK")) {
-                    String startCoordsString = data.substring(6);
-                    startCoordsString.split(" ");
-                    System.out.println("Clock coordinates: " + startCoordsString);
-                }
-
-                else if (data.contains("DOOR")) {
-                    String startCoordsString = data.substring(5);
-                    startCoordsString.split(" ");
-                    System.out.println("Door coordinates: " + startCoordsString);
-                }
-
-                else if (data.contains("LEVER")) {
-                    String startCoordsString = data.substring(6);
-                    startCoordsString.split(" ");
-                    System.out.println("Lever coordinates: " + startCoordsString);
-                }
-
-                else if (data.contains("GATE")) {
-                    String startCoordsString = data.substring(5);
-                    startCoordsString.split(" ");
-                    System.out.println("Gate coordinates: " + startCoordsString);
-                }
-
-                else if (data.contains("BOMB")) {
-                    String startCoordsString = data.substring(5);
-                    startCoordsString.split(" ");
-                    System.out.println("Bomb coordinates: " + startCoordsString);
-                }
-
-                else if (data.contains("SECONDS")) {
-                    String startCoordsString = data.substring(8);
-                    startCoordsString.split(" ");
-                    System.out.println("Seconds: " + startCoordsString);
-                }
-
-                else if (data.contains("SIZE")) {
-                    String startCoordsString = data.substring(5);
-                    startCoordsString.split(" ");
-                    System.out.println("Size dimensions: " + startCoordsString);
-                }
-
-                else if (data.contains("BOARD")) {
-                    String startCoordsString = data.substring(5);
-                    startCoordsString.split(" ");
-                    System.out.println("Board: " + startCoordsString);
-                    //Select every line "BOARD" until the end of the file.
-                }
-            }
-            levelFileReader.close();
-        } catch (FileNotFoundException e) {
-            System.out.println("An error occurred.");
-            e.printStackTrace();
+        catch (FileNotFoundException e){
+            System.out.println("Could not find " + filename);
+            System.exit(0);
         }
     }
 
@@ -151,14 +61,55 @@ public class FileReader {
 
             switch (params[0]) {
                 case "PLAYER":
+                    playerCoordsReader(params);
+                    break;
+                case "ASSASSIN":
+                    assassinCoordsReader(params);
+                    break;
+                case "STHIEF":
+                    sThiefCoordsReader(params);
+                    break;
+                case "FFTHIEF":
+                    ffThiefCoordsReader(params);
+                case "COIN1":
+                    coin1CoordsReader(params);
+                    break;
+                case "COIN2":
+                    coin2CoordsReader(params);
+                    break;
+                case "COIN3":
+                    coin3CoordsReader(params);
+                    break;
+                case "COIN4":
+                    coin4CoordsReader(params);
+                    break;
+                case "CLOCK":
+                    clockCoordsReader(params);
+                    break;
+                case "DOOR":
+                    doorCoordsReader(params);
+                    break;
+                case "LEVER":
+                    leverCoordsReader(params);
+                    break;
+                case "GATE":
+                    gateCoordsReader(params);
+                    break;
+                case "BOMB":
+                    bombCoordsReader(params);
+                    break;
+                case "SECONDS":
+                    seconds = Integer.parseInt(params[1]);
                     break;
                 case "SIZE":
                     sizeReader(params);
                     break;
                 case "BOARD":
+                    int indexY = 0;
                     while(in.hasNextLine()){
-                        in.nextLine();
-                        boardLineReader(params);
+                        String scannerVariableBoard = in.nextLine();
+                        String[] paramsBoard = scannerVariableBoard.split(" ");
+                        boardLineReader(paramsBoard, indexY);
                     }
                     break;
             }
@@ -166,33 +117,123 @@ public class FileReader {
         in.close();
     }
 
+    private static void playerCoordsReader(String[] params){
+        playerStartCoords[0] = Integer.parseInt(params[1]);
+        playerStartCoords[1] = Integer.parseInt(params[2]);
+    }
+
+    private static void assassinCoordsReader(String[] params){
+        assassinStartCoords.add(Integer.parseInt(params[1]));
+        assassinStartCoords.add(Integer.parseInt(params[2]));
+
+    }
+
+    private static void sThiefCoordsReader(String[] params){
+            smartThiefStartCoords.add(Integer.parseInt(params[1]));
+            smartThiefStartCoords.add(Integer.parseInt(params[2]));
+
+    }
+
+    private static void ffThiefCoordsReader(String[] params){
+            floorFollowingThiefStartCoords.add(Integer.parseInt(params[1]));
+            floorFollowingThiefStartCoords.add(Integer.parseInt(params[2]));
+    }
+
+    private static void coin1CoordsReader(String[] params){
+            coin1Coords.add(Integer.parseInt(params[1]));
+            coin1Coords.add(Integer.parseInt(params[2]));
+    }
+
+    private static void coin2CoordsReader(String[] params){
+            coin2Coords.add(Integer.parseInt(params[1]));
+            coin2Coords.add(Integer.parseInt(params[2]));
+    }
+
+    private static void coin3CoordsReader(String[] params){
+            coin3Coords.add(Integer.parseInt(params[1]));
+            coin3Coords.add(Integer.parseInt(params[2]));
+    }
+
+    private static void coin4CoordsReader(String[] params){
+            coin4Coords.add(Integer.parseInt(params[1]));
+            coin4Coords.add(Integer.parseInt(params[2]));
+    }
+
+    private static void clockCoordsReader(String[] params){
+            clockCoords.add(Integer.parseInt(params[1]));
+            clockCoords.add(Integer.parseInt(params[2]));
+    }
+
+    private static void doorCoordsReader(String[] params){
+        doorCoords.add(Integer.parseInt(params[1]));
+        doorCoords.add(Integer.parseInt(params[2]));
+    }
+
+    private static void leverCoordsReader(String[] params){
+        leverCoords.add(Integer.parseInt(params[1]));
+        leverCoords.add(Integer.parseInt(params[2]));
+    }
+
+    private static void gateCoordsReader(String[] params){
+        gateCoords.add(Integer.parseInt(params[1]));
+        gateCoords.add(Integer.parseInt(params[2]));
+    }
+
+    private static void bombCoordsReader(String[] params){
+        bombCoords.add(Integer.parseInt(params[1]));
+        bombCoords.add(Integer.parseInt(params[2]));
+    }
 
     private static void sizeReader(String[] params){
         boardSizeX = Integer.parseInt(params[1]);
         boardSizeY = Integer.parseInt(params[2]);
     }
 
-    private static void boardLineReader(String[] params){
+    private static void boardLineReader(String[] params, int indexY){
+        //System.out.println(params[0]);
+        boardTile = new Tile[boardSizeX][boardSizeY];
         //TODO read in the tiles, then make tiles and put into boardTiles[][] in correct place.
+        for(int i=0; i<boardSizeX; i++) {
+            char[] tileIds = new char[4];
+            String currentTile;
+            currentTile = params[i];
+            //System.out.println(currentTile);
+            tileIds[0] = currentTile.charAt(0);
+            tileIds[1] = currentTile.charAt(1);
+            tileIds[2] = currentTile.charAt(2);
+            tileIds[3] = currentTile.charAt(3);
+            //System.out.println(tileIds[0] + " " + tileIds[1] + " "+ tileIds[2] + " "+tileIds[3]);
+            Tile newTile = new Tile(tileIds[0], tileIds[1], tileIds[2], tileIds[3], 30);
+
+            boardTile[i][indexY] = newTile;
+        }
     }
 
-    public static void readDataFile(String filename) {
-
-        try {
-            File circles = new File(filename);
-            Scanner in = new Scanner(circles);
-            readLineByLine(in);
-        }
-
-        catch (FileNotFoundException e){
-            System.out.println("Could not find " + filename);
-            System.exit(0);
-        }
-    }
-
-    public int[] getPlayerStartCoords(){
-        //temp:
-        playerStartCoords = new int[] {1, 0};
+    public static int[] getPlayerStartCoords() {
         return playerStartCoords;
+    }
+
+    public static ArrayList<Integer> getAssassinStartCoords() {
+        return assassinStartCoords;
+    }
+
+    public static ArrayList<Integer> getSmartThiefStartCoords() {
+        return smartThiefStartCoords;
+    }
+
+    public static ArrayList<Integer> getFloorFollowingThiefStartCoords() {
+        return floorFollowingThiefStartCoords;
+    }
+
+    public static int getBoardSizeX() {
+        return boardSizeX;
+    }
+
+    public static int getBoardSizeY() {
+        return boardSizeY;
+    }
+
+    public static Tile[][] getBoardTile() {
+        return boardTile;
     }
 }

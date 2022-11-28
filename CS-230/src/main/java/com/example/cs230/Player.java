@@ -6,7 +6,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.StackPane;
 
 public class Player {
-    private static final int DEFAULT_MOVEMENT_OFFSET = 100;
+    //private static final int DEFAULT_MOVEMENT_OFFSET = 100;
     private boolean isLeftKeyPressed = false;
     private boolean isRightKeyPressed = false;
     private boolean isUpKeyPressed = false;
@@ -17,8 +17,9 @@ public class Player {
     private Board board;
     private int[] playerCoords = new int[2];
 
-    public Player(Scene gameScene, Ninja chosenNinja, Board currentBoard){
-        movementOffset = DEFAULT_MOVEMENT_OFFSET;
+    public Player(Scene gameScene, Ninja chosenNinja, Board currentBoard, int movementOffset){
+        this.movementOffset = 10;
+        System.out.println(this.movementOffset);
         board = currentBoard;
         createKeyListeners(gameScene);
         createPlayer(chosenNinja);
@@ -26,10 +27,10 @@ public class Player {
 
     private void createPlayer(Ninja chosenNinja){
         player = new ImageView(chosenNinja.getUrlNinja());
-        player.setFitWidth(100);
-        player.setFitHeight(100);
+        player.setFitWidth(50);
+        player.setFitHeight(50);
 
-        playerCoords = board.getStartCharacterPosition();
+        playerCoords = board.getPlayerStartCoords();
 
         playerStackPane.getChildren().add(player);
     }

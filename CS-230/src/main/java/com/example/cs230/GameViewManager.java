@@ -22,7 +22,7 @@ import javafx.stage.Stage;
  */
 public class GameViewManager {
     private static final int GAME_WIDTH = 800;
-    private static final int GAME_HEIGHT = 600;
+    private static final int GAME_HEIGHT = 800;
     private VBox gamePane;
     private HBox topRow = new HBox();
 
@@ -71,14 +71,14 @@ public class GameViewManager {
     }
 
     private void createPlayer(Ninja chosenNinja){
-        currentPlayer = new Player(gameScene, chosenNinja, currentBoard);
+        currentPlayer = new Player(gameScene, chosenNinja, currentBoard, currentBoard.getTileSize());
         StackPane currentPlayerStack = currentPlayer.getPlayerStack();
 
-        int boardColumns = currentBoard.getBoardWidth();
-        int tileSize = GAME_WIDTH/ boardColumns;
+        //int boardColumns = currentBoard.getBoardWidth();
+        int tileSize = currentBoard.getTileSize();
         currentPlayer.setMovementOffset(tileSize);
 
-        int[] playerStart = currentBoard.getStartCharacterPosition();
+        int[] playerStart = currentBoard.getPlayerStartCoords();
         int playerStartX = playerStart[0];
         int playerStartY = playerStart[1];
         currentPlayerStack.setLayoutX(playerStartX * tileSize + (tileSize / 2.0));
@@ -98,7 +98,7 @@ public class GameViewManager {
     }
 
     private void createBoard(){
-        currentBoard = new Board(0);
+        currentBoard = new Board(0, GAME_WIDTH);
 
         gamePlayPane.setCenter(currentBoard.getBoardPane());
         //gamePlayPane.getChildren().add(testBoard.getBoardPane());
