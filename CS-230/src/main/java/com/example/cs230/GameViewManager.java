@@ -71,10 +71,9 @@ public class GameViewManager {
     }
 
     private void createPlayer(Ninja chosenNinja){
-        currentPlayer = new Player(gameScene, chosenNinja, currentBoard, currentBoard.getTileSize());
+        currentPlayer = new Player(gameScene, chosenNinja, currentBoard);
         StackPane currentPlayerStack = currentPlayer.getPlayerStack();
 
-        //int boardColumns = currentBoard.getBoardWidth();
         int tileSize = currentBoard.getTileSize();
         currentPlayer.setMovementOffset(tileSize);
 
@@ -99,9 +98,7 @@ public class GameViewManager {
 
     private void createBoard(){
         currentBoard = new Board(0, GAME_WIDTH);
-
         gamePlayPane.setCenter(currentBoard.getBoardPane());
-        //gamePlayPane.getChildren().add(testBoard.getBoardPane());
     }
 
     /**
@@ -127,7 +124,4 @@ public class GameViewManager {
         gamePane.setBackground(background);
     }
 
-    public Board getCurrentBoard(){
-        return currentBoard;
-    }
 }

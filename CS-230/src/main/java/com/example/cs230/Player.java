@@ -6,7 +6,6 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.StackPane;
 
 public class Player {
-    //private static final int DEFAULT_MOVEMENT_OFFSET = 100;
     private boolean isLeftKeyPressed = false;
     private boolean isRightKeyPressed = false;
     private boolean isUpKeyPressed = false;
@@ -17,9 +16,8 @@ public class Player {
     private Board board;
     private int[] playerCoords = new int[2];
 
-    public Player(Scene gameScene, Ninja chosenNinja, Board currentBoard, int movementOffset){
+    public Player(Scene gameScene, Ninja chosenNinja, Board currentBoard) {
         this.movementOffset = 10;
-        System.out.println(this.movementOffset);
         board = currentBoard;
         createKeyListeners(gameScene);
         createPlayer(chosenNinja);
