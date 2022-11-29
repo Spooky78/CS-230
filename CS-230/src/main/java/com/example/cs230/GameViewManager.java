@@ -3,6 +3,8 @@ package com.example.cs230;
 import static javafx.geometry.Pos.TOP_LEFT;
 
 import java.util.ArrayList;
+import java.util.Stack;
+
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -59,6 +61,7 @@ public class GameViewManager {
         createSilverCoins();
         createAssassin();
         createPlayer(chosenNinja);
+        createSmartThief();
 
         gamePane.getChildren().add(gamePlayPane);
 
@@ -90,6 +93,28 @@ public class GameViewManager {
         currentPlayerStack.setLayoutY(playerStartY * tileSize + (tileSize / 2.0));
 
         gamePlayPane.getChildren().add(currentPlayerStack);
+    }
+
+    private void createSmartThief() {
+        ArrayList <Integer> coords = currentBoard.getSmartThiefStartCoords();
+
+        for(int i = 0; i < coords.size(); i+=2 ) {
+            int[] currentCoords = new int[2];
+            currentCoords[0] = coords.get(i);
+            currentCoords[1] = coords.get(i + 1);
+            StackPane currentStackPane = new StackPane();
+            SmartThief currentSmartThief = new SmartThief(currentBoard, currentCoords, currentStackPane);
+            currentStackPane.getChildren().add(currentSmartThief.getSmartThief());
+
+            /*
+            int coordX = coords.get(i);
+            int coordY = coords.get(i+1);
+            int tileSize = currentBoard.getTileSize();
+            currentStackPane.setLayoutX((coordX*tileSize) - (tileSize/2));
+            currentStackPane.setLayoutY((coordY*tileSize) - (tileSize/2));
+            */
+            gamePlayPane.getChildren().add(currentStackPane);
+        }
     }
 
     private void createAssassin(){
