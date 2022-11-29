@@ -27,6 +27,7 @@ public class Board {
     private static ArrayList<Integer> leverCoords = new ArrayList<>();
     private static ArrayList<Integer> gateCoords = new ArrayList<>();
     private static ArrayList<Integer> bombCoords = new ArrayList<>();
+    private static String assassinStartDirection;
     private static int seconds;
 
     public Board(int currentLevel, int screenWidth){
@@ -112,8 +113,9 @@ public class Board {
     }
 
     private static void assassinCoordsReader(String[] params){
-        assassinStartCoords.add(Integer.parseInt(params[1]));
+        assassinStartDirection = params[1];
         assassinStartCoords.add(Integer.parseInt(params[2]));
+        assassinStartCoords.add(Integer.parseInt(params[3]));
 
     }
 
@@ -227,6 +229,10 @@ public class Board {
     }
     public static int[] getPlayerStartCoords() {
         return playerStartCoords;
+    }
+
+    public static String getAssassinStartDirection() {
+        return assassinStartDirection;
     }
 
     public static ArrayList<Integer> getAssassinStartCoords() {

@@ -96,16 +96,19 @@ public class GameViewManager {
         ArrayList<Integer> coords = currentBoard.getAssassinStartCoords();
         //Each iteration of loop creates new assassin.
         for (int i=0; i<coords.size(); i+=2) {
-            FlyingAssassin currentAssassin = new FlyingAssassin(currentBoard);
+            int[] currentCoords = new int[2];
+            currentCoords[0] = coords.get(i);
+            currentCoords[1] = coords.get(i+1);
             StackPane currentStackPane = new StackPane();
+            FlyingAssassin currentAssassin = new FlyingAssassin(currentBoard, currentCoords, currentStackPane);
             currentStackPane.getChildren().add(currentAssassin.getAssassin());
-
+/*
             int coordX = coords.get(i);
             int coordY = coords.get(i+1);
             int tileSize = currentBoard.getTileSize();
             currentStackPane.setLayoutX((coordX*tileSize) - (tileSize/2));
             currentStackPane.setLayoutY((coordY*tileSize) - (tileSize/2));
-
+*/
             gamePlayPane.getChildren().add(currentStackPane);
         }
     }
