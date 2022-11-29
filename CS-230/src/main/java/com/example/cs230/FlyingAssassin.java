@@ -1,22 +1,30 @@
 package com.example.cs230;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Objects;
 import javafx.animation.TranslateTransition;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
 
 public class FlyingAssassin extends NPC{
-    private static final String ASSASSIN_PATH = "CS-230/src/main/resources/Assassin/assassinDown.png";
+    private static final String ASSASSIN_PATH = "/Assassin/assassinDown.png";
     private ImageView assassin;
+    private Board gameBoard;
     //private StackPane assassinStack;
-    public FlyingAssassin(){
+    public FlyingAssassin(Board board){
+        gameBoard = board;
         createNPC();
         //move();
     }
 
     @Override
     protected void createNPC(){
-        assassin = new ImageView(ASSASSIN_PATH);
+        Image assassinImage = new Image(
+            Objects.requireNonNull(getClass().getResourceAsStream(ASSASSIN_PATH)));
+        assassin = new ImageView(assassinImage);
         assassin.setFitWidth(50);
         assassin.setFitHeight(50);
         //assassinStack.getChildren().add(assassin);
@@ -25,7 +33,7 @@ public class FlyingAssassin extends NPC{
     protected void move(){
         TranslateTransition moveAssassin = new TranslateTransition();
         moveAssassin.setNode(assassin);
-        moveAssassin.setDuration(Duration.millis(1000));
+        moveAssassin.setDuration(Duration.millis(100));
         moveAssassin.setCycleCount(TranslateTransition.INDEFINITE);
         moveAssassin.setByX(500);
         moveAssassin.setAutoReverse(true);

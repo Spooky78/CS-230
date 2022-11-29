@@ -96,7 +96,7 @@ public class GameViewManager {
         ArrayList<Integer> coords = currentBoard.getAssassinStartCoords();
         //Each iteration of loop creates new assassin.
         for (int i=0; i<coords.size(); i+=2) {
-            FlyingAssassin currentAssassin = new FlyingAssassin();
+            FlyingAssassin currentAssassin = new FlyingAssassin(currentBoard);
             StackPane currentStackPane = new StackPane();
             currentStackPane.getChildren().add(currentAssassin.getAssassin());
 
