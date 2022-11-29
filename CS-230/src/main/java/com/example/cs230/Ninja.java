@@ -2,7 +2,7 @@ package com.example.cs230;
 
 public enum Ninja {
     BLUE("ninjaBlue.png", "player.png"),
-    GREY("ninjaGrey.png", "player.png"),
+    GREY("ninjaGrey.png", "NinjaGreyPlayer.png"),
     BLACK("ninjaBlack.png", "player.png"),
     RED("ninjaRed.png", "player.png");
 
