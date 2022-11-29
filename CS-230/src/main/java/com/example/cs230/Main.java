@@ -12,29 +12,25 @@ import java.io.FileNotFoundException;
 
 
 //LAST WEEK TASKS
-//TODO: read in level file in Board class.
-//TODO: draw board to screen using tile pane in Board class.
-//TODO: crop sprites (make sure as close to image as possible).
-//TODO: draw NPCs to screen (any where).
-//TODO: Game window top of border pane make buttons (pause, save, ect) no function
 
-//TASKS FOR THIS WEEK
-//TODO: maybe combine Board and FileReader Classes, as redundent to get coords fron file reader, pass to board and then pass to where it is relevant
+//TODO: crop sprites (make sure as close to image as possible).
+
 
 //TODO: (for items & NPCs get it at least to draw on screen in correct position)
-//TODO: coin item (coin values 1,3,5,10)??
-//TODO: lever item
-//TODO: gate item
-//TODO: clock item
-//TODO: bomb item
-//TODO: smart thief
-//TODO: floor following thief
+//TODO: coin item (coin values 1,3,5,10)?? Omar
+//TODO: lever item chrysis
+//TODO: gate item lewis
+//TODO: clock item lewis
+//TODO: bomb item Arran
+//TODO: smart thief Rex
+//TODO: floor following thief Vic
 //TODO: draw time to screen
 //TODO: finish player movement (jump across tiles)
 
 //If spare time
 //TODO: Resume and Start New Game
 //TODO: Text font, Text boxes will resize when the game window is resized
+    //TODO: score
 public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws FileNotFoundException {
