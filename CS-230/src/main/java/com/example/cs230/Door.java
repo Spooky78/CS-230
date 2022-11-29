@@ -2,7 +2,7 @@ package com.example.cs230;
 
 import javafx.scene.image.ImageView;
 
-public class Door {
+public class Door{
     private static final String DOOR_PATH = "door.png";
     private ImageView door;
 

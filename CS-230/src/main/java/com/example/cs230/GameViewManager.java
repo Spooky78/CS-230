@@ -24,8 +24,8 @@ import javafx.stage.Stage;
  * @author Spooky78
  */
 public class GameViewManager {
-    private static final int GAME_WIDTH = 800;
-    private static final int GAME_HEIGHT = 800;
+    private static final int GAME_WIDTH = 600;
+    private static final int GAME_HEIGHT = 600;
     private VBox gamePane;
     private HBox topRow = new HBox();
 
@@ -55,6 +55,7 @@ public class GameViewManager {
         createTopRow();
         createBoard();
         createDoor();
+        createBronzeCoins();
         createAssassin();
         createPlayer(chosenNinja);
 
@@ -100,7 +101,24 @@ public class GameViewManager {
 
             int coordX = coords.get(i);
             int coordY = coords.get(i+1);
-            System.out.println(coordX + " "+ coordY);
+            int tileSize = currentBoard.getTileSize();
+            currentStackPane.setLayoutX((coordX*tileSize) - (tileSize/2));
+            currentStackPane.setLayoutY((coordY*tileSize) - (tileSize/2));
+
+            gamePlayPane.getChildren().add(currentStackPane);
+        }
+    }
+
+    private void createBronzeCoins(){
+        ArrayList<Integer> coords = currentBoard.getCoin1Coords();
+        //Each iteration of loop creates new bronze coin.
+        for (int i=0; i<coords.size(); i+=2) {
+            Coin currentBronzeCoin = new Coin("BRONZE");
+            StackPane currentStackPane = new StackPane();
+            currentStackPane.getChildren().add(currentBronzeCoin.getBronzeCoin());
+
+            int coordX = coords.get(i);
+            int coordY = coords.get(i+1);
             int tileSize = currentBoard.getTileSize();
             currentStackPane.setLayoutX((coordX*tileSize) - (tileSize/2));
             currentStackPane.setLayoutY((coordY*tileSize) - (tileSize/2));
