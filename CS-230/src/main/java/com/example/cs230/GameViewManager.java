@@ -1,5 +1,7 @@
 package com.example.cs230;
 
+import static javafx.geometry.Pos.TOP_LEFT;
+
 import java.util.ArrayList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -120,7 +122,7 @@ public class GameViewManager {
 
     private void createBoard(){
         currentBoard = new Board(0, GAME_WIDTH);
-        gamePlayPane.setCenter(currentBoard.getBoardPane());
+        gamePlayPane.setLeft(currentBoard.getBoardPane());
     }
 
     /**
