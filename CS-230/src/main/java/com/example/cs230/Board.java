@@ -37,9 +37,7 @@ public class Board {
             File circles = new File(filename);
             Scanner in = new Scanner(circles);
             readLineByLine(in);
-        }
-
-        catch (FileNotFoundException e){
+        } catch (FileNotFoundException e){
             System.out.println("Could not find " + filename);
             System.exit(0);
         }
@@ -242,6 +240,42 @@ public class Board {
 
     public static ArrayList<Integer> getFloorFollowingThiefStartCoords() {
         return floorFollowingThiefStartCoords;
+    }
+
+    public static ArrayList<Integer> getCoin1Coords() {
+        return coin1Coords;
+    }
+
+    public static ArrayList<Integer> getCoin2Coords() {
+        return coin2Coords;
+    }
+
+    public static ArrayList<Integer> getCoin3Coords() {
+        return coin3Coords;
+    }
+
+    public static ArrayList<Integer> getCoin4Coords() {
+        return coin4Coords;
+    }
+
+    public static ArrayList<Integer> getClockCoords() {
+        return clockCoords;
+    }
+
+    public static ArrayList<Integer> getLeverCoords() {
+        return leverCoords;
+    }
+
+    public static ArrayList<Integer> getGateCoords() {
+        return gateCoords;
+    }
+
+    public static ArrayList<Integer> getBombCoords() {
+        return bombCoords;
+    }
+
+    public static int getSeconds() {
+        return seconds;
     }
 
     public static int[] getDoorCoords() {
