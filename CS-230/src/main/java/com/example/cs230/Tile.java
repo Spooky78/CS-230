@@ -1,7 +1,14 @@
 package com.example.cs230;
 
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
+import javafx.scene.paint.Color;
 
 public class Tile {
     private static final String A_TILE_PATH = "Tile1.png";
@@ -9,7 +16,9 @@ public class Tile {
     private static final String C_TILE_PATH = "Tile3.png";
     private static final String D_TILE_PATH = "Tile4.png";
     private final TilePane tilePane = new TilePane();
+    private final StackPane tileBorderPane = new StackPane();
     private final char[] tileIds = new char[4];
+    private final int tileSize;
 
     /**
      * get from file reader and change the representing code to the image of tiles.
@@ -19,6 +28,7 @@ public class Tile {
      * @param bottomRight returns pink imagine
      */
     public Tile(char topLeft, char topRight, char bottomLeft, char bottomRight, int tileSize){
+        this.tileSize = tileSize;
         tilePane.setPrefColumns(2);
         tilePane.setPrefRows(2);
 
@@ -40,10 +50,12 @@ public class Tile {
         }
         for (int i=0; i< tileIds.length; i++) {
             ImageView currentTile = new ImageView(tilePaths[i]);
-            currentTile.setFitHeight(tileSize/2);
-            currentTile.setFitWidth(tileSize/2);
+            currentTile.setFitHeight((tileSize/2)-1);
+            currentTile.setFitWidth((tileSize/2)-1);
             tilePane.getChildren().add(currentTile);
         }
+
+        makeTileBoarderPane();
     }
 
     public boolean hasSubTile(char[] newIds){
@@ -57,14 +69,20 @@ public class Tile {
         return false;
     }
 
-
+    private void makeTileBoarderPane(){
+        tileBorderPane.setBackground(new Background(new BackgroundFill(Color.BLACK,
+            CornerRadii.EMPTY, Insets.EMPTY)));
+        tileBorderPane.getChildren().add(tilePane);
+        tileBorderPane.setAlignment(Pos.CENTER);
+        tileBorderPane.setPrefSize(tileSize, tileSize);
+    }
 
     /**
      * called from the game
      * @return the colour(s) of the tile
      */
-    public TilePane getTile(){
-        return tilePane;
+    public StackPane getTile(){
+        return tileBorderPane;
     }
 
     public char[] getTileIds(){
