@@ -64,8 +64,6 @@ public class GameViewManager {
         createSmartThief();
 
         gamePane.getChildren().add(gamePlayPane);
-
-
         gameStage.show();
     }
 
@@ -127,13 +125,6 @@ public class GameViewManager {
             StackPane currentStackPane = new StackPane();
             FlyingAssassin currentAssassin = new FlyingAssassin(currentBoard, currentCoords, currentStackPane);
             currentStackPane.getChildren().add(currentAssassin.getAssassin());
-/*
-            int coordX = coords.get(i);
-            int coordY = coords.get(i+1);
-            int tileSize = currentBoard.getTileSize();
-            currentStackPane.setLayoutX((coordX*tileSize) - (tileSize/2));
-            currentStackPane.setLayoutY((coordY*tileSize) - (tileSize/2));
-*/
             gamePlayPane.getChildren().add(currentStackPane);
         }
     }

@@ -5,9 +5,12 @@ import java.util.Timer;
 import java.util.TimerTask;
 import javafx.animation.SequentialTransition;
 import javafx.animation.TranslateTransition;
+import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class FlyingAssassin extends NPC{
@@ -69,7 +72,7 @@ public class FlyingAssassin extends NPC{
 
         int count = 1;
         //if you go through 1000 cycles, you've been playing too long!!
-        while(count<100){
+        while(count<100) {
             long delayRight = gameBoard.getBoardSizeX()*100*count;
             TimerTask taskLoop = new TimerTask() {
                 public void run() {
