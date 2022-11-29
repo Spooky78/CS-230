@@ -1,5 +1,6 @@
 package com.example.cs230;
 
+import java.util.ArrayList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -88,13 +89,22 @@ public class GameViewManager {
     }
 
     private void createAssassin(){
-        FlyingAssassin currentAssassin = new FlyingAssassin();
-        StackPane currentStackPane = new StackPane();
-        currentStackPane.getChildren().add(currentAssassin.getAssassin());
-        currentStackPane.setLayoutX(400);
-        currentStackPane.setLayoutY(200);
+        ArrayList<Integer> coords = currentBoard.getAssassinStartCoords();
+        //Each iteration of loop creates new assassin.
+        for (int i=0; i<coords.size(); i+=2) {
+            FlyingAssassin currentAssassin = new FlyingAssassin();
+            StackPane currentStackPane = new StackPane();
+            currentStackPane.getChildren().add(currentAssassin.getAssassin());
 
-        gamePlayPane.getChildren().add(currentStackPane);
+            int coordX = coords.get(i);
+            int coordY = coords.get(i+1);
+            System.out.println(coordX + " "+ coordY);
+            int tileSize = currentBoard.getTileSize();
+            currentStackPane.setLayoutX((coordX*tileSize) - (tileSize/2));
+            currentStackPane.setLayoutY((coordY*tileSize) - (tileSize/2));
+
+            gamePlayPane.getChildren().add(currentStackPane);
+        }
     }
 
     private void createDoor(){
