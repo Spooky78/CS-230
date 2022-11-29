@@ -11,7 +11,7 @@ public class FlyingAssassin extends NPC{
     //private StackPane assassinStack;
     public FlyingAssassin(){
         createNPC();
-        //move();
+        move();
     }
 
     @Override

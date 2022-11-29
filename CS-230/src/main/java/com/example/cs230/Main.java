@@ -26,6 +26,7 @@ import java.io.FileNotFoundException;
 //TODO: lever item
 //TODO: gate item
 //TODO: clock item
+//TODO: bomb item
 //TODO: smart thief
 //TODO: floor following thief
 //TODO: draw time to screen
