@@ -45,22 +45,51 @@ public class FlyingAssassin extends NPC{
         String startDirection = gameBoard.getAssassinStartDirection();
         switch (startDirection){
             case "RIGHT":
-                int durationLeftStart = (gameBoard.getBoardSizeX() - coords[0])*100;
-                SequentialTransition transition = moveStartRight();
-                setImageRight();
-                transition.play();
-                Timer timer = new Timer();
-                TimerTask task = new TimerTask() {
-                    public void run() {
-                        //The task you want to do
-                        transition.pause();
-                        setImageLeft();
-                        transition.playFrom(Duration.millis(durationLeftStart));
-
-                    }
-                };
-                timer.schedule(task, durationLeftStart);
+                startRightMovement();
                 break;
+        }
+    }
+
+    private void startRightMovement(){
+        int durationLeftStart = (gameBoard.getBoardSizeX() - coords[0])*100;
+        SequentialTransition transition = moveStartRight();
+        setImageRight();
+        transition.play();
+        Timer timer = new Timer();
+        TimerTask task = new TimerTask() {
+            public void run() {
+                //The task you want to do
+                transition.pause();
+                setImageLeft();
+                transition.playFrom(Duration.millis(durationLeftStart));
+
+            }
+        };
+        timer.schedule(task, durationLeftStart);
+
+        int count = 1;
+        //if you go through 1000 cycles, you've been playing too long!!
+        while(count<100){
+            long delayRight = gameBoard.getBoardSizeX()*100*count;
+            TimerTask taskLoop = new TimerTask() {
+                public void run() {
+                    transition.pause();
+                    setImageRight();
+                    transition.playFrom(Duration.millis(delayRight));
+                }
+            };
+            timer.schedule(taskLoop, durationLeftStart +delayRight);
+
+            long delayLeft = gameBoard.getBoardSizeX()*100*(count+1);
+            TimerTask taskLoopLeft = new TimerTask() {
+                public void run() {
+                    transition.pause();
+                    setImageLeft();
+                    transition.playFrom(Duration.millis(delayLeft));
+                }
+            };
+            timer.schedule(taskLoopLeft, durationLeftStart + delayLeft);
+            count+=2;
         }
     }
 
