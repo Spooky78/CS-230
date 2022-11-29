@@ -199,7 +199,6 @@ public class Board {
         boardPane = new TilePane();
         for (int i=0; i<boardSizeX*boardSizeY; i++){
             boardPane.getChildren().add(boardTile.get(i).getTile());
-            //System.out.println(boardTile.get(i).getTileIds());
             boardPane.setMaxWidth(screenWidth);
             boardPane.setMinWidth(screenWidth);
 

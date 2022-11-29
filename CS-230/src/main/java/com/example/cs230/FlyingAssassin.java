@@ -6,12 +6,12 @@ import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
 
 public class FlyingAssassin extends NPC{
-    private static final String ASSASSIN_PATH = "player.png";
+    private static final String ASSASSIN_PATH = "CS-230/src/main/resources/Assassin/assassinDown.png";
     private ImageView assassin;
     //private StackPane assassinStack;
     public FlyingAssassin(){
         createNPC();
-        move();
+        //move();
     }
 
     @Override
