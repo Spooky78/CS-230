@@ -117,8 +117,8 @@ public class ViewManager {
             playGame.setFont(Font.font("Verdana", 50));
         }
         ninjaChooserSubScene.getPane().getChildren().add(playGame);
-        ninjaChooserSubScene.getPane().getChildren().add(createCurrentProfile());
-        ninjaChooserSubScene.getPane().getChildren().add(createPlayerProfilePicker());
+        //ninjaChooserSubScene.getPane().getChildren().add(createCurrentProfile());
+        //ninjaChooserSubScene.getPane().getChildren().add(createPlayerProfilePicker());
         ninjaChooserSubScene.getPane().getChildren().add(createPlayerCharacterToChoose());
         ninjaChooserSubScene.getPane().getChildren().add(createButtonToStart());
     }
@@ -214,7 +214,6 @@ public class ViewManager {
                 ninjaChooserSubScene.getPane().getChildren().set(1, createCurrentProfile());
                 allProfiles.add(newProfile);
             }
-            System.out.println(newProfileName);
         });
         return newProfileButton;
     }
@@ -227,10 +226,10 @@ public class ViewManager {
         MainMenuButton startButton = new MainMenuButton("START");
 
         startButton.setOnAction(actionEvent -> {
-            if (chosenNinja != null && currentPlayerProfile != null) {
+            //if (chosenNinja != null && currentPlayerProfile != null) {
                 GameViewManager gameManager = new GameViewManager();
                 gameManager.createNewGame(mainStage, chosenNinja);
-            }
+            //}
         });
 
         return startButton;

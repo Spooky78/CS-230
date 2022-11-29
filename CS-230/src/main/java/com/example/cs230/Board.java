@@ -296,7 +296,6 @@ public class Board {
 
     public int getTileSize(){
         int tileSize = screenWidth/boardSizeX;
-        System.out.println(tileSize);
         return tileSize;
     }
 
