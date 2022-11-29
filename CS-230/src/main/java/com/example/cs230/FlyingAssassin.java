@@ -1,6 +1,8 @@
 package com.example.cs230;
 
 import java.util.Objects;
+import java.util.Timer;
+import java.util.TimerTask;
 import javafx.animation.SequentialTransition;
 import javafx.animation.TranslateTransition;
 import javafx.scene.image.Image;
@@ -43,12 +45,26 @@ public class FlyingAssassin extends NPC{
         String startDirection = gameBoard.getAssassinStartDirection();
         switch (startDirection){
             case "RIGHT":
-                moveStartRight();
+                int durationLeftStart = (gameBoard.getBoardSizeX() - coords[0])*100;
+                SequentialTransition transition = moveStartRight();
+                setImageRight();
+                transition.play();
+                Timer timer = new Timer();
+                TimerTask task = new TimerTask() {
+                    public void run() {
+                        //The task you want to do
+                        transition.pause();
+                        setImageLeft();
+                        transition.playFrom(Duration.millis(durationLeftStart));
+
+                    }
+                };
+                timer.schedule(task, durationLeftStart);
                 break;
         }
     }
 
-    private void moveStartRight(){
+    private SequentialTransition moveStartRight(){
         //setImageRight();
         int moveLeftStart = gameBoard.getBoardSizeX() - coords[0];
         TranslateTransition moveRightStartLoop = new TranslateTransition();
@@ -58,7 +74,8 @@ public class FlyingAssassin extends NPC{
 
         SequentialTransition moveLeftStartTimeline = new SequentialTransition();
         moveLeftStartTimeline.getChildren().addAll(moveRightStartLoop, moveHorizontalStartRight());
-        moveLeftStartTimeline.play();
+        //moveLeftStartTimeline.play();
+        return moveLeftStartTimeline;
     }
 
     private SequentialTransition moveHorizontalStartRight(){
