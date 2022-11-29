@@ -4,8 +4,11 @@ import javafx.scene.image.ImageView;
 
 public class Coin{
     private static final String BRONZE_COIN_PATH = "CoinBronze.png";
+    private static final String SILVER_COIN_PATH = "CoinSilver.png";
+
     private static final  int COIN_SIZE = 30;
     private ImageView bronzeCoin = new ImageView();
+    private ImageView silverCoin = new ImageView();
 
 
     public Coin(String cointype) {
@@ -19,11 +22,20 @@ public class Coin{
                 bronzeCoin.setFitWidth(COIN_SIZE);
                 bronzeCoin.setFitHeight(COIN_SIZE);
                 break;
+            case "SILVER":
+                silverCoin = new ImageView(SILVER_COIN_PATH);
+                silverCoin.setFitWidth(COIN_SIZE);
+                silverCoin.setFitHeight(COIN_SIZE);
+                break;
+
         }
     }
 
     public ImageView getBronzeCoin() {
         return bronzeCoin;
+    }
+    public ImageView getSilverCoin() {
+        return silverCoin;
     }
 
 

@@ -56,6 +56,7 @@ public class GameViewManager {
         createBoard();
         createDoor();
         createBronzeCoins();
+        createSilverCoins();
         createAssassin();
         createPlayer(chosenNinja);
 
@@ -116,6 +117,24 @@ public class GameViewManager {
             Coin currentBronzeCoin = new Coin("BRONZE");
             StackPane currentStackPane = new StackPane();
             currentStackPane.getChildren().add(currentBronzeCoin.getBronzeCoin());
+
+            int coordX = coords.get(i);
+            int coordY = coords.get(i+1);
+            int tileSize = currentBoard.getTileSize();
+            currentStackPane.setLayoutX((coordX*tileSize) - (tileSize/2));
+            currentStackPane.setLayoutY((coordY*tileSize) - (tileSize/2));
+
+            gamePlayPane.getChildren().add(currentStackPane);
+        }
+    }
+
+    private void createSilverCoins(){
+        ArrayList<Integer> coords = currentBoard.getCoin2Coords();
+        //Each iteration of loop creates new silver coin.
+        for (int i=0; i<coords.size(); i+=2) {
+            Coin currentSilverCoin = new Coin("SILVER");
+            StackPane currentStackPane = new StackPane();
+            currentStackPane.getChildren().add(currentSilverCoin.getSilverCoin());
 
             int coordX = coords.get(i);
             int coordY = coords.get(i+1);
