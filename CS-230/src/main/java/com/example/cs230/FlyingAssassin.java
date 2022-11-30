@@ -5,12 +5,9 @@ import java.util.Timer;
 import java.util.TimerTask;
 import javafx.animation.SequentialTransition;
 import javafx.animation.TranslateTransition;
-import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
-import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class FlyingAssassin extends NPC{
@@ -18,6 +15,8 @@ public class FlyingAssassin extends NPC{
     private static final String ASSASSIN_UP_PATH = "/Assassin/assassinUp.png";
     private static final String ASSASSIN_LEFT_PATH = "/Assassin/assassinLeft.png";
     private static final String ASSASSIN_RIGHT_PATH = "/Assassin/assassinRight.png";
+    private static final int MILLS_DELAY = 500;
+    private static final int SCHEDULING_DELAY = 200;
     private ImageView assassin;
     private Board gameBoard;
     private StackPane assassinStackPane;
@@ -41,7 +40,6 @@ public class FlyingAssassin extends NPC{
         int tileSize = gameBoard.getTileSize();
         assassinStackPane.setLayoutX((coords[0]*tileSize) - (tileSize/2));
         assassinStackPane.setLayoutY((coords[1]*tileSize) - (tileSize/2));
-        //assassinStack.getChildren().add(assassin);
     }
 
     protected void move(){
@@ -50,90 +48,147 @@ public class FlyingAssassin extends NPC{
             case "RIGHT":
                 startRightMovement();
                 break;
+            case "LEFT":
+                //moveStartLeftTransition();
+                startLeftMovement();
+                break;
         }
     }
 
     private void startRightMovement(){
-        int durationLeftStart = (gameBoard.getBoardSizeX() - coords[0])*100;
-        SequentialTransition transition = moveStartRight();
+        int durationRightStart = (gameBoard.getBoardSizeX() - coords[0])*MILLS_DELAY;
+        SequentialTransition transition = moveStartRightTransition();
         setImageRight();
         transition.play();
         Timer timer = new Timer();
         TimerTask task = new TimerTask() {
             public void run() {
-                //The task you want to do
                 transition.pause();
                 setImageLeft();
-                transition.playFrom(Duration.millis(durationLeftStart));
-
+                transition.playFrom(Duration.millis(durationRightStart));
             }
         };
-        timer.schedule(task, durationLeftStart);
+        timer.schedule(task, durationRightStart);
 
         int count = 1;
+        //TODO: stop when end screen shown.
         //if you go through 1000 cycles, you've been playing too long!!
         while(count<100) {
-            long delayRight = gameBoard.getBoardSizeX()*100*count;
-            TimerTask taskLoop = new TimerTask() {
-                public void run() {
-                    transition.pause();
-                    setImageRight();
-                    transition.playFrom(Duration.millis(delayRight));
-                }
-            };
-            timer.schedule(taskLoop, durationLeftStart +delayRight);
-
-            long delayLeft = gameBoard.getBoardSizeX()*100*(count+1);
-            TimerTask taskLoopLeft = new TimerTask() {
-                public void run() {
-                    transition.pause();
-                    setImageLeft();
-                    transition.playFrom(Duration.millis(delayLeft));
-                }
-            };
-            timer.schedule(taskLoopLeft, durationLeftStart + delayLeft);
+            moveRightTimer(timer, count, durationRightStart-SCHEDULING_DELAY, transition);
+            moveLeftTimer(timer, count+1, durationRightStart-SCHEDULING_DELAY, transition);
             count+=2;
         }
     }
 
-    private SequentialTransition moveStartRight(){
-        //setImageRight();
-        int moveLeftStart = gameBoard.getBoardSizeX() - coords[0];
-        TranslateTransition moveRightStartLoop = new TranslateTransition();
-        moveRightStartLoop.setNode(assassin);
-        moveRightStartLoop.setDuration(Duration.millis(moveLeftStart*100));
-        moveRightStartLoop.setByX(moveLeftStart * gameBoard.getTileSize());
+    private void startLeftMovement(){
+        int durationLeftStart = (gameBoard.getBoardSizeX() - (gameBoard.getBoardSizeX() - coords[0]) -1) * MILLS_DELAY;
+        SequentialTransition transition = moveStartLeftTransition();
+        setImageLeft();
+        transition.play();
 
-        SequentialTransition moveLeftStartTimeline = new SequentialTransition();
-        moveLeftStartTimeline.getChildren().addAll(moveRightStartLoop, moveHorizontalStartRight());
-        //moveLeftStartTimeline.play();
-        return moveLeftStartTimeline;
+        Timer timer = new Timer();
+        TimerTask task = new TimerTask() {
+            public void run() {
+                System.out.println("FUCK");
+                transition.pause();
+                setImageRight();
+                transition.playFrom(Duration.millis(durationLeftStart));
+            }
+        };
+        timer.schedule(task, durationLeftStart);
+        int count = 1;
+        //TODO: stop when end screen shown.
+        //if you go through 1000 cycles, you've been playing too long!!
+        while(count<100) {
+            moveLeftTimer(timer, count, durationLeftStart-SCHEDULING_DELAY, transition);
+            moveRightTimer(timer, count+1, durationLeftStart-SCHEDULING_DELAY, transition);
+            count+=2;
+        }
     }
 
-    private SequentialTransition moveHorizontalStartRight(){
-        //setImageLeft();
-        TranslateTransition moveLeft = new TranslateTransition();
-        moveLeft.setNode(assassin);
-        moveLeft.setDuration(Duration.millis(gameBoard.getBoardSizeX()*100));
-        moveLeft.setByX(-((gameBoard.getBoardSizeX() -1) * gameBoard.getTileSize()));
+    private void moveRightTimer(Timer timer, int count, int startDelay, SequentialTransition transition){
+        long delayRight = (long) gameBoard.getBoardSizeX() * MILLS_DELAY * count;
+        TimerTask taskLoop = new TimerTask() {
+            public void run() {
+                transition.pause();
+                setImageRight();
+                transition.playFrom(Duration.millis(delayRight+startDelay));
+            }
+        };
+        timer.schedule(taskLoop, startDelay + delayRight);
+    }
 
-        //setImageRight();
-        TranslateTransition moveRight = new TranslateTransition();
-        moveRight.setNode(assassin);
-        moveRight.setDuration(Duration.millis(gameBoard.getBoardSizeX()*100));
-        moveRight.setByX((gameBoard.getBoardSizeX() -1) * gameBoard.getTileSize());
+    private void moveLeftTimer(Timer timer, int count, int startDelay, SequentialTransition transition){
+        long delayLeft = (long) gameBoard.getBoardSizeX() * MILLS_DELAY * count;
+        TimerTask taskLoopLeft = new TimerTask() {
+            public void run() {
+                transition.pause();
+                setImageLeft();
+                transition.playFrom(Duration.millis(delayLeft+startDelay));
+            }
+        };
+        timer.schedule(taskLoopLeft, startDelay + delayLeft);
+    }
 
+    private SequentialTransition moveStartRightTransition(){
+        int startMove = gameBoard.getBoardSizeX() - coords[0];
+        TranslateTransition moveRightStartLoop = moveStartHorizontalTransition(startMove, 1);
 
+        TranslateTransition moveLeft = moveHorizontalLeftTransition();
+        TranslateTransition moveRight = moveHorizontalRightTransition();
         SequentialTransition moveHorizontal = new SequentialTransition();
         moveHorizontal.getChildren().addAll(moveLeft, moveRight);
         moveHorizontal.setCycleCount(SequentialTransition.INDEFINITE);
-        return moveHorizontal;
+
+        SequentialTransition moveLeftStartTimeline = new SequentialTransition();
+        moveLeftStartTimeline.getChildren().addAll(moveRightStartLoop, moveHorizontal);
+        return moveLeftStartTimeline;
+    }
+
+
+    private SequentialTransition moveStartLeftTransition(){
+        int startMove = (gameBoard.getBoardSizeX() - (gameBoard.getBoardSizeX() - coords[0]) -1);
+        TranslateTransition moveLeftStartLoop = moveStartHorizontalTransition(startMove, -1);
+
+        TranslateTransition moveRight = moveHorizontalRightTransition();
+        TranslateTransition moveLeft = moveHorizontalLeftTransition();
+        SequentialTransition moveHorizontal = new SequentialTransition();
+        moveHorizontal.getChildren().addAll(moveRight, moveLeft);
+        moveHorizontal.setCycleCount(SequentialTransition.INDEFINITE);
+
+        SequentialTransition moveLeftStartTimeline = new SequentialTransition();
+        moveLeftStartTimeline.getChildren().addAll(moveLeftStartLoop, moveHorizontal);
+        moveLeftStartTimeline.play();
+        return moveLeftStartTimeline;
+    }
+
+    private TranslateTransition moveStartHorizontalTransition(int startMove, int direction){
+        TranslateTransition moveHorizontalStartLoop = new TranslateTransition();
+        moveHorizontalStartLoop.setNode(assassin);
+        moveHorizontalStartLoop.setDuration(Duration.millis(startMove*MILLS_DELAY));
+        moveHorizontalStartLoop.setByX(startMove * gameBoard.getTileSize() *direction);
+        return moveHorizontalStartLoop;
+    }
+
+    private TranslateTransition moveHorizontalRightTransition(){
+        TranslateTransition moveRight = new TranslateTransition();
+        moveRight.setNode(assassin);
+        moveRight.setDuration(Duration.millis(gameBoard.getBoardSizeX() * MILLS_DELAY));
+        moveRight.setByX((gameBoard.getBoardSizeX() -1) * gameBoard.getTileSize());
+        return moveRight;
+    }
+
+    private TranslateTransition moveHorizontalLeftTransition(){
+        TranslateTransition moveLeft = new TranslateTransition();
+        moveLeft.setNode(assassin);
+        moveLeft.setDuration(Duration.millis(gameBoard.getBoardSizeX()* MILLS_DELAY));
+        moveLeft.setByX(-((gameBoard.getBoardSizeX() -1) * gameBoard.getTileSize()));
+        return moveLeft;
     }
 
     private void setImageLeft(){
         Image assassinImage = new Image(
             Objects.requireNonNull(getClass().getResourceAsStream(ASSASSIN_LEFT_PATH)));
-        //assassin = new ImageView(assassinImage);
         assassin.setImage(assassinImage);
         assassin.setFitWidth(50);
         assassin.setFitHeight(50);
@@ -142,7 +197,22 @@ public class FlyingAssassin extends NPC{
     private void setImageRight(){
         Image assassinImage = new Image(
             Objects.requireNonNull(getClass().getResourceAsStream(ASSASSIN_RIGHT_PATH)));
-        //assassin = new ImageView(assassinImage);
+        assassin.setImage(assassinImage);
+        assassin.setFitWidth(50);
+        assassin.setFitHeight(50);
+    }
+
+    private void setImageUp(){
+        Image assassinImage = new Image(
+            Objects.requireNonNull(getClass().getResourceAsStream(ASSASSIN_UP_PATH)));
+        assassin.setImage(assassinImage);
+        assassin.setFitWidth(50);
+        assassin.setFitHeight(50);
+    }
+
+    private void setImageDown(){
+        Image assassinImage = new Image(
+            Objects.requireNonNull(getClass().getResourceAsStream(ASSASSIN_DOWN_PATH)));
         assassin.setImage(assassinImage);
         assassin.setFitWidth(50);
         assassin.setFitHeight(50);

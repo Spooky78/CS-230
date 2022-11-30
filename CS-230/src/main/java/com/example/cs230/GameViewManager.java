@@ -5,6 +5,8 @@ import static javafx.geometry.Pos.TOP_LEFT;
 import java.util.ArrayList;
 import java.util.Stack;
 
+import java.util.Timer;
+import java.util.TimerTask;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -20,6 +22,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 /**
  * Responsible for the main game window.
