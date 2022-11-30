@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
+
 import javafx.scene.layout.TilePane;
 
 public class Board {
@@ -30,7 +31,7 @@ public class Board {
     private static String assassinStartDirection;
     private static int seconds;
 
-    public Board(int currentLevel, int screenWidth){
+    public Board(int currentLevel, int screenWidth) {
         currentLevelID = currentLevel;
         this.screenWidth = screenWidth;
         String filename = "CS-230/src/main/resources/Levels/Level00.txt";
@@ -38,7 +39,7 @@ public class Board {
             File circles = new File(filename);
             Scanner in = new Scanner(circles);
             readLineByLine(in);
-        } catch (FileNotFoundException e){
+        } catch (FileNotFoundException e) {
             System.out.println("Could not find " + filename);
             System.exit(0);
         }
@@ -46,7 +47,7 @@ public class Board {
     }
 
     private static void readLineByLine(Scanner in) {
-        while(in.hasNextLine()) {
+        while (in.hasNextLine()) {
             String scannerVariable = in.nextLine();
             String[] params = scannerVariable.split(" ");
 
@@ -96,7 +97,7 @@ public class Board {
                     sizeReader(params);
                     break;
                 case "BOARD":
-                    while(in.hasNextLine()){
+                    while (in.hasNextLine()) {
                         String scannerVariableBoard = in.nextLine();
                         String[] paramsBoard = scannerVariableBoard.split(" ");
                         boardLineReader(paramsBoard);
@@ -107,82 +108,82 @@ public class Board {
         in.close();
     }
 
-    private static void playerCoordsReader(String[] params){
+    private static void playerCoordsReader(String[] params) {
         playerStartCoords[0] = Integer.parseInt(params[1]);
         playerStartCoords[1] = Integer.parseInt(params[2]);
     }
 
-    private static void assassinCoordsReader(String[] params){
+    private static void assassinCoordsReader(String[] params) {
         assassinStartDirection = params[1];
         assassinStartCoords.add(Integer.parseInt(params[2]));
         assassinStartCoords.add(Integer.parseInt(params[3]));
 
     }
 
-    private static void sThiefCoordsReader(String[] params){
+    private static void sThiefCoordsReader(String[] params) {
         smartThiefStartCoords.add(Integer.parseInt(params[1]));
         smartThiefStartCoords.add(Integer.parseInt(params[2]));
 
     }
 
-    private static void ffThiefCoordsReader(String[] params){
+    private static void ffThiefCoordsReader(String[] params) {
         floorFollowingThiefStartCoords.add(Integer.parseInt(params[1]));
         floorFollowingThiefStartCoords.add(Integer.parseInt(params[2]));
     }
 
-    private static void coin1CoordsReader(String[] params){
+    private static void coin1CoordsReader(String[] params) {
         coin1Coords.add(Integer.parseInt(params[1]));
         coin1Coords.add(Integer.parseInt(params[2]));
     }
 
-    private static void coin2CoordsReader(String[] params){
+    private static void coin2CoordsReader(String[] params) {
         coin2Coords.add(Integer.parseInt(params[1]));
         coin2Coords.add(Integer.parseInt(params[2]));
     }
 
-    private static void coin3CoordsReader(String[] params){
+    private static void coin3CoordsReader(String[] params) {
         coin3Coords.add(Integer.parseInt(params[1]));
         coin3Coords.add(Integer.parseInt(params[2]));
     }
 
-    private static void coin4CoordsReader(String[] params){
+    private static void coin4CoordsReader(String[] params) {
         coin4Coords.add(Integer.parseInt(params[1]));
         coin4Coords.add(Integer.parseInt(params[2]));
     }
 
-    private static void clockCoordsReader(String[] params){
+    private static void clockCoordsReader(String[] params) {
         clockCoords.add(Integer.parseInt(params[1]));
         clockCoords.add(Integer.parseInt(params[2]));
     }
 
-    private static void doorCoordsReader(String[] params){
+    private static void doorCoordsReader(String[] params) {
         doorCoords[0] = Integer.parseInt(params[1]);
         doorCoords[1] = Integer.parseInt(params[2]);
     }
 
-    private static void leverCoordsReader(String[] params){
+    private static void leverCoordsReader(String[] params) {
         leverCoords.add(Integer.parseInt(params[1]));
         leverCoords.add(Integer.parseInt(params[2]));
     }
 
-    private static void gateCoordsReader(String[] params){
+    private static void gateCoordsReader(String[] params) {
         gateCoords.add(Integer.parseInt(params[1]));
         gateCoords.add(Integer.parseInt(params[2]));
     }
 
-    private static void bombCoordsReader(String[] params){
+    private static void bombCoordsReader(String[] params) {
         bombCoords.add(Integer.parseInt(params[1]));
         bombCoords.add(Integer.parseInt(params[2]));
     }
 
-    private static void sizeReader(String[] params){
+    private static void sizeReader(String[] params) {
         boardSizeX = Integer.parseInt(params[1]);
         boardSizeY = Integer.parseInt(params[2]);
     }
 
-    private static void boardLineReader(String[] params){
+    private static void boardLineReader(String[] params) {
         //TODO read in the tiles, then make tiles and put into boardTiles[][] in correct place.
-        for(int i=0; i<boardSizeX; i++) {
+        for (int i = 0; i < boardSizeX; i++) {
             char[] tileIds = new char[4];
             String currentTile;
             currentTile = params[i];
@@ -190,16 +191,16 @@ public class Board {
             tileIds[1] = currentTile.charAt(1);
             tileIds[2] = currentTile.charAt(2);
             tileIds[3] = currentTile.charAt(3);
-            int tileSize = screenWidth/boardSizeX;
+            int tileSize = screenWidth / boardSizeX;
             Tile newTile = new Tile(tileIds[0], tileIds[1], tileIds[2], tileIds[3], tileSize);
 
             boardTile.add(newTile);
         }
     }
 
-    private void createBoard(){
+    private void createBoard() {
         boardPane = new TilePane();
-        for (int i=0; i<boardSizeX*boardSizeY; i++){
+        for (int i = 0; i < boardSizeX * boardSizeY; i++) {
             boardPane.getChildren().add(boardTile.get(i).getTile());
             boardPane.setMaxWidth(screenWidth);
             boardPane.setMinWidth(screenWidth);
@@ -207,26 +208,27 @@ public class Board {
         }
     }
 
-    public boolean canMove(int[] currentTile, int[] newTile){
+    public boolean canMove(int[] currentTile, int[] newTile) {
         int currentX = currentTile[0];
         int currentY = currentTile[1];
         int newX = newTile[0];
         int newY = newTile[1];
         board = new Tile[boardSizeX][boardSizeY];
         int index = 0;
-        for (int i=0; i<boardSizeY; i++){
-            for (int j=0; j<boardSizeX; j++){
+        for (int i = 0; i < boardSizeY; i++) {
+            for (int j = 0; j < boardSizeX; j++) {
                 board[j][i] = boardTile.get(index);
                 index++;
             }
         }
         char[] newIds = board[newX][newY].getTileIds();
-        if(board[currentX][currentY].hasSubTile(newIds)){
+        if (board[currentX][currentY].hasSubTile(newIds)) {
             return true;
         } else {
             return false;
         }
     }
+
     public static int[] getPlayerStartCoords() {
         return playerStartCoords;
     }
@@ -299,12 +301,12 @@ public class Board {
         return boardTile;
     }
 
-    public int getTileSize(){
-        int tileSize = screenWidth/boardSizeX;
+    public int getTileSize() {
+        int tileSize = screenWidth / boardSizeX;
         return tileSize;
     }
 
-    public TilePane getBoardPane(){
+    public TilePane getBoardPane() {
         return boardPane;
     }
 }

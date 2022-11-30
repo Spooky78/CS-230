@@ -22,12 +22,13 @@ public class Tile {
 
     /**
      * get from file reader and change the representing code to the image of tiles.
-     * @param topLeft returns green image
-     * @param topRight returns orange image
-     * @param bottomLeft returns yellow imagine
+     *
+     * @param topLeft     returns green image
+     * @param topRight    returns orange image
+     * @param bottomLeft  returns yellow imagine
      * @param bottomRight returns pink imagine
      */
-    public Tile(char topLeft, char topRight, char bottomLeft, char bottomRight, int tileSize){
+    public Tile(char topLeft, char topRight, char bottomLeft, char bottomRight, int tileSize) {
         this.tileSize = tileSize;
         tilePane.setPrefColumns(2);
         tilePane.setPrefRows(2);
@@ -38,27 +39,27 @@ public class Tile {
         tileIds[3] = bottomRight;
 
         String[] tilePaths = new String[4];
-        for(int i = 0; i < tileIds.length; i++) {
+        for (int i = 0; i < tileIds.length; i++) {
             switch (tileIds[i]) {
                 case 'A' -> tilePaths[i] = A_TILE_PATH;
                 case 'B' -> tilePaths[i] = B_TILE_PATH;
                 case 'C' -> tilePaths[i] = C_TILE_PATH;
                 case 'D' -> tilePaths[i] = D_TILE_PATH;
                 default -> throw new IllegalArgumentException(
-                    "Invalid tiles ID: " + tileIds[i]);
+                        "Invalid tiles ID: " + tileIds[i]);
             }
         }
-        for (int i=0; i< tileIds.length; i++) {
+        for (int i = 0; i < tileIds.length; i++) {
             ImageView currentTile = new ImageView(tilePaths[i]);
-            currentTile.setFitHeight((tileSize/2)-1);
-            currentTile.setFitWidth((tileSize/2)-1);
+            currentTile.setFitHeight((tileSize / 2) - 1);
+            currentTile.setFitWidth((tileSize / 2) - 1);
             tilePane.getChildren().add(currentTile);
         }
 
         makeTileBoarderPane();
     }
 
-    public boolean hasSubTile(char[] newIds){
+    public boolean hasSubTile(char[] newIds) {
         for (char newId : newIds) {
             for (char tileId : tileIds) {
                 if (tileId == newId) {
@@ -69,9 +70,9 @@ public class Tile {
         return false;
     }
 
-    private void makeTileBoarderPane(){
+    private void makeTileBoarderPane() {
         tileBorderPane.setBackground(new Background(new BackgroundFill(Color.BLACK,
-            CornerRadii.EMPTY, Insets.EMPTY)));
+                CornerRadii.EMPTY, Insets.EMPTY)));
         tileBorderPane.getChildren().add(tilePane);
         tileBorderPane.setAlignment(Pos.CENTER);
         tileBorderPane.setPrefSize(tileSize, tileSize);
@@ -79,13 +80,14 @@ public class Tile {
 
     /**
      * called from the game
+     *
      * @return the colour(s) of the tile
      */
-    public StackPane getTile(){
+    public StackPane getTile() {
         return tileBorderPane;
     }
 
-    public char[] getTileIds(){
+    public char[] getTileIds() {
         return tileIds;
     }
 }

@@ -23,7 +23,7 @@ public class Player {
         createPlayer(chosenNinja);
     }
 
-    private void createPlayer(Ninja chosenNinja){
+    private void createPlayer(Ninja chosenNinja) {
         player = new ImageView(chosenNinja.getUrlNinja());
         player.setFitWidth(50);
         player.setFitHeight(50);
@@ -33,9 +33,9 @@ public class Player {
         playerStackPane.getChildren().add(player);
     }
 
-    private void createKeyListeners(Scene gameScene){
+    private void createKeyListeners(Scene gameScene) {
         gameScene.setOnKeyPressed(keyEvent -> {
-            if(keyEvent.getCode() == KeyCode.LEFT) {
+            if (keyEvent.getCode() == KeyCode.LEFT) {
                 isLeftKeyPressed = true;
             } else if (keyEvent.getCode() == KeyCode.RIGHT) {
                 isRightKeyPressed = true;
@@ -48,7 +48,7 @@ public class Player {
         });
 
         gameScene.setOnKeyReleased(keyEvent -> {
-            if(keyEvent.getCode() == KeyCode.LEFT){
+            if (keyEvent.getCode() == KeyCode.LEFT) {
                 isLeftKeyPressed = false;
             } else if (keyEvent.getCode() == KeyCode.RIGHT) {
                 isRightKeyPressed = false;
@@ -63,47 +63,47 @@ public class Player {
     private void movePlayer() {
         if (isLeftKeyPressed && (!isRightKeyPressed && !isDownKeyPressed && !isUpKeyPressed)) {
             try {
-                boolean canMove = board.canMove(playerCoords, new int[] {playerCoords[0] - 1, playerCoords[1]});
+                boolean canMove = board.canMove(playerCoords, new int[]{playerCoords[0] - 1, playerCoords[1]});
                 int currentOffset = 1;
-                while(!canMove){
+                while (!canMove) {
                     currentOffset++;
-                    canMove = board.canMove(playerCoords, new int[] {playerCoords[0] - currentOffset, playerCoords[1]});
+                    canMove = board.canMove(playerCoords, new int[]{playerCoords[0] - currentOffset, playerCoords[1]});
                 }
                 if (canMove) {
                     playerStackPane.setLayoutX(playerStackPane.getLayoutX() - (movementOffset * currentOffset));
                     playerCoords[0] = playerCoords[0] - currentOffset;
                 }
-                } catch (Exception e) {
+            } catch (Exception e) {
                 System.out.println("Something went wrong.");
             }
         }
 
         if (isRightKeyPressed && (!isLeftKeyPressed && !isDownKeyPressed && !isUpKeyPressed)) {
             try {
-                boolean canMove = board.canMove(playerCoords, new int[] {playerCoords[0] + 1, playerCoords[1]});
+                boolean canMove = board.canMove(playerCoords, new int[]{playerCoords[0] + 1, playerCoords[1]});
                 int currentOffset = 1;
-                while(!canMove){
+                while (!canMove) {
                     currentOffset++;
                     canMove = board.canMove(playerCoords,
-                            new int[] {playerCoords[0] + currentOffset, playerCoords[1]});
+                            new int[]{playerCoords[0] + currentOffset, playerCoords[1]});
 
                 }
-                if (canMove){
-                    playerStackPane.setLayoutX(playerStackPane.getLayoutX() + (movementOffset*currentOffset));
+                if (canMove) {
+                    playerStackPane.setLayoutX(playerStackPane.getLayoutX() + (movementOffset * currentOffset));
                     playerCoords[0] = playerCoords[0] + currentOffset;
                 }
-        } catch (Exception e) {
-            System.out.println("Something went wrong.");
-        }
+            } catch (Exception e) {
+                System.out.println("Something went wrong.");
+            }
         }
 
         if (isUpKeyPressed && (!isLeftKeyPressed && !isDownKeyPressed && !isRightKeyPressed)) {
             try {
-                boolean canMove = board.canMove(playerCoords, new int[] {playerCoords[0], playerCoords[1] - 1});
+                boolean canMove = board.canMove(playerCoords, new int[]{playerCoords[0], playerCoords[1] - 1});
                 int currentOffset = 1;
-                while(!canMove){
+                while (!canMove) {
                     currentOffset++;
-                    canMove = board.canMove(playerCoords, new int[] {playerCoords[0], playerCoords[1] - currentOffset});
+                    canMove = board.canMove(playerCoords, new int[]{playerCoords[0], playerCoords[1] - currentOffset});
                 }
                 if (canMove) {
                     playerStackPane.setLayoutY(playerStackPane.getLayoutY() - (movementOffset * currentOffset));
@@ -116,11 +116,11 @@ public class Player {
 
         if (isDownKeyPressed && (!isLeftKeyPressed && !isRightKeyPressed && !isUpKeyPressed)) {
             try {
-                boolean canMove = board.canMove(playerCoords, new int[] {playerCoords[0], playerCoords[1] + 1});
+                boolean canMove = board.canMove(playerCoords, new int[]{playerCoords[0], playerCoords[1] + 1});
                 int currentOffset = 1;
-                while(!canMove){
+                while (!canMove) {
                     currentOffset++;
-                    canMove = board.canMove(playerCoords, new int[] {playerCoords[0], playerCoords[1] + currentOffset});
+                    canMove = board.canMove(playerCoords, new int[]{playerCoords[0], playerCoords[1] + currentOffset});
                 }
                 if (canMove) {
                     playerStackPane.setLayoutY(playerStackPane.getLayoutY() + (movementOffset * currentOffset));
@@ -133,11 +133,11 @@ public class Player {
 
     }
 
-    public void setMovementOffset(int newOffset){
+    public void setMovementOffset(int newOffset) {
         movementOffset = newOffset;
     }
 
-    public StackPane getPlayerStack(){
+    public StackPane getPlayerStack() {
         return playerStackPane;
     }
 }

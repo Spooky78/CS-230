@@ -21,14 +21,16 @@ import java.net.URISyntaxException;
  */
 public class MainMenuButton extends Button {
     private final String FONT_PATH;
+
     {
         try {
             FONT_PATH = String.valueOf(new File(ClassLoader.getSystemResource(
-                "kenvector_future.ttf").toURI()));
+                    "kenvector_future.ttf").toURI()));
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         }
     }
+
     private static final String BUTTON_FREE_PATH = "paperButton.png";
     private static final String BUTTON_PRESSED_PATH = "paperButtonPressed.png";
     private static final int PREF_WIDTH = 182;
@@ -37,6 +39,7 @@ public class MainMenuButton extends Button {
 
     /**
      * Creates a main menu button.
+     *
      * @param text the text that the button will display.
      */
     public MainMenuButton(String text) {
@@ -65,8 +68,8 @@ public class MainMenuButton extends Button {
 
         Image backgroundImage = new Image(BUTTON_PRESSED_PATH, PREF_WIDTH, PREF_HEIGHT, false, false);
         BackgroundImage background = new BackgroundImage(backgroundImage, BackgroundRepeat.NO_REPEAT,
-            BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, new BackgroundSize(100, 100,
-            true, true, true, true));
+                BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, new BackgroundSize(100, 100,
+                true, true, true, true));
         setBackground(new Background(background));
     }
 
@@ -76,8 +79,8 @@ public class MainMenuButton extends Button {
     private void setButtonReleasedStyle() {
         Image backgroundImage = new Image(BUTTON_FREE_PATH, PREF_WIDTH, PREF_HEIGHT, false, false);
         BackgroundImage background = new BackgroundImage(backgroundImage, BackgroundRepeat.NO_REPEAT,
-            BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, new BackgroundSize(100, 100,
-            true, true, true, true));
+                BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, new BackgroundSize(100, 100,
+                true, true, true, true));
         setBackground(new Background(background));
     }
 

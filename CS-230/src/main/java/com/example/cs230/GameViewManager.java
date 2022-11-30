@@ -7,6 +7,7 @@ import java.util.Stack;
 
 import java.util.Timer;
 import java.util.TimerTask;
+
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -26,6 +27,7 @@ import javafx.util.Duration;
 
 /**
  * Responsible for the main game window.
+ *
  * @author Spooky78
  */
 public class GameViewManager {
@@ -50,7 +52,8 @@ public class GameViewManager {
 
     /**
      * Creates a new game.
-     * @param stage The previous stage (usually menuStage).
+     *
+     * @param stage       The previous stage (usually menuStage).
      * @param chosenNinja The player character.
      */
     public void createNewGame(Stage stage, Ninja chosenNinja) {
@@ -80,7 +83,7 @@ public class GameViewManager {
         gameStage.setScene(gameScene);
     }
 
-    private void createPlayer(Ninja chosenNinja){
+    private void createPlayer(Ninja chosenNinja) {
         currentPlayer = new Player(gameScene, chosenNinja, currentBoard);
         StackPane currentPlayerStack = currentPlayer.getPlayerStack();
 
@@ -97,9 +100,9 @@ public class GameViewManager {
     }
 
     private void createSmartThief() {
-        ArrayList <Integer> coords = currentBoard.getSmartThiefStartCoords();
+        ArrayList<Integer> coords = currentBoard.getSmartThiefStartCoords();
 
-        for(int i = 0; i < coords.size(); i+=2 ) {
+        for (int i = 0; i < coords.size(); i += 2) {
             int[] currentCoords = new int[2];
             currentCoords[0] = coords.get(i);
             currentCoords[1] = coords.get(i + 1);
@@ -118,13 +121,13 @@ public class GameViewManager {
         }
     }
 
-    private void createAssassin(){
+    private void createAssassin() {
         ArrayList<Integer> coords = currentBoard.getAssassinStartCoords();
         //Each iteration of loop creates new assassin.
-        for (int i=0; i<coords.size(); i+=2) {
+        for (int i = 0; i < coords.size(); i += 2) {
             int[] currentCoords = new int[2];
             currentCoords[0] = coords.get(i);
-            currentCoords[1] = coords.get(i+1);
+            currentCoords[1] = coords.get(i + 1);
             StackPane currentStackPane = new StackPane();
             FlyingAssassin currentAssassin = new FlyingAssassin(currentBoard, currentCoords, currentStackPane);
             currentStackPane.getChildren().add(currentAssassin.getAssassin());
@@ -132,54 +135,54 @@ public class GameViewManager {
         }
     }
 
-    private void createBronzeCoins(){
+    private void createBronzeCoins() {
         ArrayList<Integer> coords = currentBoard.getCoin1Coords();
         //Each iteration of loop creates new bronze coin.
-        for (int i=0; i<coords.size(); i+=2) {
+        for (int i = 0; i < coords.size(); i += 2) {
             Coin currentBronzeCoin = new Coin("BRONZE");
             StackPane currentStackPane = new StackPane();
             currentStackPane.getChildren().add(currentBronzeCoin.getBronzeCoin());
 
             int coordX = coords.get(i);
-            int coordY = coords.get(i+1);
+            int coordY = coords.get(i + 1);
             int tileSize = currentBoard.getTileSize();
-            currentStackPane.setLayoutX((coordX*tileSize) - (tileSize/2));
-            currentStackPane.setLayoutY((coordY*tileSize) - (tileSize/2));
+            currentStackPane.setLayoutX((coordX * tileSize) - (tileSize / 2));
+            currentStackPane.setLayoutY((coordY * tileSize) - (tileSize / 2));
 
             gamePlayPane.getChildren().add(currentStackPane);
         }
     }
 
-    private void createSilverCoins(){
+    private void createSilverCoins() {
         ArrayList<Integer> coords = currentBoard.getCoin2Coords();
         //Each iteration of loop creates new silver coin.
-        for (int i=0; i<coords.size(); i+=2) {
+        for (int i = 0; i < coords.size(); i += 2) {
             Coin currentSilverCoin = new Coin("SILVER");
             StackPane currentStackPane = new StackPane();
             currentStackPane.getChildren().add(currentSilverCoin.getSilverCoin());
 
             int coordX = coords.get(i);
-            int coordY = coords.get(i+1);
+            int coordY = coords.get(i + 1);
             int tileSize = currentBoard.getTileSize();
-            currentStackPane.setLayoutX((coordX*tileSize) - (tileSize/2));
-            currentStackPane.setLayoutY((coordY*tileSize) - (tileSize/2));
+            currentStackPane.setLayoutX((coordX * tileSize) - (tileSize / 2));
+            currentStackPane.setLayoutY((coordY * tileSize) - (tileSize / 2));
 
             gamePlayPane.getChildren().add(currentStackPane);
         }
     }
 
-    private void createDoor(){
+    private void createDoor() {
         Door door = new Door();
         StackPane doorPane = new StackPane();
         doorPane.getChildren().add(door.getDoor());
         int[] positionCoords = currentBoard.getDoorCoords();
         int tileSize = currentBoard.getTileSize();
-        doorPane.setLayoutX((positionCoords[0]*tileSize) - (tileSize/2));
-        doorPane.setLayoutY((positionCoords[1]*tileSize) - (tileSize/2));
+        doorPane.setLayoutX((positionCoords[0] * tileSize) - (tileSize / 2));
+        doorPane.setLayoutY((positionCoords[1] * tileSize) - (tileSize / 2));
         gamePlayPane.getChildren().add(doorPane);
     }
 
-    private void createBoard(){
+    private void createBoard() {
         currentBoard = new Board(0, GAME_WIDTH);
         gamePlayPane.setLeft(currentBoard.getBoardPane());
     }
@@ -187,7 +190,7 @@ public class GameViewManager {
     /**
      * Creates top row of game window, which contains time left.
      */
-    private void createTopRow(){
+    private void createTopRow() {
         topRow.setPadding(new Insets(20));
         topRow.setSpacing(20);
 
@@ -203,7 +206,7 @@ public class GameViewManager {
      */
     private void createBackground() {
         Background background = new Background(new BackgroundFill(
-            Color.SANDYBROWN, CornerRadii.EMPTY, Insets.EMPTY));
+                Color.SANDYBROWN, CornerRadii.EMPTY, Insets.EMPTY));
         gamePane.setBackground(background);
     }
 

@@ -22,7 +22,7 @@ public class SmartThief extends NPC {
     }
 
     @Override
-    protected void createNPC(){
+    protected void createNPC() {
         Image assassinImage = new Image(
                 Objects.requireNonNull(getClass().getResourceAsStream(SMARTTHIEF_PATH)));
         sThief = new ImageView(assassinImage);
@@ -36,7 +36,7 @@ public class SmartThief extends NPC {
     protected void move() {
     }
 
-    public ImageView getSmartThief(){
+    public ImageView getSmartThief() {
         return sThief;
     }
 }

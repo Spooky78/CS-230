@@ -4,19 +4,19 @@ public class PlayerProfile {
     private String name;
     private int[][] highScores;
 
-    public PlayerProfile(String name){
+    public PlayerProfile(String name) {
         this.name = name;
     }
 
-    public void setScore(){
+    public void setScore() {
 
     }
 
-    public String getName(){
+    public String getName() {
         return name;
     }
 
-    public PlayerProfile getProfile(){
+    public PlayerProfile getProfile() {
         return this;
     }
 }

@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 
 /**
  * The main class which contains main method to run application.
+ *
  * @author Vic
  */
 
@@ -30,7 +31,7 @@ import java.io.FileNotFoundException;
 //If spare time
 //TODO: Resume and Start New Game
 //TODO: Text font, Text boxes will resize when the game window is resized
-    //TODO: score
+//TODO: score
 public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws FileNotFoundException {
@@ -41,6 +42,7 @@ public class Main extends Application {
 
     /**
      * Entry to main method.
+     *
      * @param args command-line arguments array.
      */
     public static void main(String[] args) {

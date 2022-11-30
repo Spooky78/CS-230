@@ -16,7 +16,7 @@ public class NinjaPicker extends VBox {
     private final Ninja ninja;
     private boolean isBoxChosen;
 
-    public NinjaPicker(Ninja ninjaCharacter){
+    public NinjaPicker(Ninja ninjaCharacter) {
         boxImage = new ImageView(BOX_NOT_CHOSEN);
         ImageView shipImage = new ImageView(ninjaCharacter.getNinjaFaceset());
         this.ninja = ninjaCharacter;
@@ -27,7 +27,7 @@ public class NinjaPicker extends VBox {
         this.getChildren().add(shipImage);
     }
 
-    public Ninja getNinja(){
+    public Ninja getNinja() {
         return ninja;
     }
 

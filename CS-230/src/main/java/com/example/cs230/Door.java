@@ -2,11 +2,11 @@ package com.example.cs230;
 
 import javafx.scene.image.ImageView;
 
-public class Door{
+public class Door {
     private static final String DOOR_PATH = "door.png";
     private ImageView door;
 
-    public Door(){
+    public Door() {
         createItem();
     }
 
@@ -17,7 +17,7 @@ public class Door{
         door.setFitHeight(50);
     }
 
-    public ImageView getDoor(){
+    public ImageView getDoor() {
         return door;
     }
 

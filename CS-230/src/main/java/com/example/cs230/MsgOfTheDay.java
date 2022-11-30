@@ -6,6 +6,7 @@ import java.net.*;
 
 /**
  * Responsible for message of the day.
+ *
  * @author Everybody.
  */
 
@@ -30,8 +31,8 @@ public class MsgOfTheDay {
 
         String[] out = new String[STRING_LENGTH];
         char[] letters = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I',
-            'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q',
-            'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
+                'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q',
+                'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
 
         //put the string into a character array
         char[] ch = str.toCharArray();
@@ -79,6 +80,7 @@ public class MsgOfTheDay {
 
     /**
      * Get the puzzle code from the API.
+     *
      * @return The puzzle from API.
      */
     public String getRequest() {
@@ -91,7 +93,7 @@ public class MsgOfTheDay {
             httpURLConnection.setRequestMethod("GET");
             String line;
             InputStreamReader inputStreamReader =
-                new InputStreamReader(httpURLConnection.getInputStream());
+                    new InputStreamReader(httpURLConnection.getInputStream());
             BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
             StringBuilder response = new StringBuilder();
             while ((line = bufferedReader.readLine()) != null) {
@@ -109,6 +111,7 @@ public class MsgOfTheDay {
 
     /**
      * Return the solution to the API and then get the message of the day.
+     *
      * @return The message of the day.
      */
 
@@ -121,7 +124,7 @@ public class MsgOfTheDay {
             httpURLConnection.setRequestMethod("GET");
             String line;
             InputStreamReader inputStreamReader =
-                new InputStreamReader(httpURLConnection.getInputStream());
+                    new InputStreamReader(httpURLConnection.getInputStream());
             BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
             StringBuilder response = new StringBuilder();
             while ((line = bufferedReader.readLine()) != null) {

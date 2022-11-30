@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -22,6 +23,7 @@ import javafx.stage.Stage;
 
 /**
  * Responsible for the main menu window.
+ *
  * @author Everybody
  */
 public class ViewManager {
@@ -96,6 +98,7 @@ public class ViewManager {
 
     /**
      * If sub scene is hidden then move it.
+     *
      * @param subScene The sub scene to be moved.
      */
     private void showSubScene(MainMenuSubScene subScene) {
@@ -125,22 +128,24 @@ public class ViewManager {
 
     /**
      * Creates the text about what profile is currently chosen.
+     *
      * @return The text of the currently chosen profile.
      */
-    private Text createCurrentProfile(){
+    private Text createCurrentProfile() {
         Text currentProfileText = new Text("Please Select Profile!");
-        if (currentPlayerProfile != null){
+        if (currentPlayerProfile != null) {
             currentProfileText = new Text("Profile: " + currentPlayerProfile.getName());
         }
-        currentProfileText.setFont(Font.font("Arial",25));
+        currentProfileText.setFont(Font.font("Arial", 25));
         return currentProfileText;
     }
 
     /**
      * Creates the row of buttons associated with making/ choosing a profile.
+     *
      * @return the HBox of profile buttons.
      */
-    private HBox createPlayerProfilePicker(){
+    private HBox createPlayerProfilePicker() {
         MainMenuButton newProfileButton = createNewProfileButton();
         MainMenuButton chooseProfileButton = chooseProfileButton();
 
@@ -149,19 +154,20 @@ public class ViewManager {
 
         profilePrickerPane.setSpacing(20);
         profilePrickerPane.setAlignment(Pos.CENTER);
-        return  profilePrickerPane;
+        return profilePrickerPane;
     }
 
     /**
      * Creates the chose profile button along with it acton of choosing a profile.
+     *
      * @return The chose profile button.
      */
-    private MainMenuButton chooseProfileButton(){
+    private MainMenuButton chooseProfileButton() {
         MainMenuButton chooseProfileButton = new MainMenuButton("Choose\nProfile");
         chooseProfileButton.setOnAction(e -> {
-            if (allProfiles.size() == 0){
+            if (allProfiles.size() == 0) {
                 Text error = new Text("Error no profiles have been made!");
-                error.setFont(Font.font("Arial",25));
+                error.setFont(Font.font("Arial", 25));
                 ninjaChooserSubScene.getPane().getChildren().set(1, error);
             } else {
                 String[] arrayData = new String[allProfiles.size()];
@@ -183,7 +189,7 @@ public class ViewManager {
                         if (selected.equals(allProfile.getName())) {
                             currentPlayerProfile = allProfile;
                             ninjaChooserSubScene.getPane().getChildren()
-                                .set(1, createCurrentProfile());
+                                    .set(1, createCurrentProfile());
                         }
                     }
                 }
@@ -195,9 +201,10 @@ public class ViewManager {
 
     /**
      * Creates new profile button algong with it action of naking new profile.
+     *
      * @return The new profile button.
      */
-    private MainMenuButton createNewProfileButton(){
+    private MainMenuButton createNewProfileButton() {
         TextInputDialog nameInputDialog = new TextInputDialog("Enter a name");
         nameInputDialog.setContentText("Name: ");
         nameInputDialog.setHeaderText("Create New Player Profile!");
@@ -220,6 +227,7 @@ public class ViewManager {
 
     /**
      * Creates the start button.
+     *
      * @return The start button.
      */
     private MainMenuButton createButtonToStart() {
@@ -227,8 +235,8 @@ public class ViewManager {
 
         startButton.setOnAction(actionEvent -> {
             //if (chosenNinja != null && currentPlayerProfile != null) {
-                GameViewManager gameManager = new GameViewManager();
-                gameManager.createNewGame(mainStage, chosenNinja);
+            GameViewManager gameManager = new GameViewManager();
+            gameManager.createNewGame(mainStage, chosenNinja);
             //}
         });
 
@@ -237,13 +245,14 @@ public class ViewManager {
 
     /**
      * Creates the player character to choose.
+     *
      * @return The HBox of the player character.
      */
     private HBox createPlayerCharacterToChoose() {
         HBox ninjaPickerBox = new HBox();
         ninjaPickerBox.setSpacing(20);
         ninjaPickerList = new ArrayList<>();
-        for (Ninja ninja: Ninja.values()) {
+        for (Ninja ninja : Ninja.values()) {
             NinjaPicker shipToPick = new NinjaPicker(ninja);
             ninjaPickerList.add(shipToPick);
             ninjaPickerBox.getChildren().add(shipToPick);
@@ -264,6 +273,7 @@ public class ViewManager {
      * get font from font file(.ttf)
      */
     private final String FONT_PATH;
+
     {
         try {
             FONT_PATH = String.valueOf(new File(ClassLoader.getSystemResource(
@@ -296,17 +306,17 @@ public class ViewManager {
     /**
      * Creates credits of who created the game.
      */
-    private  void createCreditsText() {
+    private void createCreditsText() {
         Text creditTitle = new Text("Credits");
         try {
-            creditTitle.setFont(Font.loadFont(new FileInputStream(FONT_PATH),60));
+            creditTitle.setFont(Font.loadFont(new FileInputStream(FONT_PATH), 60));
         } catch (FileNotFoundException e) {
             creditTitle.setFont(Font.font("Arial", 60));
         }
         Text members = new Text("\n Ziming Dong, 2013509 \n Rex Lam, 2035415 \n Arran Pearce, 2010120 " +
                 "\n Omar Sufer, 2123959 \n Dimitrios Koumaris, 2269609 \n Vic Lismanovica, 2108255 " +
                 "\n Chrysis Pitsillides, 2009555");
-        members.setFont(Font.font("Arial",25));
+        members.setFont(Font.font("Arial", 25));
         VBox creditTit = new VBox();
         creditTit.getChildren().add(creditTitle);
         creditTit.setAlignment(Pos.CENTER);
@@ -328,38 +338,38 @@ public class ViewManager {
             howToPlayTitle.setFont(Font.font("Arial", 40));
         }
         VBox instructions = new VBox();
-        Text objective = new Text("\nObjective: \n" );
+        Text objective = new Text("\nObjective: \n");
         Text objInstruction = new Text(
                 "Use the arrow keys to move around the room and collect all the variables, " +
                         "then escape  through the red door to the next level. \n\n"
         );
-        Text how2Play = new Text("\nHow to play: \n" );
+        Text how2Play = new Text("\nHow to play: \n");
         Text playInstruction = new Text(
                 "You can only move to tiles that are the same color as the tile you are on." +
                         "If you are blocked by a different color. You automatically jump" +
                         "to the next same-color tile. To move to a new color, go to a multicolored tile. \n"
         );
-        Text items = new Text("\nItems: \n" );
+        Text items = new Text("\nItems: \n");
         Text itemsInstruction = new Text(
                 "Keys, bombs and levers open locked doors. \n" +
                         "Coins get more score dependent on remaining time \n" +
                         "Clocks add time to the countdown timer. \n"
         );
-        Text thieves = new Text("\nThieves: \n" );
+        Text thieves = new Text("\nThieves: \n");
         Text thievesInstruction = new Text(
                 "Floor following thieves follows the colored edge of the floor. \n" +
-                "Smart Thieves collects the loot and reach the exit of the level before the player. " +
+                        "Smart Thieves collects the loot and reach the exit of the level before the player. " +
                         "When the Smart Thieves arrived first, you lost the game."
         );
         helpTitle.getChildren().add(howToPlayTitle);
         helpTitle.setAlignment(Pos.CENTER);
-        objective.setFont(Font.font("Arial",FontWeight.BOLD, FontPosture.ITALIC,15));
+        objective.setFont(Font.font("Arial", FontWeight.BOLD, FontPosture.ITALIC, 15));
         objective.setUnderline(true);
-        how2Play.setFont(Font.font("Arial",FontWeight.BOLD, FontPosture.ITALIC,15));
+        how2Play.setFont(Font.font("Arial", FontWeight.BOLD, FontPosture.ITALIC, 15));
         how2Play.setUnderline(true);
-        items.setFont(Font.font("Arial",FontWeight.BOLD, FontPosture.ITALIC,15));
+        items.setFont(Font.font("Arial", FontWeight.BOLD, FontPosture.ITALIC, 15));
         items.setUnderline(true);
-        thieves.setFont(Font.font("Arial",FontWeight.BOLD, FontPosture.ITALIC,15));
+        thieves.setFont(Font.font("Arial", FontWeight.BOLD, FontPosture.ITALIC, 15));
         thieves.setUnderline(true);
         objInstruction.setWrappingWidth(400);
         playInstruction.setWrappingWidth(400);
@@ -380,6 +390,7 @@ public class ViewManager {
 
     /**
      * Gets main stage.
+     *
      * @return The main stage.
      */
     public Stage getMainStage() {
@@ -393,7 +404,7 @@ public class ViewManager {
         buttonPane = new VBox();
         buttonPane.setSpacing(20);
         buttonPane.setAlignment(Pos.CENTER_LEFT);
-        buttonPane.setPadding(new Insets(0,20,20,60));
+        buttonPane.setPadding(new Insets(0, 20, 20, 60));
         mainPane.setLeft(buttonPane);
         createStartButton();
         createScoreButton();
@@ -453,8 +464,8 @@ public class ViewManager {
     private void createBackground() {
         Image backgroundImage = new Image(BACKGROUND_PATH, WIDTH, HEIGHT, false, false);
         BackgroundImage background = new BackgroundImage(backgroundImage, BackgroundRepeat.NO_REPEAT,
-            BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, new BackgroundSize(100, 100,
-            true, true, true, true));
+                BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, new BackgroundSize(100, 100,
+                true, true, true, true));
         mainPane.setBackground(new Background(background));
     }
 
@@ -471,7 +482,7 @@ public class ViewManager {
         logoPane = new VBox();
         logoPane.getChildren().add(logo);
         logoPane.setAlignment(Pos.TOP_CENTER);
-        logoPane.setPadding(new Insets(30,0,0,0));
+        logoPane.setPadding(new Insets(30, 0, 0, 0));
         mainPane.setTop(logoPane);
     }
 
@@ -483,7 +494,7 @@ public class ViewManager {
     private void createMsgOfTheDay() {
         MsgOfTheDay m = new MsgOfTheDay();
         Text msgOfTheDay = new Text(m.getRequest());
-        msgOfTheDay.setFont(Font.font("Arial", FontPosture.ITALIC,18));
+        msgOfTheDay.setFont(Font.font("Arial", FontPosture.ITALIC, 18));
         msgOfTheDay.setTextAlignment(TextAlignment.CENTER);
         msgOfTheDay.setWrappingWidth(600);
         logoPane.getChildren().add(msgOfTheDay);

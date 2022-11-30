@@ -30,10 +30,10 @@ public class MainMenuSubScene {
         parentPane.setPadding(new Insets(50));
 
         Image image = new Image(BACKGROUND_IMAGE, PREF_WIDTH,
-            PREF_HEIGHT, false, false);
+                PREF_HEIGHT, false, false);
         BackgroundImage background = new BackgroundImage(image, BackgroundRepeat.NO_REPEAT,
-            BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
-            new BackgroundSize(100,100,true,true,true,true));
+                BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
+                new BackgroundSize(100, 100, true, true, true, true));
 
         parentPane.setBackground(new Background(background));
 
@@ -42,6 +42,7 @@ public class MainMenuSubScene {
 
     /**
      * Gets the pane.
+     *
      * @return Returns the pane.
      */
 

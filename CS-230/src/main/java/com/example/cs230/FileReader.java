@@ -162,7 +162,7 @@ public class FileReader {
 
     public int[] getPlayerStartCoords() {
         //temp:
-        playerStartCoords = new int[] {1, 0};
+        playerStartCoords = new int[]{1, 0};
         return playerStartCoords;
     }
 }

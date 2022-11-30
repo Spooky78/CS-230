@@ -9,7 +9,7 @@ public enum Ninja {
     private final String urlNinjaFaceSet;
     private final String urlNinja;
 
-    Ninja(String urlNinjaFaceSet, String urlNinja){
+    Ninja(String urlNinjaFaceSet, String urlNinja) {
         this.urlNinjaFaceSet = urlNinjaFaceSet;
         this.urlNinja = urlNinja;
     }
@@ -18,7 +18,7 @@ public enum Ninja {
         return urlNinjaFaceSet;
     }
 
-    public String getUrlNinja(){
+    public String getUrlNinja() {
         return urlNinja;
     }
 }

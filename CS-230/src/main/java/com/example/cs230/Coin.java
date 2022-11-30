@@ -2,11 +2,11 @@ package com.example.cs230;
 
 import javafx.scene.image.ImageView;
 
-public class Coin{
+public class Coin {
     private static final String BRONZE_COIN_PATH = "CoinBronze.png";
     private static final String SILVER_COIN_PATH = "CoinSilver.png";
 
-    private static final  int COIN_SIZE = 30;
+    private static final int COIN_SIZE = 30;
     private ImageView bronzeCoin = new ImageView();
     private ImageView silverCoin = new ImageView();
 
@@ -15,6 +15,7 @@ public class Coin{
         createItem(cointype)
         ;
     }
+
     protected void createItem(String cointype) {
         switch (cointype) {
             case "BRONZE":
@@ -34,6 +35,7 @@ public class Coin{
     public ImageView getBronzeCoin() {
         return bronzeCoin;
     }
+
     public ImageView getSilverCoin() {
         return silverCoin;
     }
