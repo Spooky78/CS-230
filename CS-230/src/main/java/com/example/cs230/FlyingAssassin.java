@@ -52,6 +52,12 @@ public class FlyingAssassin extends NPC{
                 //moveStartLeftTransition();
                 startLeftMovement();
                 break;
+            case "UP":
+                startUpMovement();
+                break;
+            case "DOWN":
+                startDownMovement();
+                break;
         }
     }
 
@@ -89,7 +95,6 @@ public class FlyingAssassin extends NPC{
         Timer timer = new Timer();
         TimerTask task = new TimerTask() {
             public void run() {
-                System.out.println("FUCK");
                 transition.pause();
                 setImageRight();
                 transition.playFrom(Duration.millis(durationLeftStart));
@@ -102,6 +107,55 @@ public class FlyingAssassin extends NPC{
         while(count<100) {
             moveLeftTimer(timer, count, durationLeftStart-SCHEDULING_DELAY, transition);
             moveRightTimer(timer, count+1, durationLeftStart-SCHEDULING_DELAY, transition);
+            count+=2;
+        }
+    }
+
+    private void startUpMovement(){
+        int durationUpStart = (gameBoard.getBoardSizeY() - coords[0])*MILLS_DELAY;
+        SequentialTransition transition = moveStartUpTransition();
+        setImageUp();
+        transition.play();
+        Timer timer = new Timer();
+        TimerTask task = new TimerTask() {
+            public void run() {
+                transition.pause();
+                setImageDown();
+                transition.playFrom(Duration.millis(durationUpStart));
+            }
+        };
+        timer.schedule(task, durationUpStart);
+
+        int count = 1;
+        //TODO: stop when end screen shown.
+        //if you go through 1000 cycles, you've been playing too long!!
+        while(count<100) {
+            moveUpTimer(timer, count, durationUpStart-SCHEDULING_DELAY, transition);
+            moveDownTimer(timer, count+1, durationUpStart-SCHEDULING_DELAY, transition);
+            count+=2;
+        }
+    }
+    private void startDownMovement(){
+        int durationDownStart = (gameBoard.getBoardSizeY() - (gameBoard.getBoardSizeY() - coords[0]) -1) * MILLS_DELAY;
+        SequentialTransition transition = moveStartDownTransition();
+        setImageDown();
+        transition.play();
+
+        Timer timer = new Timer();
+        TimerTask task = new TimerTask() {
+            public void run() {
+                transition.pause();
+                setImageUp();
+                transition.playFrom(Duration.millis(durationDownStart));
+            }
+        };
+        timer.schedule(task, durationDownStart);
+        int count = 1;
+        //TODO: stop when end screen shown.
+        //if you go through 1000 cycles, you've been playing too long!!
+        while(count<100) {
+            moveDownTimer(timer, count, durationDownStart-SCHEDULING_DELAY, transition);
+            moveUpTimer(timer, count+1, durationDownStart-SCHEDULING_DELAY, transition);
             count+=2;
         }
     }
@@ -130,6 +184,30 @@ public class FlyingAssassin extends NPC{
         timer.schedule(taskLoopLeft, startDelay + delayLeft);
     }
 
+    private void moveUpTimer(Timer timer, int count, int startDelay, SequentialTransition transition){
+        long delayUp = (long) gameBoard.getBoardSizeY() * MILLS_DELAY * count;
+        TimerTask taskLoopUp = new TimerTask() {
+            public void run() {
+                transition.pause();
+                setImageUp();
+                transition.playFrom(Duration.millis(delayUp+startDelay));
+            }
+        };
+        timer.schedule(taskLoopUp, startDelay + delayUp);
+    }
+
+    private void moveDownTimer(Timer timer, int count, int startDelay, SequentialTransition transition){
+        long delayDown = (long) gameBoard.getBoardSizeY() * MILLS_DELAY * count;
+        TimerTask taskLoopDown = new TimerTask() {
+            public void run() {
+                transition.pause();
+                setImageDown();
+                transition.playFrom(Duration.millis(delayDown+startDelay));
+            }
+        };
+        timer.schedule(taskLoopDown, startDelay + delayDown);
+    }
+
     private SequentialTransition moveStartRightTransition(){
         int startMove = gameBoard.getBoardSizeX() - coords[0];
         TranslateTransition moveRightStartLoop = moveStartHorizontalTransition(startMove, 1);
@@ -145,7 +223,6 @@ public class FlyingAssassin extends NPC{
         return moveLeftStartTimeline;
     }
 
-
     private SequentialTransition moveStartLeftTransition(){
         int startMove = (gameBoard.getBoardSizeX() - (gameBoard.getBoardSizeX() - coords[0]) -1);
         TranslateTransition moveLeftStartLoop = moveStartHorizontalTransition(startMove, -1);
@@ -160,6 +237,37 @@ public class FlyingAssassin extends NPC{
         moveLeftStartTimeline.getChildren().addAll(moveLeftStartLoop, moveHorizontal);
         moveLeftStartTimeline.play();
         return moveLeftStartTimeline;
+    }
+
+    private SequentialTransition moveStartUpTransition() {
+        int startMove = gameBoard.getBoardSizeY() - coords[0];
+        TranslateTransition moveUpStartLoop = moveStartVerticalTransition(startMove, 1);
+
+        TranslateTransition moveDown = moveVerticalDownTransition();
+        TranslateTransition moveUp = moveVerticalUpTransition();
+        SequentialTransition moveVertical = new SequentialTransition();
+        moveVertical.getChildren().addAll(moveDown, moveUp);
+        moveVertical.setCycleCount(SequentialTransition.INDEFINITE);
+
+        SequentialTransition moveDownStartTimeline = new SequentialTransition();
+        moveDownStartTimeline.getChildren().addAll(moveUpStartLoop, moveVertical);
+        return moveDownStartTimeline;
+    }
+
+    private SequentialTransition moveStartDownTransition() {
+        int startMove = (gameBoard.getBoardSizeY() - (gameBoard.getBoardSizeY() - coords[0]) -1);
+        TranslateTransition moveDownStartLoop = moveStartVerticalTransition(startMove, -1);
+
+        TranslateTransition moveUp = moveVerticalUpTransition();
+        TranslateTransition moveDown = moveVerticalDownTransition();
+        SequentialTransition moveVertical = new SequentialTransition();
+        moveVertical.getChildren().addAll(moveUp, moveDown);
+        moveVertical.setCycleCount(SequentialTransition.INDEFINITE);
+
+        SequentialTransition moveDownStartTimeline = new SequentialTransition();
+        moveDownStartTimeline.getChildren().addAll(moveDownStartLoop, moveVertical);
+        moveDownStartTimeline.play();
+        return moveDownStartTimeline;
     }
 
     private TranslateTransition moveStartHorizontalTransition(int startMove, int direction){
@@ -184,6 +292,30 @@ public class FlyingAssassin extends NPC{
         moveLeft.setDuration(Duration.millis(gameBoard.getBoardSizeX()* MILLS_DELAY));
         moveLeft.setByX(-((gameBoard.getBoardSizeX() -1) * gameBoard.getTileSize()));
         return moveLeft;
+    }
+
+    private TranslateTransition moveStartVerticalTransition(int startMove, int direction){
+        TranslateTransition moveVerticalStartLoop = new TranslateTransition();
+        moveVerticalStartLoop.setNode(assassin);
+        moveVerticalStartLoop.setDuration(Duration.millis(startMove * MILLS_DELAY));
+        moveVerticalStartLoop.setByY(startMove * gameBoard.getTileSize() * direction);
+        return moveVerticalStartLoop;
+    }
+
+    private TranslateTransition moveVerticalUpTransition(){
+        TranslateTransition moveUp = new TranslateTransition();
+        moveUp.setNode(assassin);
+        moveUp.setDuration(Duration.millis(gameBoard.getBoardSizeY() * MILLS_DELAY));
+        moveUp.setByY((gameBoard.getBoardSizeY() -1) * gameBoard.getTileSize());
+        return moveUp;
+    }
+
+    private TranslateTransition moveVerticalDownTransition(){
+        TranslateTransition moveDown = new TranslateTransition();
+        moveDown.setNode(assassin);
+        moveDown.setDuration(Duration.millis(gameBoard.getBoardSizeY() * MILLS_DELAY));
+        moveDown.setByY(-((gameBoard.getBoardSizeY() -1) * gameBoard.getTileSize()));
+        return moveDown;
     }
 
     private void setImageLeft(){
