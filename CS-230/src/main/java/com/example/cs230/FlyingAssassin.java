@@ -54,11 +54,11 @@ public class FlyingAssassin extends NPC {
                 //moveStartLeftTransition();
                 startLeftMovement();
                 break;
-            case "UP":
-                startUpMovement();
-                break;
             case "DOWN":
                 startDownMovement();
+                break;
+            case "UP":
+                startUpMovement();
                 break;
         }
     }
@@ -113,37 +113,11 @@ public class FlyingAssassin extends NPC {
         }
     }
 
-    private void startUpMovement() {
-        int durationUpStart = (gameBoard.getBoardSizeY() - coords[0]) * MILLS_DELAY;
-        SequentialTransition transition = moveStartUpTransition();
-        setImageUp();
-        transition.play();
-        Timer timer = new Timer();
-        TimerTask task = new TimerTask() {
-            public void run() {
-                transition.pause();
-                setImageDown();
-                transition.playFrom(Duration.millis(durationUpStart));
-            }
-        };
-        timer.schedule(task, durationUpStart);
-
-        int count = 1;
-        //TODO: stop when end screen shown.
-        //if you go through 1000 cycles, you've been playing too long!!
-        while (count < 100) {
-            moveUpTimer(timer, count, durationUpStart - SCHEDULING_DELAY, transition);
-            moveDownTimer(timer, count + 1, durationUpStart - SCHEDULING_DELAY, transition);
-            count += 2;
-        }
-    }
-
     private void startDownMovement() {
-        int durationDownStart = (gameBoard.getBoardSizeY() - (gameBoard.getBoardSizeY() - coords[0]) - 1) * MILLS_DELAY;
+        int durationDownStart = (gameBoard.getBoardSizeY() - coords[1]) * MILLS_DELAY;
         SequentialTransition transition = moveStartDownTransition();
         setImageDown();
         transition.play();
-
         Timer timer = new Timer();
         TimerTask task = new TimerTask() {
             public void run() {
@@ -153,12 +127,38 @@ public class FlyingAssassin extends NPC {
             }
         };
         timer.schedule(task, durationDownStart);
+
         int count = 1;
         //TODO: stop when end screen shown.
         //if you go through 1000 cycles, you've been playing too long!!
         while (count < 100) {
             moveDownTimer(timer, count, durationDownStart - SCHEDULING_DELAY, transition);
             moveUpTimer(timer, count + 1, durationDownStart - SCHEDULING_DELAY, transition);
+            count += 2;
+        }
+    }
+
+    private void startUpMovement() {
+        int durationUpStart = (gameBoard.getBoardSizeY() - (gameBoard.getBoardSizeY() - coords[1]) - 1) * MILLS_DELAY;
+        SequentialTransition transition = moveStartUpTransition();
+        setImageUp();
+        transition.play();
+
+        Timer timer = new Timer();
+        TimerTask task = new TimerTask() {
+            public void run() {
+                transition.pause();
+                setImageDown();
+                transition.playFrom(Duration.millis(durationUpStart));
+            }
+        };
+        timer.schedule(task, durationUpStart);
+        int count = 1;
+        //TODO: stop when end screen shown.
+        //if you go through 1000 cycles, you've been playing too long!!
+        while (count < 100) {
+            moveDownTimer(timer, count + 1, durationUpStart - SCHEDULING_DELAY, transition);
+            moveUpTimer(timer, count, durationUpStart - SCHEDULING_DELAY, transition);
             count += 2;
         }
     }
@@ -187,24 +187,24 @@ public class FlyingAssassin extends NPC {
         timer.schedule(taskLoopLeft, startDelay + delayLeft);
     }
 
-    private void moveUpTimer(Timer timer, int count, int startDelay, SequentialTransition transition) {
+    private void moveDownTimer(Timer timer, int count, int startDelay, SequentialTransition transition) {
         long delayUp = (long) gameBoard.getBoardSizeY() * MILLS_DELAY * count;
         TimerTask taskLoopUp = new TimerTask() {
             public void run() {
                 transition.pause();
-                setImageUp();
+                setImageDown();
                 transition.playFrom(Duration.millis(delayUp + startDelay));
             }
         };
         timer.schedule(taskLoopUp, startDelay + delayUp);
     }
 
-    private void moveDownTimer(Timer timer, int count, int startDelay, SequentialTransition transition) {
+    private void moveUpTimer(Timer timer, int count, int startDelay, SequentialTransition transition) {
         long delayDown = (long) gameBoard.getBoardSizeY() * MILLS_DELAY * count;
         TimerTask taskLoopDown = new TimerTask() {
             public void run() {
                 transition.pause();
-                setImageDown();
+                setImageUp();
                 transition.playFrom(Duration.millis(delayDown + startDelay));
             }
         };
@@ -242,8 +242,8 @@ public class FlyingAssassin extends NPC {
         return moveLeftStartTimeline;
     }
 
-    private SequentialTransition moveStartUpTransition() {
-        int startMove = gameBoard.getBoardSizeY() - coords[0];
+    private SequentialTransition moveStartDownTransition() {
+        int startMove = gameBoard.getBoardSizeY() - coords[1];
         TranslateTransition moveUpStartLoop = moveStartVerticalTransition(startMove, 1);
 
         TranslateTransition moveDown = moveVerticalDownTransition();
@@ -257,8 +257,8 @@ public class FlyingAssassin extends NPC {
         return moveDownStartTimeline;
     }
 
-    private SequentialTransition moveStartDownTransition() {
-        int startMove = (gameBoard.getBoardSizeY() - (gameBoard.getBoardSizeY() - coords[0]) - 1);
+    private SequentialTransition moveStartUpTransition() {
+        int startMove = (gameBoard.getBoardSizeY() - (gameBoard.getBoardSizeY() - coords[1]) - 1);
         TranslateTransition moveDownStartLoop = moveStartVerticalTransition(startMove, -1);
 
         TranslateTransition moveUp = moveVerticalUpTransition();
