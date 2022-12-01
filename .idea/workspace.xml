@@ -5,23 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="70b5a907-3c6f-42e6-9f64-1720237bb43d" name="Changes" comment="Added UP/DOWN movements + some extra cases">
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_25_11_2022__07_37__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_25_11_2022__07_37__Changes_.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CS-230/src/main/java/com/example/cs230/Lever.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CS-230/src/main/java/com/example/cs230/GameViewManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/CS-230/src/main/java/com/example/cs230/GameViewManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CS-230/src/main/resources/Levels/Level00.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CS-230/src/main/resources/Levels/Level00.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CS-230/target/classes/GoldKey.png" beforeDir="false" afterPath="$PROJECT_DIR$/CS-230/target/classes/GoldKey.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CS-230/target/classes/Levels/Level00.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CS-230/target/classes/Levels/Level00.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CS-230/target/classes/Reptile.png" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/CS-230/target/classes/SilverKey.png" beforeDir="false" afterPath="$PROJECT_DIR$/CS-230/target/classes/SilverKey.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CS-230/target/classes/com/example/cs230/Board.class" beforeDir="false" afterPath="$PROJECT_DIR$/CS-230/target/classes/com/example/cs230/Board.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CS-230/target/classes/com/example/cs230/FileReader.class" beforeDir="false" afterPath="$PROJECT_DIR$/CS-230/target/classes/com/example/cs230/FileReader.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CS-230/target/classes/com/example/cs230/FlyingAssassin.class" beforeDir="false" afterPath="$PROJECT_DIR$/CS-230/target/classes/com/example/cs230/FlyingAssassin.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CS-230/target/classes/SpriteSheet5.png" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/CS-230/target/classes/com/example/cs230/GameViewManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/CS-230/target/classes/com/example/cs230/GameViewManager.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CS-230/target/classes/com/example/cs230/Item.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/CS-230/target/classes/com/example/cs230/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/CS-230/target/classes/com/example/cs230/Main.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CS-230/target/classes/com/example/cs230/Ninja.class" beforeDir="false" afterPath="$PROJECT_DIR$/CS-230/target/classes/com/example/cs230/Ninja.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CS-230/target/classes/com/example/cs230/Player$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/CS-230/target/classes/com/example/cs230/Player.class" beforeDir="false" afterPath="$PROJECT_DIR$/CS-230/target/classes/com/example/cs230/Player.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CS-230/target/classes/com/example/cs230/SmartThief.class" beforeDir="false" afterPath="$PROJECT_DIR$/CS-230/target/classes/com/example/cs230/SmartThief.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CS-230/target/classes/com/example/cs230/Tile.class" beforeDir="false" afterPath="$PROJECT_DIR$/CS-230/target/classes/com/example/cs230/Tile.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CS-230/target/classes/com/example/cs230/ViewManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/CS-230/target/classes/com/example/cs230/ViewManager.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -88,6 +81,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1668768924704</updated>
+      <workItem from="1669920631229" duration="1775000" />
     </task>
     <task id="LOCAL-00001" summary="Change main menu ui look. As well as function of how hide/show works.">
       <created>1668772310298</created>

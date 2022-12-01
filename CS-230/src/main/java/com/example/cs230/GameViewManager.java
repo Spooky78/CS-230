@@ -63,6 +63,7 @@ public class GameViewManager {
         createTopRow();
         createBoard();
         createDoor();
+        createLever();
         createBronzeCoins();
         createSilverCoins();
         createGoldCoins();
@@ -205,6 +206,18 @@ public class GameViewManager {
             currentStackPane.setLayoutY((coordY * tileSize) - (tileSize / 2));
 
             gamePlayPane.getChildren().add(currentStackPane);
+        }
+    }
+    private void createLever() {
+        ArrayList<Integer> positionCoords = currentBoard.getLeverCoords();
+        for (int i = 0; i < positionCoords.size(); i += 2) {
+        Lever lever = new Lever();
+        StackPane leverPane = new StackPane();
+        leverPane.getChildren().add(lever.getLever());
+        int tileSize = currentBoard.getTileSize();
+        leverPane.setLayoutX((positionCoords.get(i) * tileSize) - (tileSize / 2));
+        leverPane.setLayoutY((positionCoords.get(i+1) * tileSize) - (tileSize / 2));
+        gamePlayPane.getChildren().add(leverPane);
         }
     }
 
