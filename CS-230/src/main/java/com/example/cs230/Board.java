@@ -25,6 +25,7 @@ public class Board {
     private static ArrayList<Integer> coin4Coords = new ArrayList<>();
     private static ArrayList<Integer> clockCoords = new ArrayList<>();
     private static int[] doorCoords = new int[2];
+    private static ArrayList<String> leverColours = new ArrayList<>();
     private static ArrayList<Integer> leverCoords = new ArrayList<>();
     private static int[] gate1Coords = new int[2];
     private static int[] gate2Coords = new int[2];
@@ -166,8 +167,9 @@ public class Board {
     }
 
     private static void leverCoordsReader(String[] params) {
-        leverCoords.add(Integer.parseInt(params[1]));
+        leverColours.add(params[1]);
         leverCoords.add(Integer.parseInt(params[2]));
+        leverCoords.add(Integer.parseInt(params[3]));
     }
 
     private static void gate1CoordsReader(String[] params) {
@@ -277,6 +279,7 @@ public class Board {
     public static ArrayList<Integer> getClockCoords() {
         return clockCoords;
     }
+    public static ArrayList<String> getLeverColours(){return leverColours;}
 
     public static ArrayList<Integer> getLeverCoords() {
         return leverCoords;
