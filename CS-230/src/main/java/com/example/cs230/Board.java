@@ -26,7 +26,8 @@ public class Board {
     private static ArrayList<Integer> clockCoords = new ArrayList<>();
     private static int[] doorCoords = new int[2];
     private static ArrayList<Integer> leverCoords = new ArrayList<>();
-    private static ArrayList<Integer> gateCoords = new ArrayList<>();
+    private static int[] gate1Coords = new int[2];
+    private static int[] gate2Coords = new int[2];
     private static ArrayList<Integer> bombCoords = new ArrayList<>();
     private static String assassinStartDirection;
     private static int seconds;
@@ -84,8 +85,11 @@ public class Board {
                 case "LEVER":
                     leverCoordsReader(params);
                     break;
-                case "GATE":
-                    gateCoordsReader(params);
+                case "GATE1":
+                    gate1CoordsReader(params);
+                    break;
+                case "GATE2":
+                    gate2CoordsReader(params);
                     break;
                 case "BOMB":
                     bombCoordsReader(params);
@@ -166,9 +170,14 @@ public class Board {
         leverCoords.add(Integer.parseInt(params[2]));
     }
 
-    private static void gateCoordsReader(String[] params) {
-        gateCoords.add(Integer.parseInt(params[1]));
-        gateCoords.add(Integer.parseInt(params[2]));
+    private static void gate1CoordsReader(String[] params) {
+        gate1Coords[0] = Integer.parseInt(params[1]);
+        gate1Coords[1] = Integer.parseInt(params[2]);
+    }
+
+    private static void gate2CoordsReader(String[] params) {
+        gate2Coords[0] = Integer.parseInt(params[1]);
+        gate2Coords[1] = Integer.parseInt(params[2]);
     }
 
     private static void bombCoordsReader(String[] params) {
@@ -273,8 +282,12 @@ public class Board {
         return leverCoords;
     }
 
-    public static ArrayList<Integer> getGateCoords() {
-        return gateCoords;
+    public static int[] getGate1Coords() {
+        return gate1Coords;
+    }
+
+    public static int[] getGate2Coords() {
+        return gate2Coords;
     }
 
     public static ArrayList<Integer> getBombCoords() {
