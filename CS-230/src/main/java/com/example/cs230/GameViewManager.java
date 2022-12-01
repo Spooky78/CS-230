@@ -65,6 +65,8 @@ public class GameViewManager {
         createDoor();
         createBronzeCoins();
         createSilverCoins();
+        createGoldCoins();
+        createPlatCoins();
         createAssassin();
         createPlayer(chosenNinja);
         createSmartThief();
@@ -160,6 +162,41 @@ public class GameViewManager {
             Coin currentSilverCoin = new Coin("SILVER");
             StackPane currentStackPane = new StackPane();
             currentStackPane.getChildren().add(currentSilverCoin.getSilverCoin());
+
+            int coordX = coords.get(i);
+            int coordY = coords.get(i + 1);
+            int tileSize = currentBoard.getTileSize();
+            currentStackPane.setLayoutX((coordX * tileSize) - (tileSize / 2));
+            currentStackPane.setLayoutY((coordY * tileSize) - (tileSize / 2));
+
+            gamePlayPane.getChildren().add(currentStackPane);
+        }
+    }
+    private void createGoldCoins() {
+        ArrayList<Integer> coords = currentBoard.getCoin3Coords();
+        //Each iteration of loop creates new gold coin.
+        for (int i = 0; i < coords.size(); i += 2) {
+            Coin currentGoldCoin = new Coin("GOLD");
+            StackPane currentStackPane = new StackPane();
+            currentStackPane.getChildren().add(currentGoldCoin.getGoldCoin());
+
+            int coordX = coords.get(i);
+            int coordY = coords.get(i + 1);
+            int tileSize = currentBoard.getTileSize();
+            currentStackPane.setLayoutX((coordX * tileSize) - (tileSize / 2));
+            currentStackPane.setLayoutY((coordY * tileSize) - (tileSize / 2));
+
+            gamePlayPane.getChildren().add(currentStackPane);
+        }
+    }
+
+    private void createPlatCoins() {
+        ArrayList<Integer> coords = currentBoard.getCoin4Coords();
+        //Each iteration of loop creates new gold coin.
+        for (int i = 0; i < coords.size(); i += 2) {
+            Coin currentPlatCoin = new Coin("PLAT");
+            StackPane currentStackPane = new StackPane();
+            currentStackPane.getChildren().add(currentPlatCoin.getPlatCoin());
 
             int coordX = coords.get(i);
             int coordY = coords.get(i + 1);
