@@ -19,18 +19,17 @@ public class Board {
     private ArrayList<Integer> assassinStartCoords = new ArrayList<>();
     private ArrayList<Integer> smartThiefStartCoords = new ArrayList<>();
     private ArrayList<Integer> floorFollowingThiefStartCoords = new ArrayList<>();
-    private ArrayList<Integer> coin1Coords = new ArrayList<>();
-    private ArrayList<Integer> coin2Coords = new ArrayList<>();
-    private ArrayList<Integer> coin3Coords = new ArrayList<>();
-    private ArrayList<Integer> coin4Coords = new ArrayList<>();
+    private ArrayList<String> coinColor = new ArrayList<>();
+
+    private ArrayList<Integer> coinCoords = new ArrayList<>();
     private ArrayList<Integer> clockCoords = new ArrayList<>();
     private int[] doorCoords = new int[2];
 
     //index of coords is /2 for colour (e.g) colour index2 has coords at index2,3
     private ArrayList<String> leverColours = new ArrayList<>();
     private ArrayList<Integer> leverCoords = new ArrayList<>();
-    private int[] gate1Coords = new int[2];
-    private int[] gate2Coords = new int[2];
+    private ArrayList<Integer> gate1Coords = new ArrayList<>();
+    private ArrayList<Integer> gate2Coords = new ArrayList<>();
     private ArrayList<Integer> bombCoords = new ArrayList<>();
     private String assassinStartDirection;
     private int seconds;
@@ -67,17 +66,9 @@ public class Board {
                     break;
                 case "FFTHIEF":
                     ffThiefCoordsReader(params);
-                case "COIN1":
-                    coin1CoordsReader(params);
-                    break;
-                case "COIN2":
-                    coin2CoordsReader(params);
-                    break;
-                case "COIN3":
-                    coin3CoordsReader(params);
-                    break;
-                case "COIN4":
-                    coin4CoordsReader(params);
+                case "COIN":
+                    coinCoordsReader(params);
+                    //run 11 times
                     break;
                 case "CLOCK":
                     clockCoordsReader(params);
@@ -138,24 +129,10 @@ public class Board {
         floorFollowingThiefStartCoords.add(Integer.parseInt(params[2]));
     }
 
-    private void coin1CoordsReader(String[] params) {
-        coin1Coords.add(Integer.parseInt(params[1]));
-        coin1Coords.add(Integer.parseInt(params[2]));
-    }
-
-    private void coin2CoordsReader(String[] params) {
-        coin2Coords.add(Integer.parseInt(params[1]));
-        coin2Coords.add(Integer.parseInt(params[2]));
-    }
-
-    private void coin3CoordsReader(String[] params) {
-        coin3Coords.add(Integer.parseInt(params[1]));
-        coin3Coords.add(Integer.parseInt(params[2]));
-    }
-
-    private void coin4CoordsReader(String[] params) {
-        coin4Coords.add(Integer.parseInt(params[1]));
-        coin4Coords.add(Integer.parseInt(params[2]));
+    private void coinCoordsReader(String[] params) {
+        coinColor.add(params[1]);
+        coinCoords.add(Integer.parseInt(params[2]));
+        coinCoords.add(Integer.parseInt(params[3]));
     }
 
     private void clockCoordsReader(String[] params) {
@@ -175,13 +152,13 @@ public class Board {
     }
 
     private void gate1CoordsReader(String[] params) {
-        gate1Coords[0] = Integer.parseInt(params[1]);
-        gate1Coords[1] = Integer.parseInt(params[2]);
+        gate1Coords.add(Integer.parseInt(params[1]));
+        gate1Coords.add(Integer.parseInt(params[2]));
     }
 
     private void gate2CoordsReader(String[] params) {
-        gate2Coords[0] = Integer.parseInt(params[1]);
-        gate2Coords[1] = Integer.parseInt(params[2]);
+        gate2Coords.add(Integer.parseInt(params[1]));
+        gate2Coords.add(Integer.parseInt(params[2]));
     }
 
     private void bombCoordsReader(String[] params) {
@@ -206,7 +183,6 @@ public class Board {
             tileIds[3] = currentTile.charAt(3);
             int tileSize = screenWidth / boardSizeX;
             Tile newTile = new Tile(tileIds[0], tileIds[1], tileIds[2], tileIds[3], tileSize);
-
             boardTile.add(newTile);
         }
     }
@@ -262,23 +238,8 @@ public class Board {
         return floorFollowingThiefStartCoords;
     }
 
-    public ArrayList<Integer> getCoin1Coords() {
-        return coin1Coords;
-    }
-
-    public ArrayList<Integer> getCoin2Coords() {
-        return coin2Coords;
-    }
-
-    public ArrayList<Integer> getCoin3Coords() {
-        return coin3Coords;
-    }
-
-    public ArrayList<Integer> getCoin4Coords() {
-        return coin4Coords;
-    }
-
-    public  ArrayList<Integer> getClockCoords() {
+    public ArrayList<Integer> getCoinCoords() {return coinCoords;}
+    public ArrayList<Integer> getClockCoords() {
         return clockCoords;
     }
     public ArrayList<String> getLeverColours(){return leverColours;}
@@ -287,11 +248,11 @@ public class Board {
         return leverCoords;
     }
 
-    public int[] getGate1Coords() {
+    public ArrayList<Integer> getGate1Coords() {
         return gate1Coords;
     }
 
-    public int[] getGate2Coords() {
+    public ArrayList<Integer> getGate2Coords() {
         return gate2Coords;
     }
 
@@ -314,6 +275,8 @@ public class Board {
     public int getBoardSizeY() {
         return boardSizeY;
     }
+
+    public ArrayList<String> getCoinColor() {return coinColor;}
 
     public ArrayList<Tile> getBoardTile() {
         return boardTile;
