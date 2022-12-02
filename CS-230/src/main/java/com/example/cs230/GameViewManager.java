@@ -1,13 +1,8 @@
 package com.example.cs230;
 
-import static javafx.geometry.Pos.TOP_LEFT;
-
 import java.util.ArrayList;
-import java.util.Stack;
 
-import java.util.Timer;
-import java.util.TimerTask;
-
+import javafx.animation.AnimationTimer;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -21,9 +16,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 
 /**
  * Responsible for the main game window.
@@ -40,8 +33,13 @@ public class GameViewManager {
     private Scene gameScene;
     private Stage gameStage;
     private Stage menuStage;
+    private AnimationTimer gameTimer;
     private Player currentPlayer;
+    private StackPane currentPlayerStack;
     private Board currentBoard;
+    private ArrayList<StackPane> allAssassinStacks = new ArrayList<>();
+    private ArrayList<FlyingAssassin> allAssassins = new ArrayList<>();
+    private int playerScore = 0;
 
     /**
      * Creates a GameViewManager.
@@ -60,7 +58,7 @@ public class GameViewManager {
         this.menuStage = stage;
         this.menuStage.hide();
         createBackground();
-        createTopRow();
+        updateTopRow();
         createBoard();
         createDoor();
         createClock();
@@ -75,6 +73,9 @@ public class GameViewManager {
         createPlayer(chosenNinja);
         createSmartThief();
 
+        createGameLoop();
+        topRow.setAlignment(Pos.CENTER_RIGHT);
+        gamePane.getChildren().add(topRow);
         gamePane.getChildren().add(gamePlayPane);
         gameStage.show();
     }
@@ -89,9 +90,41 @@ public class GameViewManager {
         gameStage.setScene(gameScene);
     }
 
+    private void createGameLoop(){
+        System.out.print("FUCK");
+        //Interactions interactions = new Interactions();
+        gameTimer = new AnimationTimer() {
+            @Override
+            public void handle(long l) {
+                //assassinKill();
+                updateTopRow();
+            }
+        };
+        gameTimer.start();
+    }
+
+    private void assassinKill(){
+//        Interactions interactions = new Interactions();
+//        for(int i=0; i<allAssassins.size();i++){
+//            //System.out.println("FUCKK");
+//            if (interactions.isCollide(allAssassins.get(i).getAssassin(),
+//                allAssassins.get(i).getRadius(), currentPlayerStack,
+//                currentPlayer.getRadius())){
+//                System.out.println("DIE");
+//            }
+//            int[] playerC =currentPlayer.getPlayerCoords();
+//            //System.out.println(playerC[0] + " "+playerC[1]);
+//            int[] aC = allAssassins.get(i).getCoords();
+//            System.out.println(playerC[0] + " "+playerC[1]+" "+aC[0] + " " + aC[1]);
+//            if (allAssassins.get(i).getCoords() == currentPlayer.getPlayerCoords()){
+//                System.out.println("DIE");
+//            }
+//        }
+    }
+
     private void createPlayer(Ninja chosenNinja) {
         currentPlayer = new Player(gameScene, chosenNinja, currentBoard);
-        StackPane currentPlayerStack = currentPlayer.getPlayerStack();
+        currentPlayerStack = currentPlayer.getPlayerStack();
 
         int tileSize = currentBoard.getTileSize();
         currentPlayer.setMovementOffset(tileSize);
@@ -115,14 +148,6 @@ public class GameViewManager {
             StackPane currentStackPane = new StackPane();
             SmartThief currentSmartThief = new SmartThief(currentBoard, currentCoords, currentStackPane);
             currentStackPane.getChildren().add(currentSmartThief.getSmartThief());
-
-            /*
-            int coordX = coords.get(i);
-            int coordY = coords.get(i+1);
-            int tileSize = currentBoard.getTileSize();
-            currentStackPane.setLayoutX((coordX*tileSize) - (tileSize/2));
-            currentStackPane.setLayoutY((coordY*tileSize) - (tileSize/2));
-            */
             gamePlayPane.getChildren().add(currentStackPane);
         }
     }
@@ -136,6 +161,8 @@ public class GameViewManager {
             currentCoords[1] = coords.get(i + 1);
             StackPane currentStackPane = new StackPane();
             FlyingAssassin currentAssassin = new FlyingAssassin(currentBoard, currentCoords, currentStackPane);
+            allAssassinStacks.add(currentStackPane);
+            allAssassins.add(currentAssassin);
             currentStackPane.getChildren().add(currentAssassin.getAssassin());
             gamePlayPane.getChildren().add(currentStackPane);
         }
@@ -214,13 +241,9 @@ public class GameViewManager {
     private void createLever() {
         ArrayList<Integer> positionCoords = currentBoard.getLeverCoords();
         for (int i = 0; i < positionCoords.size(); i += 2) {
-        Lever lever = new Lever();
-        StackPane leverPane = new StackPane();
-        leverPane.getChildren().add(lever.getLever());
-        int tileSize = currentBoard.getTileSize();
-        leverPane.setLayoutX((positionCoords.get(i) * tileSize) - (tileSize / 2));
-        leverPane.setLayoutY((positionCoords.get(i+1) * tileSize) - (tileSize / 2));
-        gamePlayPane.getChildren().add(leverPane);
+            int[] currentLeverCoords = {positionCoords.get(i), positionCoords.get(i+1)};
+            Lever lever = new Lever(currentBoard, currentLeverCoords);
+            gamePlayPane.getChildren().add(lever.getLeverPane());
         }
     }
 
@@ -278,15 +301,24 @@ public class GameViewManager {
     /**
      * Creates top row of game window, which contains time left.
      */
-    private void createTopRow() {
+    private void updateTopRow() {
         topRow.setPadding(new Insets(20));
         topRow.setSpacing(20);
-
-        Text timeCounter = new Text("Time Left:");
+        topRow.getChildren().clear();
+        Text timeCounter = new Text("Time Left: ");
         timeCounter.setFont(Font.font("Arial", 20));
         topRow.getChildren().add(timeCounter);
-        topRow.setAlignment(Pos.CENTER_RIGHT);
-        gamePane.getChildren().add(topRow);
+
+        Text playerScore = new Text("SCORE: " + updateScorePlayer());
+        playerScore.setFont(Font.font("Arial", 20));
+        topRow.getChildren().add(playerScore);
+
+
+    }
+
+    private int updateScorePlayer(){
+        //
+        return playerScore;
     }
 
     /**

@@ -25,6 +25,8 @@ public class Board {
     private static ArrayList<Integer> coin4Coords = new ArrayList<>();
     private static ArrayList<Integer> clockCoords = new ArrayList<>();
     private static int[] doorCoords = new int[2];
+
+    //index of coords is /2 for colour (e.g) colour index2 has coords at index2,3
     private static ArrayList<String> leverColours = new ArrayList<>();
     private static ArrayList<Integer> leverCoords = new ArrayList<>();
     private static int[] gate1Coords = new int[2];
