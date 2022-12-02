@@ -69,7 +69,7 @@ public class GameViewManager {
         createSilverCoins();
         createGoldCoins();
         createPlatCoins();
-        createAssassin();
+        //createAssassin();
         createPlayer(chosenNinja);
         createSmartThief();
 

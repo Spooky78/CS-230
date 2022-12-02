@@ -49,15 +49,15 @@ public class FlyingAssassin extends NPC {
         switch (startDirection) {
             case "RIGHT":
                 //startRightMovement();
-                startMovementRightDirection();
+                //startMovementRightDirection();
                 break;
             case "LEFT":
                 //startLeftMovement();
-                startMovementLeftDirection();
+                //startMovementLeftDirection();
                 break;
             case "DOWN":
                 //startDownMovement();
-                startMovementDownDirection();
+                //startMovementDownDirection();
                 break;
             case "UP":
                 //startUpMovement();
@@ -66,81 +66,89 @@ public class FlyingAssassin extends NPC {
         }
     }
 
-    private void startMovementRightDirection(){
-        int count = 0;
-        while(count<100){
-            setImageRight();
-            while(coords[0] > gameBoard.getBoardSizeX()){
-                moveTile("RIGHT");
-            }
-            setImageLeft();
-            while(coords[0] < -1){
-                moveTile("LEFT");
-            }
-        }
-    }
-
-    private void startMovementLeftDirection(){
-        int count = 0;
-        while(count<100){
-            setImageLeft();
-            while(coords[0] < -1){
-                moveTile("LEFT");
-            }
-            setImageRight();
-            while(coords[0] > gameBoard.getBoardSizeX()){
-                moveTile("RIGHT");
-            }
-        }
-    }
-
-    private void startMovementDownDirection(){
-        int count = 0;
-        while(count<100){
-            setImageDown();
-            while(coords[1] < gameBoard.getBoardSizeY()){
-                moveTile("DOWN");
-            }
-            setImageUp();
-            while (coords[1] > -1){
-                moveTile("UP");
-            }
-        }
-    }
+//    private void startMovementRightDirection(){
+//        int count = 0;
+//        while(count<100){
+//            setImageRight();
+//            while(coords[0] > gameBoard.getBoardSizeX()){
+//                moveTile("RIGHT");
+//            }
+//            setImageLeft();
+//            while(coords[0] < -1){
+//                moveTile("LEFT");
+//            }
+//        }
+//    }
+//
+//    private void startMovementLeftDirection(){
+//        int count = 0;
+//        while(count<100){
+//            setImageLeft();
+//            while(coords[0] < -1){
+//                moveTile("LEFT");
+//            }
+//            setImageRight();
+//            while(coords[0] > gameBoard.getBoardSizeX()){
+//                moveTile("RIGHT");
+//            }
+//        }
+//    }
+//
+//    private void startMovementDownDirection(){
+//        int count = 0;
+//        while(count<100){
+//            setImageDown();
+//            while(coords[1] < gameBoard.getBoardSizeY()){
+//                moveTile("DOWN");
+//            }
+//            setImageUp();
+//            while (coords[1] > -1){
+//                moveTile("UP");
+//            }
+//        }
+//    }
 
     private  void startMovementUpDirection() {
         int count = 0;
-        while (count < 100) {
-            setImageUp();
-            while (coords[1] > -1){
-                moveTile("UP");
-            }
-            setImageDown();
-            while(coords[1] < gameBoard.getBoardSizeY()){
-                moveTile("DOWN");
-            }
-        }
+        setImageUp();
+            System.out.println(coords[1]);
+            int moveUp = coords[1] -1;
+            moveTile("UP", moveUp);
+            //move.play();
+
+//        while (count < 100) {
+//            setImageUp();
+//            while (coords[1] > -1){
+//                moveTile("UP");
+//            }
+//            setImageDown();
+//            while(coords[1] < gameBoard.getBoardSizeY()){
+//                moveTile("DOWN");
+//            }
+//        }
     }
 
-    private void moveTile(String direction){
+    private TranslateTransition moveTile(String direction, int distance){
         TranslateTransition moveAcrossTile = new TranslateTransition(Duration.millis(MILLS_DELAY));
         moveAcrossTile.setNode(assassin);
         moveAcrossTile.setDuration(Duration.millis(MILLS_DELAY));
         if (direction == "RIGHT"){
-            moveAcrossTile.setByX(gameBoard.getBoardSizeX());
+            moveAcrossTile.setByX(gameBoard.getTileSize());
             coords[0] += 1;
         } else if (direction == "LEFT") {
             moveAcrossTile.setByX(-gameBoard.getBoardSizeX());
             coords[0] -= 1;
         } else if (direction == "UP") {
-            moveAcrossTile.setByY(gameBoard.getBoardSizeY());
-            coords[1] += 1;
-        } else if (direction == "DOWN") {
-            moveAcrossTile.setByY(-gameBoard.getTileSize());
+            //moveAcrossTile.setByY(-gameBoard.getTileSize() * distance);
+            assassinStackPane.setLayoutY(assassinStackPane.getLayoutX()-gameBoard.getTileSize());
             coords[1] -= 1;
+        } else if (direction == "DOWN") {
+            moveAcrossTile.setByY(gameBoard.getTileSize());
+            coords[1] += 1;
         }
-        moveAcrossTile.setCycleCount(1);
-        moveAcrossTile.play();
+        //moveAcrossTile.setCycleCount(1);
+        //moveAcrossTile.play();
+        return moveAcrossTile;
     }
 
     private void startRightMovementOld() {
