@@ -259,7 +259,7 @@ public class GameViewManager {
     }
 
     private void createClock() {
-        ArrayList<Integer> positionCoords = Board.getClockCoords();
+        ArrayList<Integer> positionCoords = currentBoard.getClockCoords();
         for (int i = 0; i < positionCoords.size(); i += 2) {
             Clock clock = new Clock();
             StackPane clockPane = new StackPane();
@@ -275,7 +275,7 @@ public class GameViewManager {
         Gate gate = new Gate("GOLDEN");
         StackPane gatePane = new StackPane();
         gatePane.getChildren().add(gate.getGoldenGate());
-        int[] positionCoords = Board.getGate1Coords();
+        int[] positionCoords = currentBoard.getGate1Coords();
         int tileSize = currentBoard.getTileSize();
         gatePane.setLayoutX((positionCoords[0] * tileSize) - (tileSize / 2.0));
         gatePane.setLayoutY((positionCoords[1] * tileSize) - (tileSize / 2.0));
@@ -286,7 +286,7 @@ public class GameViewManager {
         Gate gate = new Gate("SILVER");
         StackPane gatePane = new StackPane();
         gatePane.getChildren().add(gate.getSilverGate());
-        int[] positionCoords = Board.getGate2Coords();
+        int[] positionCoords = currentBoard.getGate2Coords();
         int tileSize = currentBoard.getTileSize();
         gatePane.setLayoutX((positionCoords[0] * tileSize) - (tileSize / 2.0));
         gatePane.setLayoutY((positionCoords[1] * tileSize) - (tileSize / 2.0));

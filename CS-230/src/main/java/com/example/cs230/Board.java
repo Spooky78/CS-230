@@ -11,29 +11,29 @@ public class Board {
     private TilePane boardPane;
     private Tile[][] board;
     private int currentLevelID;
-    private static int screenWidth;
-    private static int boardSizeX;
-    private static int boardSizeY;
-    private static ArrayList<Tile> boardTile = new ArrayList<>();
-    private static int[] playerStartCoords = new int[2];
-    private static ArrayList<Integer> assassinStartCoords = new ArrayList<>();
-    private static ArrayList<Integer> smartThiefStartCoords = new ArrayList<>();
-    private static ArrayList<Integer> floorFollowingThiefStartCoords = new ArrayList<>();
-    private static ArrayList<Integer> coin1Coords = new ArrayList<>();
-    private static ArrayList<Integer> coin2Coords = new ArrayList<>();
-    private static ArrayList<Integer> coin3Coords = new ArrayList<>();
-    private static ArrayList<Integer> coin4Coords = new ArrayList<>();
-    private static ArrayList<Integer> clockCoords = new ArrayList<>();
-    private static int[] doorCoords = new int[2];
+    private int screenWidth;
+    private int boardSizeX;
+    private int boardSizeY;
+    private ArrayList<Tile> boardTile = new ArrayList<>();
+    private int[] playerStartCoords = new int[2];
+    private ArrayList<Integer> assassinStartCoords = new ArrayList<>();
+    private ArrayList<Integer> smartThiefStartCoords = new ArrayList<>();
+    private ArrayList<Integer> floorFollowingThiefStartCoords = new ArrayList<>();
+    private ArrayList<Integer> coin1Coords = new ArrayList<>();
+    private ArrayList<Integer> coin2Coords = new ArrayList<>();
+    private ArrayList<Integer> coin3Coords = new ArrayList<>();
+    private ArrayList<Integer> coin4Coords = new ArrayList<>();
+    private ArrayList<Integer> clockCoords = new ArrayList<>();
+    private int[] doorCoords = new int[2];
 
     //index of coords is /2 for colour (e.g) colour index2 has coords at index2,3
-    private static ArrayList<String> leverColours = new ArrayList<>();
-    private static ArrayList<Integer> leverCoords = new ArrayList<>();
-    private static int[] gate1Coords = new int[2];
-    private static int[] gate2Coords = new int[2];
-    private static ArrayList<Integer> bombCoords = new ArrayList<>();
-    private static String assassinStartDirection;
-    private static int seconds;
+    private ArrayList<String> leverColours = new ArrayList<>();
+    private ArrayList<Integer> leverCoords = new ArrayList<>();
+    private int[] gate1Coords = new int[2];
+    private int[] gate2Coords = new int[2];
+    private ArrayList<Integer> bombCoords = new ArrayList<>();
+    private String assassinStartDirection;
+    private int seconds;
 
     public Board(int currentLevel, int screenWidth) {
         currentLevelID = currentLevel;
@@ -50,7 +50,7 @@ public class Board {
         createBoard();
     }
 
-    private static void readLineByLine(Scanner in) {
+    private void readLineByLine(Scanner in) {
         while (in.hasNextLine()) {
             String scannerVariable = in.nextLine();
             String[] params = scannerVariable.split(" ");
@@ -115,86 +115,86 @@ public class Board {
         in.close();
     }
 
-    private static void playerCoordsReader(String[] params) {
+    private void playerCoordsReader(String[] params) {
         playerStartCoords[0] = Integer.parseInt(params[1]);
         playerStartCoords[1] = Integer.parseInt(params[2]);
     }
 
-    private static void assassinCoordsReader(String[] params) {
+    private void assassinCoordsReader(String[] params) {
         assassinStartDirection = params[1];
         assassinStartCoords.add(Integer.parseInt(params[2]));
         assassinStartCoords.add(Integer.parseInt(params[3]));
 
     }
 
-    private static void sThiefCoordsReader(String[] params) {
+    private void sThiefCoordsReader(String[] params) {
         smartThiefStartCoords.add(Integer.parseInt(params[1]));
         smartThiefStartCoords.add(Integer.parseInt(params[2]));
 
     }
 
-    private static void ffThiefCoordsReader(String[] params) {
+    private void ffThiefCoordsReader(String[] params) {
         floorFollowingThiefStartCoords.add(Integer.parseInt(params[1]));
         floorFollowingThiefStartCoords.add(Integer.parseInt(params[2]));
     }
 
-    private static void coin1CoordsReader(String[] params) {
+    private void coin1CoordsReader(String[] params) {
         coin1Coords.add(Integer.parseInt(params[1]));
         coin1Coords.add(Integer.parseInt(params[2]));
     }
 
-    private static void coin2CoordsReader(String[] params) {
+    private void coin2CoordsReader(String[] params) {
         coin2Coords.add(Integer.parseInt(params[1]));
         coin2Coords.add(Integer.parseInt(params[2]));
     }
 
-    private static void coin3CoordsReader(String[] params) {
+    private void coin3CoordsReader(String[] params) {
         coin3Coords.add(Integer.parseInt(params[1]));
         coin3Coords.add(Integer.parseInt(params[2]));
     }
 
-    private static void coin4CoordsReader(String[] params) {
+    private void coin4CoordsReader(String[] params) {
         coin4Coords.add(Integer.parseInt(params[1]));
         coin4Coords.add(Integer.parseInt(params[2]));
     }
 
-    private static void clockCoordsReader(String[] params) {
+    private void clockCoordsReader(String[] params) {
         clockCoords.add(Integer.parseInt(params[1]));
         clockCoords.add(Integer.parseInt(params[2]));
     }
 
-    private static void doorCoordsReader(String[] params) {
+    private void doorCoordsReader(String[] params) {
         doorCoords[0] = Integer.parseInt(params[1]);
         doorCoords[1] = Integer.parseInt(params[2]);
     }
 
-    private static void leverCoordsReader(String[] params) {
+    private void leverCoordsReader(String[] params) {
         leverColours.add(params[1]);
         leverCoords.add(Integer.parseInt(params[2]));
         leverCoords.add(Integer.parseInt(params[3]));
     }
 
-    private static void gate1CoordsReader(String[] params) {
+    private void gate1CoordsReader(String[] params) {
         gate1Coords[0] = Integer.parseInt(params[1]);
         gate1Coords[1] = Integer.parseInt(params[2]);
     }
 
-    private static void gate2CoordsReader(String[] params) {
+    private void gate2CoordsReader(String[] params) {
         gate2Coords[0] = Integer.parseInt(params[1]);
         gate2Coords[1] = Integer.parseInt(params[2]);
     }
 
-    private static void bombCoordsReader(String[] params) {
+    private void bombCoordsReader(String[] params) {
         bombCoords.add(Integer.parseInt(params[1]));
         bombCoords.add(Integer.parseInt(params[2]));
     }
 
-    private static void sizeReader(String[] params) {
+    private void sizeReader(String[] params) {
         boardSizeX = Integer.parseInt(params[1]);
         boardSizeY = Integer.parseInt(params[2]);
     }
 
-    private static void boardLineReader(String[] params) {
+    private void boardLineReader(String[] params) {
         //TODO read in the tiles, then make tiles and put into boardTiles[][] in correct place.
         for (int i = 0; i < boardSizeX; i++) {
             char[] tileIds = new char[4];
@@ -242,80 +242,80 @@ public class Board {
         }
     }
 
-    public static int[] getPlayerStartCoords() {
+    public int[] getPlayerStartCoords() {
         return playerStartCoords;
     }
 
-    public static String getAssassinStartDirection() {
+    public String getAssassinStartDirection() {
         return assassinStartDirection;
     }
 
-    public static ArrayList<Integer> getAssassinStartCoords() {
+    public ArrayList<Integer> getAssassinStartCoords() {
         return assassinStartCoords;
     }
 
-    public static ArrayList<Integer> getSmartThiefStartCoords() {
+    public ArrayList<Integer> getSmartThiefStartCoords() {
         return smartThiefStartCoords;
     }
 
-    public static ArrayList<Integer> getFloorFollowingThiefStartCoords() {
+    public ArrayList<Integer> getFloorFollowingThiefStartCoords() {
         return floorFollowingThiefStartCoords;
     }
 
-    public static ArrayList<Integer> getCoin1Coords() {
+    public ArrayList<Integer> getCoin1Coords() {
         return coin1Coords;
     }
 
-    public static ArrayList<Integer> getCoin2Coords() {
+    public ArrayList<Integer> getCoin2Coords() {
         return coin2Coords;
     }
 
-    public static ArrayList<Integer> getCoin3Coords() {
+    public ArrayList<Integer> getCoin3Coords() {
         return coin3Coords;
     }
 
-    public static ArrayList<Integer> getCoin4Coords() {
+    public ArrayList<Integer> getCoin4Coords() {
         return coin4Coords;
     }
 
-    public static ArrayList<Integer> getClockCoords() {
+    public  ArrayList<Integer> getClockCoords() {
         return clockCoords;
     }
-    public static ArrayList<String> getLeverColours(){return leverColours;}
+    public ArrayList<String> getLeverColours(){return leverColours;}
 
-    public static ArrayList<Integer> getLeverCoords() {
+    public ArrayList<Integer> getLeverCoords() {
         return leverCoords;
     }
 
-    public static int[] getGate1Coords() {
+    public int[] getGate1Coords() {
         return gate1Coords;
     }
 
-    public static int[] getGate2Coords() {
+    public int[] getGate2Coords() {
         return gate2Coords;
     }
 
-    public static ArrayList<Integer> getBombCoords() {
+    public ArrayList<Integer> getBombCoords() {
         return bombCoords;
     }
 
-    public static int getSeconds() {
+    public int getSeconds() {
         return seconds;
     }
 
-    public static int[] getDoorCoords() {
+    public int[] getDoorCoords() {
         return doorCoords;
     }
 
-    public static int getBoardSizeX() {
+    public int getBoardSizeX() {
         return boardSizeX;
     }
 
-    public static int getBoardSizeY() {
+    public int getBoardSizeY() {
         return boardSizeY;
     }
 
-    public static ArrayList<Tile> getBoardTile() {
+    public ArrayList<Tile> getBoardTile() {
         return boardTile;
     }
 
