@@ -65,10 +65,7 @@ public class GameViewManager {
         createGoldenGate();
         createSilverGate();
         createLever();
-        createBronzeCoins();
-        createSilverCoins();
-        createGoldCoins();
-        createPlatCoins();
+        createCoins();
         //createAssassin();
         createPlayer(chosenNinja);
         createSmartThief();
@@ -90,7 +87,7 @@ public class GameViewManager {
         gameStage.setScene(gameScene);
     }
 
-    private void createGameLoop() {
+    private void createGameLoop(){
         System.out.print("FUCK");
         //Interactions interactions = new Interactions();
         gameTimer = new AnimationTimer() {
@@ -103,7 +100,7 @@ public class GameViewManager {
         gameTimer.start();
     }
 
-    private void assassinKill() {
+    private void assassinKill(){
 //        Interactions interactions = new Interactions();
 //        for(int i=0; i<allAssassins.size();i++){
 //            //System.out.println("FUCKK");
@@ -168,119 +165,74 @@ public class GameViewManager {
         }
     }
 
-    private void createBronzeCoins() {
-        ArrayList<Integer> coords = currentBoard.getCoin1Coords();
+    private void createCoins() {
+        ArrayList<String> coinColor = currentBoard.getCoinColor();
+        ArrayList<Integer> coords = currentBoard.getCoinCoords();
         //Each iteration of loop creates new bronze coin.
-        for (int i = 0; i < coords.size(); i += 2) {
-            Coin currentBronzeCoin = new Coin("BRONZE");
-            StackPane currentStackPane = new StackPane();
-            currentStackPane.getChildren().add(currentBronzeCoin.getBronzeCoin());
+        for (int i = 0; i < coinColor.size(); i += 1) {
+            int[] currentCoinCoords = {coords.get(i * 2), coords.get((i * 2) + 1)};
+            /*
 
-            int coordX = coords.get(i);
-            int coordY = coords.get(i + 1);
-            int tileSize = currentBoard.getTileSize();
-            currentStackPane.setLayoutX((coordX * tileSize) - (tileSize / 2));
-            currentStackPane.setLayoutY((coordY * tileSize) - (tileSize / 2));
-
-            gamePlayPane.getChildren().add(currentStackPane);
-        }
-    }
-
-    private void createSilverCoins() {
-        ArrayList<Integer> coords = currentBoard.getCoin2Coords();
-        //Each iteration of loop creates new silver coin.
-        for (int i = 0; i < coords.size(); i += 2) {
-            Coin currentSilverCoin = new Coin("SILVER");
-            StackPane currentStackPane = new StackPane();
-            currentStackPane.getChildren().add(currentSilverCoin.getSilverCoin());
-
-            int coordX = coords.get(i);
-            int coordY = coords.get(i + 1);
-            int tileSize = currentBoard.getTileSize();
-            currentStackPane.setLayoutX((coordX * tileSize) - (tileSize / 2));
-            currentStackPane.setLayoutY((coordY * tileSize) - (tileSize / 2));
-
-            gamePlayPane.getChildren().add(currentStackPane);
-        }
-    }
-
-    private void createGoldCoins() {
-        ArrayList<Integer> coords = currentBoard.getCoin3Coords();
-        //Each iteration of loop creates new gold coin.
-        for (int i = 0; i < coords.size(); i += 2) {
-            Coin currentGoldCoin = new Coin("GOLD");
-            StackPane currentStackPane = new StackPane();
-            currentStackPane.getChildren().add(currentGoldCoin.getGoldCoin());
-
-            int coordX = coords.get(i);
-            int coordY = coords.get(i + 1);
-            int tileSize = currentBoard.getTileSize();
-            currentStackPane.setLayoutX((coordX * tileSize) - (tileSize / 2));
-            currentStackPane.setLayoutY((coordY * tileSize) - (tileSize / 2));
-
-            gamePlayPane.getChildren().add(currentStackPane);
-        }
-    }
-
-    private void createPlatCoins() {
-        ArrayList<Integer> coords = currentBoard.getCoin4Coords();
-        //Each iteration of loop creates new gold coin.
-        for (int i = 0; i < coords.size(); i += 2) {
-            Coin currentPlatCoin = new Coin("PLAT");
-            StackPane currentStackPane = new StackPane();
-            currentStackPane.getChildren().add(currentPlatCoin.getPlatCoin());
-
-            int coordX = coords.get(i);
-            int coordY = coords.get(i + 1);
-            int tileSize = currentBoard.getTileSize();
-            currentStackPane.setLayoutX((coordX * tileSize) - (tileSize / 2));
-            currentStackPane.setLayoutY((coordY * tileSize) - (tileSize / 2));
-
-            gamePlayPane.getChildren().add(currentStackPane);
+             */
+            Coin currentCoin = new Coin(coinColor.get(i), currentBoard, currentCoinCoords);
+            gamePlayPane.getChildren().add(currentCoin.getCoinStackPane());
+            System.out.println(coinColor.get(i) + "FUCK" + currentCoinCoords[0] + "FUCK" + currentCoinCoords[1]);
         }
     }
 
     private void createLever() {
         ArrayList<Integer> positionCoords = currentBoard.getLeverCoords();
         for (int i = 0; i < positionCoords.size(); i += 2) {
-            int[] currentLeverCoords = {positionCoords.get(i), positionCoords.get(i + 1)};
+            int[] currentLeverCoords = {positionCoords.get(i), positionCoords.get(i+1)};
             Lever lever = new Lever(currentBoard, currentLeverCoords);
             gamePlayPane.getChildren().add(lever.getLeverPane());
         }
     }
 
     private void createDoor() {
+        Door door = new Door();
         StackPane doorPane = new StackPane();
+        doorPane.getChildren().add(door.getDoor());
         int[] positionCoords = currentBoard.getDoorCoords();
-        Door door = new Door(currentBoard, positionCoords);
-        gamePlayPane.getChildren().add(door.getDoorPane());
+        int tileSize = currentBoard.getTileSize();
+        doorPane.setLayoutX((positionCoords[0] * tileSize) - (tileSize / 2));
+        doorPane.setLayoutY((positionCoords[1] * tileSize) - (tileSize / 2));
+        gamePlayPane.getChildren().add(doorPane);
     }
 
     private void createClock() {
         ArrayList<Integer> positionCoords = currentBoard.getClockCoords();
         for (int i = 0; i < positionCoords.size(); i += 2) {
-            int[] positionCoords2 ={positionCoords.get(i), positionCoords.get(i + 1)};
-            Clock clock = new Clock(currentBoard,positionCoords2);
-            gamePlayPane.getChildren().add(clock.getClockPane());
+            Clock clock = new Clock();
+            StackPane clockPane = new StackPane();
+            clockPane.getChildren().add(clock.getClock());
+            int tileSize = currentBoard.getTileSize();
+            clockPane.setLayoutX((positionCoords.get(i) * tileSize) - (tileSize / 2.0));
+            clockPane.setLayoutY((positionCoords.get(i + 1) * tileSize) - (tileSize / 2.0));
+            gamePlayPane.getChildren().add(clockPane);
         }
     }
 
     private void createGoldenGate() {
-        ArrayList<Integer> positionCoords = currentBoard.getGate1Coords();
-        for (int i = 0; i < positionCoords.size(); i += 2) {
-            int[] positionCoords2 ={positionCoords.get(i), positionCoords.get(i + 1)};
-            Gate gate = new Gate("GOLDEN",currentBoard,positionCoords2);
-            gamePlayPane.getChildren().add(gate.getSilverGatePane());
-        }
+        Gate gate = new Gate("GOLDEN");
+        StackPane gatePane = new StackPane();
+        gatePane.getChildren().add(gate.getGoldenGate());
+        int[] positionCoords = currentBoard.getGate1Coords();
+        int tileSize = currentBoard.getTileSize();
+        gatePane.setLayoutX((positionCoords[0] * tileSize) - (tileSize / 2.0));
+        gatePane.setLayoutY((positionCoords[1] * tileSize) - (tileSize / 2.0));
+        gamePlayPane.getChildren().add(gatePane);
     }
 
     private void createSilverGate() {
-        ArrayList<Integer> positionCoords = currentBoard.getGate2Coords();
-        for (int i = 0; i < positionCoords.size(); i += 2) {
-            int[] positionCoords2 ={positionCoords.get(i), positionCoords.get(i + 1)};
-            Gate gate = new Gate("SILVER",currentBoard,positionCoords2);
-            gamePlayPane.getChildren().add(gate.getSilverGatePane());
-        }
+        Gate gate = new Gate("SILVER");
+        StackPane gatePane = new StackPane();
+        gatePane.getChildren().add(gate.getSilverGate());
+        int[] positionCoords = currentBoard.getGate2Coords();
+        int tileSize = currentBoard.getTileSize();
+        gatePane.setLayoutX((positionCoords[0] * tileSize) - (tileSize / 2.0));
+        gatePane.setLayoutY((positionCoords[1] * tileSize) - (tileSize / 2.0));
+        gamePlayPane.getChildren().add(gatePane);
     }
 
     private void createBoard() {
@@ -299,7 +251,6 @@ public class GameViewManager {
         timeCounter.setFont(Font.font("Arial", 20));
         topRow.getChildren().add(timeCounter);
 
-
         Text playerScore = new Text("SCORE: " + updateScorePlayer());
         playerScore.setFont(Font.font("Arial", 20));
         topRow.getChildren().add(playerScore);
@@ -307,7 +258,7 @@ public class GameViewManager {
 
     }
 
-    private int updateScorePlayer() {
+    private int updateScorePlayer(){
         //
         return playerScore;
     }
