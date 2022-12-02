@@ -72,7 +72,7 @@ public class FlyingAssassin extends NPC {
         Timer timer = new Timer();
 
         int scheduleCount = 0;
-        int coordsCounter = coords[0] +1;
+        int coordsCounter = coords[0];
         while (scheduleCount < 100) {
             scheduleCount = moveRightTile(timer, scheduleCount, coordsCounter);
             coordsCounter = 10;
@@ -88,7 +88,9 @@ public class FlyingAssassin extends NPC {
         Timer timer = new Timer();
 
         int scheduleCount = 0;
+        coords[0] -=1;
         int coordsCounter = coords[0];
+        System.out.println(coords[0]);
         while (scheduleCount < 100) {
             scheduleCount = moveLeftTile(timer, scheduleCount, coordsCounter);
             coordsCounter = 0;
