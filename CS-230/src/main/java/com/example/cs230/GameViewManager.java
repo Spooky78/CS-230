@@ -21,7 +21,7 @@ import javafx.stage.Stage;
 /**
  * Responsible for the main game window.
  *
- * @author Spooky78
+ * @author Everyone
  */
 public class GameViewManager {
     private static final int GAME_WIDTH = 600;
@@ -67,7 +67,7 @@ public class GameViewManager {
         createSilverGate();
         createLever();
         createCoins();
-        //createAssassin();
+        createAssassin();
         createPlayer(chosenNinja);
         createSmartThief();
 
@@ -89,7 +89,6 @@ public class GameViewManager {
     }
 
     private void createGameLoop(){
-        System.out.print("FUCK");
         //Interactions interactions = new Interactions();
         gameTimer = new AnimationTimer() {
             @Override
@@ -102,25 +101,6 @@ public class GameViewManager {
             }
         };
         gameTimer.start();
-    }
-
-    private void assassinKill(){
-//        Interactions interactions = new Interactions();
-//        for(int i=0; i<allAssassins.size();i++){
-//            //System.out.println("FUCKK");
-//            if (interactions.isCollide(allAssassins.get(i).getAssassin(),
-//                allAssassins.get(i).getRadius(), currentPlayerStack,
-//                currentPlayer.getRadius())){
-//                System.out.println("DIE");
-//            }
-//            int[] playerC =currentPlayer.getPlayerCoords();
-//            //System.out.println(playerC[0] + " "+playerC[1]);
-//            int[] aC = allAssassins.get(i).getCoords();
-//            System.out.println(playerC[0] + " "+playerC[1]+" "+aC[0] + " " + aC[1]);
-//            if (allAssassins.get(i).getCoords() == currentPlayer.getPlayerCoords()){
-//                System.out.println("DIE");
-//            }
-//        }
     }
 
     private void createPlayer(Ninja chosenNinja) {

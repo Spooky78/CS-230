@@ -27,7 +27,7 @@ public class FloorFollowingThief extends Thief {
      * @author Dimitrios
      */
     //private StackPane ffThiefStack;
-    public FloorFollowingThief(Board board, int[] startCoords, StackPane stackPane) {
+    public FloorFollowingThief (Board board, int[] startCoords, StackPane stackPane) {
         gameBoard = board;
         coords = startCoords;
         ffThiefStackPane = stackPane;
@@ -54,7 +54,6 @@ public class FloorFollowingThief extends Thief {
     protected void move() {
 
     }
-
     public ImageView getffThief() {
         return ffThief;
     }
