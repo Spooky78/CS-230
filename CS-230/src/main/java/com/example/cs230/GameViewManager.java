@@ -169,14 +169,11 @@ public class GameViewManager {
         ArrayList<String> coinColor = currentBoard.getCoinColor();
         ArrayList<Integer> coords = currentBoard.getCoinCoords();
         //Each iteration of loop creates new bronze coin.
+        System.out.println("SHIT");
         for (int i = 0; i < coinColor.size(); i += 1) {
             int[] currentCoinCoords = {coords.get(i * 2), coords.get((i * 2) + 1)};
-            /*
-
-             */
             Coin currentCoin = new Coin(coinColor.get(i), currentBoard, currentCoinCoords);
             gamePlayPane.getChildren().add(currentCoin.getCoinStackPane());
-            System.out.println(coinColor.get(i) + "FUCK" + currentCoinCoords[0] + "FUCK" + currentCoinCoords[1]);
         }
     }
 
