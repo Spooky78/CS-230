@@ -48,7 +48,8 @@ public class FlyingAssassin extends NPC {
         String startDirection = gameBoard.getAssassinStartDirection();
         switch (startDirection) {
             case "RIGHT":
-                startRightMovement();
+                //startRightMovement();
+                startMoveRight2();
                 break;
             case "LEFT":
                 //moveStartLeftTransition();
@@ -86,6 +87,40 @@ public class FlyingAssassin extends NPC {
             moveLeftTimer(timer, count + 1, durationRightStart - SCHEDULING_DELAY, transition);
             count += 2;
         }
+    }
+
+    private void startMoveRight2(){
+        int count = 0;
+        while(count<100){
+            setImageRight();
+            while(coords[0] > gameBoard.getBoardSizeX()){
+                moveRightTile();
+            }
+            setImageLeft();
+            while(coords[0] < -1){
+                moveLeftTile();
+            }
+        }
+    }
+
+    private void moveRightTile(){
+        TranslateTransition moveRight = new TranslateTransition(Duration.millis(MILLS_DELAY));
+        moveRight.setNode(assassin);
+        moveRight.setDuration(Duration.millis(MILLS_DELAY));
+        moveRight.setByX(gameBoard.getTileSize());
+        coords[0] +=1;
+        moveRight.setCycleCount(1);
+        moveRight.play();
+    }
+
+    private void moveLeftTile(){
+        TranslateTransition moveLeft = new TranslateTransition(Duration.millis(MILLS_DELAY));
+        moveLeft.setNode(assassin);
+        moveLeft.setDuration(Duration.millis(MILLS_DELAY));
+        moveLeft.setByX(-gameBoard.getTileSize());
+        coords[0] -=1;
+        moveLeft.setCycleCount(1);
+        moveLeft.play();
     }
 
     private void startLeftMovement() {
