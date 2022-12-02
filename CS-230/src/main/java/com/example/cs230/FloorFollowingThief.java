@@ -24,7 +24,7 @@ public class FloorFollowingThief extends Thief {
      * @param board
      * @param startCoords
      * @param stackPane
-     * @author user6073
+     * @author Dimitrios
      */
     //private StackPane ffThiefStack;
     public FloorFollowingThief(Board board, int[] startCoords, StackPane stackPane) {
@@ -36,7 +36,7 @@ public class FloorFollowingThief extends Thief {
     }
 
     /**
-     * @author user6073
+     * @author Dimitrios
      */
     //@Override THIS MIGHT NEED TO BE UNCOMMENTED AT SOME POINT AFTER THE BEHAVIOUR IS IMPLEMENTED
     //CURRENTLY, IT HAS A RED UNDERLINE.

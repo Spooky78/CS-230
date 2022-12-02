@@ -140,4 +140,6 @@ public class Player {
     public StackPane getPlayerStack() {
         return playerStackPane;
     }
+
+    public int[] getPlayerCoords(){return playerCoords;}
 }

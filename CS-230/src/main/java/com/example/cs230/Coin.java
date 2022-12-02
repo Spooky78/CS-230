@@ -16,9 +16,11 @@ public class Coin {
     private StackPane coinStackPane = new StackPane();
     private Board gameBoard;
     private ImageView coin = new ImageView();
+    private int[] coinPosition;
 
     public Coin(String cointype, Board board, int[] position) {
         gameBoard = board;
+        coinPosition = position;
         createItem(cointype, position);
     }
 
@@ -51,8 +53,14 @@ public class Coin {
 
 
     public boolean isCollisionPlayer(int[] playerCoords) {
-
-    return false;
+        //System.out.println(playerCoords[0] + " "+playerCoords[1]);
+        if (playerCoords[0] +1 == coinPosition[0] && playerCoords[1] +1 == coinPosition[1]) {
+            System.out.println("FU");
+            return true;
+        } else {
+            //System.out.println("SHIT");
+            return false;
+        }
     }
 
     public StackPane getCoinStackPane() {return coinStackPane;}

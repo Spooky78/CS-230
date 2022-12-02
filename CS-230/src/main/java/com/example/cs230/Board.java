@@ -7,6 +7,9 @@ import java.util.Scanner;
 
 import javafx.scene.layout.TilePane;
 
+/**
+ * @authors Dimitrios, Vic, Rex
+ */
 public class Board {
     private TilePane boardPane;
     private Tile[][] board;

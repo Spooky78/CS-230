@@ -39,6 +39,7 @@ public class GameViewManager {
     private Board currentBoard;
     private ArrayList<StackPane> allAssassinStacks = new ArrayList<>();
     private ArrayList<FlyingAssassin> allAssassins = new ArrayList<>();
+    private ArrayList<Coin> allCoins = new ArrayList<>();
     private int playerScore = 0;
 
     /**
@@ -95,6 +96,9 @@ public class GameViewManager {
             public void handle(long l) {
                 //assassinKill();
                 updateTopRow();
+                for (int i=0; i<allCoins.size();i++){
+                    allCoins.get(i).isCollisionPlayer(currentPlayer.getPlayerCoords());
+                }
             }
         };
         gameTimer.start();
@@ -173,6 +177,7 @@ public class GameViewManager {
         for (int i = 0; i < coinColor.size(); i += 1) {
             int[] currentCoinCoords = {coords.get(i * 2), coords.get((i * 2) + 1)};
             Coin currentCoin = new Coin(coinColor.get(i), currentBoard, currentCoinCoords);
+            allCoins.add(currentCoin);
             gamePlayPane.getChildren().add(currentCoin.getCoinStackPane());
         }
     }
