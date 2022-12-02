@@ -189,51 +189,7 @@ public class GameViewManager {
         }
     }
 
-    private void createDoor() {
-        Door door = new Door();
-        StackPane doorPane = new StackPane();
-        doorPane.getChildren().add(door.getDoor());
-        int[] positionCoords = currentBoard.getDoorCoords();
-        int tileSize = currentBoard.getTileSize();
-        doorPane.setLayoutX((positionCoords[0] * tileSize) - (tileSize / 2));
-        doorPane.setLayoutY((positionCoords[1] * tileSize) - (tileSize / 2));
-        gamePlayPane.getChildren().add(doorPane);
-    }
 
-    private void createClock() {
-        ArrayList<Integer> positionCoords = currentBoard.getClockCoords();
-        for (int i = 0; i < positionCoords.size(); i += 2) {
-            Clock clock = new Clock();
-            StackPane clockPane = new StackPane();
-            clockPane.getChildren().add(clock.getClock());
-            int tileSize = currentBoard.getTileSize();
-            clockPane.setLayoutX((positionCoords.get(i) * tileSize) - (tileSize / 2.0));
-            clockPane.setLayoutY((positionCoords.get(i + 1) * tileSize) - (tileSize / 2.0));
-            gamePlayPane.getChildren().add(clockPane);
-        }
-    }
-
-    private void createGoldenGate() {
-        Gate gate = new Gate("GOLDEN");
-        StackPane gatePane = new StackPane();
-        gatePane.getChildren().add(gate.getGoldenGate());
-        int[] positionCoords = currentBoard.getGate1Coords();
-        int tileSize = currentBoard.getTileSize();
-        gatePane.setLayoutX((positionCoords[0] * tileSize) - (tileSize / 2.0));
-        gatePane.setLayoutY((positionCoords[1] * tileSize) - (tileSize / 2.0));
-        gamePlayPane.getChildren().add(gatePane);
-    }
-
-    private void createSilverGate() {
-        Gate gate = new Gate("SILVER");
-        StackPane gatePane = new StackPane();
-        gatePane.getChildren().add(gate.getSilverGate());
-        int[] positionCoords = currentBoard.getGate2Coords();
-        int tileSize = currentBoard.getTileSize();
-        gatePane.setLayoutX((positionCoords[0] * tileSize) - (tileSize / 2.0));
-        gatePane.setLayoutY((positionCoords[1] * tileSize) - (tileSize / 2.0));
-        gamePlayPane.getChildren().add(gatePane);
-    }
 
     private void createBoard() {
         currentBoard = new Board(0, GAME_WIDTH);
@@ -256,6 +212,40 @@ public class GameViewManager {
         topRow.getChildren().add(playerScore);
 
 
+    }
+
+    private void createDoor() {
+        StackPane doorPane = new StackPane();
+        int[] positionCoords = currentBoard.getDoorCoords();
+        Door door = new Door(currentBoard, positionCoords);
+        gamePlayPane.getChildren().add(door.getDoorPane());
+    }
+
+    private void createClock() {
+        ArrayList<Integer> positionCoords = currentBoard.getClockCoords();
+        for (int i = 0; i < positionCoords.size(); i += 2) {
+            int[] positionCoords2 ={positionCoords.get(i), positionCoords.get(i + 1)};
+            Clock clock = new Clock(currentBoard,positionCoords2);
+            gamePlayPane.getChildren().add(clock.getClockPane());
+        }
+    }
+
+    private void createGoldenGate() {
+        ArrayList<Integer> positionCoords = currentBoard.getGate1Coords();
+        for (int i = 0; i < positionCoords.size(); i += 2) {
+            int[] positionCoords2 ={positionCoords.get(i), positionCoords.get(i + 1)};
+            Gate gate = new Gate("GOLDEN",currentBoard,positionCoords2);
+            gamePlayPane.getChildren().add(gate.getSilverGatePane());
+        }
+    }
+
+    private void createSilverGate() {
+        ArrayList<Integer> positionCoords = currentBoard.getGate2Coords();
+        for (int i = 0; i < positionCoords.size(); i += 2) {
+            int[] positionCoords2 ={positionCoords.get(i), positionCoords.get(i + 1)};
+            Gate gate = new Gate("SILVER",currentBoard,positionCoords2);
+            gamePlayPane.getChildren().add(gate.getSilverGatePane());
+        }
     }
 
     private int updateScorePlayer(){

@@ -28,8 +28,8 @@ public class Board {
     //index of coords is /2 for colour (e.g) colour index2 has coords at index2,3
     private ArrayList<String> leverColours = new ArrayList<>();
     private ArrayList<Integer> leverCoords = new ArrayList<>();
-    private int[] gate1Coords = new int[2];
-    private int[] gate2Coords = new int[2];
+    private ArrayList<Integer> gate1Coords = new ArrayList<>();
+    private ArrayList<Integer> gate2Coords = new ArrayList<>();
     private ArrayList<Integer> bombCoords = new ArrayList<>();
     private String assassinStartDirection;
     private int seconds;
@@ -152,13 +152,13 @@ public class Board {
     }
 
     private void gate1CoordsReader(String[] params) {
-        gate1Coords[0] = Integer.parseInt(params[1]);
-        gate1Coords[1] = Integer.parseInt(params[2]);
+        gate1Coords.add(Integer.parseInt(params[1]));
+        gate1Coords.add(Integer.parseInt(params[2]));
     }
 
     private void gate2CoordsReader(String[] params) {
-        gate2Coords[0] = Integer.parseInt(params[1]);
-        gate2Coords[1] = Integer.parseInt(params[2]);
+        gate2Coords.add(Integer.parseInt(params[1]));
+        gate2Coords.add(Integer.parseInt(params[2]));
     }
 
     private void bombCoordsReader(String[] params) {
@@ -248,11 +248,11 @@ public class Board {
         return leverCoords;
     }
 
-    public int[] getGate1Coords() {
+    public ArrayList<Integer> getGate1Coords() {
         return gate1Coords;
     }
 
-    public int[] getGate2Coords() {
+    public ArrayList<Integer> getGate2Coords() {
         return gate2Coords;
     }
 
