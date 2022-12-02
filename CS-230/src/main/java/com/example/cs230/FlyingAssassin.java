@@ -48,7 +48,7 @@ public class FlyingAssassin extends NPC {
         String startDirection = gameBoard.getAssassinStartDirection();
         switch (startDirection) {
             case "RIGHT":
-                //startRightMovement();
+                startRightMovement();
                 //startMovementRightDirection();
                 break;
             case "LEFT":
@@ -61,276 +61,56 @@ public class FlyingAssassin extends NPC {
                 break;
             case "UP":
                 //startUpMovement();
-                startMovementUpDirection();
+                //startMovementUpDirection();
                 break;
         }
     }
-
-//    private void startMovementRightDirection(){
-//        int count = 0;
-//        while(count<100){
-//            setImageRight();
-//            while(coords[0] > gameBoard.getBoardSizeX()){
-//                moveTile("RIGHT");
-//            }
-//            setImageLeft();
-//            while(coords[0] < -1){
-//                moveTile("LEFT");
-//            }
-//        }
-//    }
-//
-//    private void startMovementLeftDirection(){
-//        int count = 0;
-//        while(count<100){
-//            setImageLeft();
-//            while(coords[0] < -1){
-//                moveTile("LEFT");
-//            }
-//            setImageRight();
-//            while(coords[0] > gameBoard.getBoardSizeX()){
-//                moveTile("RIGHT");
-//            }
-//        }
-//    }
-//
-//    private void startMovementDownDirection(){
-//        int count = 0;
-//        while(count<100){
-//            setImageDown();
-//            while(coords[1] < gameBoard.getBoardSizeY()){
-//                moveTile("DOWN");
-//            }
-//            setImageUp();
-//            while (coords[1] > -1){
-//                moveTile("UP");
-//            }
-//        }
-//    }
-
-    private  void startMovementUpDirection() {
-        int count = 0;
-        setImageUp();
-            System.out.println(coords[1]);
-            int moveUp = coords[1] -1;
-            moveTile("UP", moveUp);
-            //move.play();
-
-//        while (count < 100) {
-//            setImageUp();
-//            while (coords[1] > -1){
-//                moveTile("UP");
-//            }
-//            setImageDown();
-//            while(coords[1] < gameBoard.getBoardSizeY()){
-//                moveTile("DOWN");
-//            }
-//        }
-    }
-
-    private TranslateTransition moveTile(String direction, int distance){
-        TranslateTransition moveAcrossTile = new TranslateTransition(Duration.millis(MILLS_DELAY));
-        moveAcrossTile.setNode(assassin);
-        moveAcrossTile.setDuration(Duration.millis(MILLS_DELAY));
-        if (direction == "RIGHT"){
-            moveAcrossTile.setByX(gameBoard.getTileSize());
-            coords[0] += 1;
-        } else if (direction == "LEFT") {
-            moveAcrossTile.setByX(-gameBoard.getBoardSizeX());
-            coords[0] -= 1;
-        } else if (direction == "UP") {
-            //moveAcrossTile.setByY(-gameBoard.getTileSize() * distance);
-            assassinStackPane.setLayoutY(assassinStackPane.getLayoutX()-gameBoard.getTileSize());
-            coords[1] -= 1;
-        } else if (direction == "DOWN") {
-            moveAcrossTile.setByY(gameBoard.getTileSize());
-            coords[1] += 1;
-        }
-        //moveAcrossTile.setCycleCount(1);
-        //moveAcrossTile.play();
-        return moveAcrossTile;
-    }
-
-    private void startRightMovementOld() {
-        int durationRightStart = (gameBoard.getBoardSizeX() - coords[0]) * MILLS_DELAY;
-        SequentialTransition transition = moveStartRightTransition();
-        setImageRight();
-        transition.play();
+    private void startRightMovement() {
+        SequentialTransition movement = moveStartRightTransition();
+        setImage("RIGHT");
+        movement.play();
         Timer timer = new Timer();
-        TimerTask task = new TimerTask() {
-            public void run() {
-                transition.pause();
-                setImageLeft();
-                transition.playFrom(Duration.millis(durationRightStart));
-            }
-        };
-        timer.schedule(task, durationRightStart);
 
-        int count = 1;
-        //TODO: stop when end screen shown.
-        //if you go through 1000 cycles, you've been playing too long!!
-        while (count < 100) {
-            moveRightTimer(timer, count, durationRightStart - SCHEDULING_DELAY, transition);
-            moveLeftTimer(timer, count + 1, durationRightStart - SCHEDULING_DELAY, transition);
-            count += 2;
+        int scheduleCount = 0;
+        int coordsCounter = coords[0];
+        while (scheduleCount < 100) {
+            scheduleCount = moveRightTile(timer, scheduleCount, coordsCounter);
+            coordsCounter = 10;
+            scheduleCount = moveLeftTile(timer, scheduleCount, coordsCounter);
+            coordsCounter = 0;
         }
     }
 
-//    private void startMoveRight2(){
-//        int count = 0;
-//        while(count<100){
-//            setImageRight();
-//            while(coords[0] > gameBoard.getBoardSizeX()){
-//                moveRightTile();
-//            }
-//            setImageLeft();
-//            while(coords[0] < -1){
-//                moveLeftTile();
-//            }
-//        }
-//    }
-//
-//    private void moveRightTile(){
-//        TranslateTransition moveRight = new TranslateTransition(Duration.millis(MILLS_DELAY));
-//        moveRight.setNode(assassin);
-//        moveRight.setDuration(Duration.millis(MILLS_DELAY));
-//        moveRight.setByX(gameBoard.getTileSize());
-//        coords[0] +=1;
-//        moveRight.setCycleCount(1);
-//        moveRight.play();
-//    }
-//
-//    private void moveLeftTile(){
-//        TranslateTransition moveLeft = new TranslateTransition(Duration.millis(MILLS_DELAY));
-//        moveLeft.setNode(assassin);
-//        moveLeft.setDuration(Duration.millis(MILLS_DELAY));
-//        moveLeft.setByX(-gameBoard.getTileSize());
-//        coords[0] -=1;
-//        moveLeft.setCycleCount(1);
-//        moveLeft.play();
-//    }
-
-    private void startLeftMovement() {
-        int durationLeftStart = (gameBoard.getBoardSizeX() - (gameBoard.getBoardSizeX() - coords[0]) - 1) * MILLS_DELAY;
-        SequentialTransition transition = moveStartLeftTransition();
-        setImageLeft();
-        transition.play();
-
-        Timer timer = new Timer();
-        TimerTask task = new TimerTask() {
-            public void run() {
-                transition.pause();
-                setImageRight();
-                transition.playFrom(Duration.millis(durationLeftStart));
-            }
-        };
-        timer.schedule(task, durationLeftStart);
-        int count = 1;
-        //TODO: stop when end screen shown.
-        //if you go through 1000 cycles, you've been playing too long!!
-        while (count < 100) {
-            moveLeftTimer(timer, count, durationLeftStart - SCHEDULING_DELAY, transition);
-            moveRightTimer(timer, count + 1, durationLeftStart - SCHEDULING_DELAY, transition);
-            count += 2;
+    private int moveRightTile(Timer timer, int scheduleCount, int coordsCounter){
+        while (coordsCounter < gameBoard.getBoardSizeX()) {
+            TimerTask task = new TimerTask() {
+                @Override
+                public void run() {
+                    coords[0] += 1;
+                    System.out.println(coords[0]);
+                }
+            };
+            timer.schedule(task, (long) MILLS_DELAY * scheduleCount);
+            scheduleCount += 1;
+            coordsCounter += 1;
         }
+        return scheduleCount;
     }
 
-    private void startDownMovement() {
-        int durationDownStart = (gameBoard.getBoardSizeY() - coords[1]) * MILLS_DELAY;
-        SequentialTransition transition = moveStartDownTransition();
-        setImageDown();
-        transition.play();
-        Timer timer = new Timer();
-        TimerTask task = new TimerTask() {
-            public void run() {
-                transition.pause();
-                setImageUp();
-                transition.playFrom(Duration.millis(durationDownStart));
-            }
-        };
-        timer.schedule(task, durationDownStart);
-
-        int count = 1;
-        //TODO: stop when end screen shown.
-        //if you go through 1000 cycles, you've been playing too long!!
-        while (count < 100) {
-            moveDownTimer(timer, count, durationDownStart - SCHEDULING_DELAY, transition);
-            moveUpTimer(timer, count + 1, durationDownStart - SCHEDULING_DELAY, transition);
-            count += 2;
+    private int moveLeftTile(Timer timer, int scheduleCount, int coordsCounter){
+        while (coordsCounter > 0) {
+            TimerTask task = new TimerTask() {
+                @Override
+                public void run() {
+                    coords[0] -= 1;
+                    System.out.println(coords[0]);
+                }
+            };
+            timer.schedule(task, (long) MILLS_DELAY * scheduleCount);
+            scheduleCount += 1;
+            coordsCounter -= 1;
         }
-    }
-
-    private void startUpMovement() {
-        int durationUpStart = (gameBoard.getBoardSizeY() - (gameBoard.getBoardSizeY() - coords[1]) - 1) * MILLS_DELAY;
-        SequentialTransition transition = moveStartUpTransition();
-        setImageUp();
-        transition.play();
-
-        Timer timer = new Timer();
-        TimerTask task = new TimerTask() {
-            public void run() {
-                transition.pause();
-                setImageDown();
-                transition.playFrom(Duration.millis(durationUpStart));
-            }
-        };
-        timer.schedule(task, durationUpStart);
-        int count = 1;
-        //TODO: stop when end screen shown.
-        //if you go through 1000 cycles, you've been playing too long!!
-        while (count < 100) {
-            moveDownTimer(timer, count + 1, durationUpStart - SCHEDULING_DELAY, transition);
-            moveUpTimer(timer, count, durationUpStart - SCHEDULING_DELAY, transition);
-            count += 2;
-        }
-    }
-
-    private void moveRightTimer(Timer timer, int count, int startDelay, SequentialTransition transition) {
-        long delayRight = (long) gameBoard.getBoardSizeX() * MILLS_DELAY * count;
-        TimerTask taskLoop = new TimerTask() {
-            public void run() {
-                transition.pause();
-                setImageRight();
-                transition.playFrom(Duration.millis(delayRight + startDelay));
-            }
-        };
-        timer.schedule(taskLoop, startDelay + delayRight);
-    }
-
-    private void moveLeftTimer(Timer timer, int count, int startDelay, SequentialTransition transition) {
-        long delayLeft = (long) gameBoard.getBoardSizeX() * MILLS_DELAY * count;
-        TimerTask taskLoopLeft = new TimerTask() {
-            public void run() {
-                transition.pause();
-                setImageLeft();
-                transition.playFrom(Duration.millis(delayLeft + startDelay));
-            }
-        };
-        timer.schedule(taskLoopLeft, startDelay + delayLeft);
-    }
-
-    private void moveDownTimer(Timer timer, int count, int startDelay, SequentialTransition transition) {
-        long delayUp = (long) gameBoard.getBoardSizeY() * MILLS_DELAY * count;
-        TimerTask taskLoopUp = new TimerTask() {
-            public void run() {
-                transition.pause();
-                setImageDown();
-                transition.playFrom(Duration.millis(delayUp + startDelay));
-            }
-        };
-        timer.schedule(taskLoopUp, startDelay + delayUp);
-    }
-
-    private void moveUpTimer(Timer timer, int count, int startDelay, SequentialTransition transition) {
-        long delayDown = (long) gameBoard.getBoardSizeY() * MILLS_DELAY * count;
-        TimerTask taskLoopDown = new TimerTask() {
-            public void run() {
-                transition.pause();
-                setImageUp();
-                transition.playFrom(Duration.millis(delayDown + startDelay));
-            }
-        };
-        timer.schedule(taskLoopDown, startDelay + delayDown);
+        return scheduleCount;
     }
 
     private SequentialTransition moveStartRightTransition() {
@@ -446,15 +226,15 @@ public class FlyingAssassin extends NPC {
     private void setImage(String direction) {
         Image assassinImage;
         switch (direction) {
-            case "Left":
+            case "LEFT":
                 assassinImage = new Image(
                         Objects.requireNonNull(getClass().getResourceAsStream(ASSASSIN_LEFT_PATH)));
                 assassin.setImage(assassinImage);break;
-            case "Right":
+            case "RIGHT":
                 assassinImage = new Image(
                         Objects.requireNonNull(getClass().getResourceAsStream(ASSASSIN_RIGHT_PATH)));
                 assassin.setImage(assassinImage);break;
-            case "Up":
+            case "UP":
                 assassinImage = new Image(
                         Objects.requireNonNull(getClass().getResourceAsStream(ASSASSIN_UP_PATH)));
                 assassin.setImage(assassinImage);break;
