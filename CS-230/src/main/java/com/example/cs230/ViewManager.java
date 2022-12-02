@@ -314,7 +314,7 @@ public class ViewManager {
             creditTitle.setFont(Font.font("Arial", 60));
         }
         Text members = new Text("\n Ziming Dong, 2013509 \n Rex Lam, 2035415 \n Arran Pearce, 2010120 " +
-                "\n Omar Sufer, 2123959 \n Dimitrios Koumaris, 2269609 \n Vic Lismanovica, 2108255 " +
+                "\n Omar Sufer, 2123959 \n Dimitrios Koumaris, 2269608 \n Vic Lismanovica, 2108255 " +
                 "\n Chrysis Pitsillides, 2009555");
         members.setFont(Font.font("Arial", 25));
         VBox creditTit = new VBox();

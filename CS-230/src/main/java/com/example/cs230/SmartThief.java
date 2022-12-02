@@ -8,7 +8,11 @@ import java.util.Objects;
 
 public class SmartThief extends NPC {
     //no smart thief at the moment so just borrow one from flying assassin
-    private static final String SMARTTHIEF_PATH = "/Assassin/assassinDown.png";
+    //can use reptile for smart thief now.
+    private static final String SMARTTHIEF_DOWN_PATH = "/Reptile/reptileDown.png";
+    private static final String SMARTTHIEF_UP_PATH = "/Reptile/reptileUp.png";
+    private static final String SMARTTHIEF_LEFT_PATH = "/Reptile/reptileLeft.png";
+    private static final String SMARTTHIEF_RIGHT_PATH = "/Reptile/reptileRight.png";
     private ImageView sThief;
     private int[] coords;
     private StackPane sThiefStackPane;
@@ -24,7 +28,7 @@ public class SmartThief extends NPC {
     @Override
     protected void createNPC() {
         Image assassinImage = new Image(
-                Objects.requireNonNull(getClass().getResourceAsStream(SMARTTHIEF_PATH)));
+                Objects.requireNonNull(getClass().getResourceAsStream(SMARTTHIEF_DOWN_PATH)));
         sThief = new ImageView(assassinImage);
         sThief.setFitWidth(50);
         sThief.setFitHeight(50);

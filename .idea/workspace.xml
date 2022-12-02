@@ -4,13 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="70b5a907-3c6f-42e6-9f64-1720237bb43d" name="Changes" comment="Added UP/DOWN movements + some extra cases">
-      <change afterPath="$PROJECT_DIR$/CS-230/src/main/java/com/example/cs230/Lever.java" afterDir="false" />
+    <list default="true" id="70b5a907-3c6f-42e6-9f64-1720237bb43d" name="Changes" comment="The floor following thief can be drawn. The smart thief has different sprites.">
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_25_11_2022__07_37__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_25_11_2022__07_37__Changes_.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CS-230/src/main/java/com/example/cs230/GameViewManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/CS-230/src/main/java/com/example/cs230/GameViewManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CS-230/src/main/resources/Levels/Level00.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CS-230/src/main/resources/Levels/Level00.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CS-230/src/main/java/com/example/cs230/FloorFollowingThief.java" beforeDir="false" afterPath="$PROJECT_DIR$/CS-230/src/main/java/com/example/cs230/FloorFollowingThief.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CS-230/src/main/java/com/example/cs230/SmartThief.java" beforeDir="false" afterPath="$PROJECT_DIR$/CS-230/src/main/java/com/example/cs230/SmartThief.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CS-230/src/main/java/com/example/cs230/ViewManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/CS-230/src/main/java/com/example/cs230/ViewManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CS-230/target/classes/GoldKey.png" beforeDir="false" afterPath="$PROJECT_DIR$/CS-230/target/classes/GoldKey.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CS-230/target/classes/Levels/Level00.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CS-230/target/classes/Levels/Level00.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CS-230/target/classes/Reptile.png" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/CS-230/target/classes/SilverKey.png" beforeDir="false" afterPath="$PROJECT_DIR$/CS-230/target/classes/SilverKey.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CS-230/target/classes/SpriteSheet5.png" beforeDir="false" />
@@ -263,6 +263,7 @@
     <MESSAGE value="Left &amp; right movement by Omar. Commented out not working, need error checking." />
     <MESSAGE value="help and credit text done" />
     <MESSAGE value="File reader and coordinate extractor by Dimitrios." />
-    <option name="LAST_COMMIT_MESSAGE" value="File reader and coordinate extractor by Dimitrios." />
+    <MESSAGE value="The floor following thief can be drawn. The smart thief has different sprites." />
+    <option name="LAST_COMMIT_MESSAGE" value="The floor following thief can be drawn. The smart thief has different sprites." />
   </component>
 </project>
