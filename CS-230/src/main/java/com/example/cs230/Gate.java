@@ -8,7 +8,6 @@ public class Gate {
     private static final String SILVER_GATE_PATH = "silverGate.png";
     private static final int GATE_SIZE = 50;
     private ImageView goldenGate = new ImageView();
-
     private ImageView silverGate = new ImageView();
 
     public Gate(String gateType) {

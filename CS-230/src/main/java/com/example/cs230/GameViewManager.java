@@ -272,25 +272,29 @@ public class GameViewManager {
     }
 
     private void createGoldenGate() {
-        Gate gate = new Gate("GOLDEN");
-        StackPane gatePane = new StackPane();
-        gatePane.getChildren().add(gate.getGoldenGate());
-        int[] positionCoords = currentBoard.getGate1Coords();
-        int tileSize = currentBoard.getTileSize();
-        gatePane.setLayoutX((positionCoords[0] * tileSize) - (tileSize / 2.0));
-        gatePane.setLayoutY((positionCoords[1] * tileSize) - (tileSize / 2.0));
-        gamePlayPane.getChildren().add(gatePane);
+        ArrayList<Integer> positionCoords = currentBoard.getGate1Coords();
+        for (int i = 0; i < positionCoords.size(); i += 2) {
+            Gate gate = new Gate("GOLDEN");
+            StackPane gatePane = new StackPane();
+            gatePane.getChildren().add(gate.getGoldenGate());
+            int tileSize = currentBoard.getTileSize();
+            gatePane.setLayoutX((positionCoords.get(i) * tileSize) - (tileSize / 2.0));
+            gatePane.setLayoutY((positionCoords.get(i + 1) * tileSize) - (tileSize / 2.0));
+            gamePlayPane.getChildren().add(gatePane);
+        }
     }
 
     private void createSilverGate() {
-        Gate gate = new Gate("SILVER");
-        StackPane gatePane = new StackPane();
-        gatePane.getChildren().add(gate.getSilverGate());
-        int[] positionCoords = currentBoard.getGate2Coords();
-        int tileSize = currentBoard.getTileSize();
-        gatePane.setLayoutX((positionCoords[0] * tileSize) - (tileSize / 2.0));
-        gatePane.setLayoutY((positionCoords[1] * tileSize) - (tileSize / 2.0));
-        gamePlayPane.getChildren().add(gatePane);
+        ArrayList<Integer> positionCoords = currentBoard.getGate2Coords();
+        for (int i = 0; i < positionCoords.size(); i += 2) {
+            Gate gate = new Gate("SILVER");
+            StackPane gatePane = new StackPane();
+            gatePane.getChildren().add(gate.getSilverGate());
+            int tileSize = currentBoard.getTileSize();
+            gatePane.setLayoutX((positionCoords.get(i) * tileSize) - (tileSize / 2.0));
+            gatePane.setLayoutY((positionCoords.get(i + 1) * tileSize) - (tileSize / 2.0));
+            gamePlayPane.getChildren().add(gatePane);
+        }
     }
 
     private void createBoard() {
@@ -308,6 +312,7 @@ public class GameViewManager {
         Text timeCounter = new Text("Time Left: ");
         timeCounter.setFont(Font.font("Arial", 20));
         topRow.getChildren().add(timeCounter);
+
 
         Text playerScore = new Text("SCORE: " + updateScorePlayer());
         playerScore.setFont(Font.font("Arial", 20));
