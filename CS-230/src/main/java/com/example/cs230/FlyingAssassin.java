@@ -52,7 +52,7 @@ public class FlyingAssassin extends NPC {
                 //startMovementRightDirection();
                 break;
             case "LEFT":
-                //startLeftMovement();
+                startLeftMovement();
                 //startMovementLeftDirection();
                 break;
             case "DOWN":
@@ -72,12 +72,28 @@ public class FlyingAssassin extends NPC {
         Timer timer = new Timer();
 
         int scheduleCount = 0;
-        int coordsCounter = coords[0];
+        int coordsCounter = coords[0] +1;
         while (scheduleCount < 100) {
             scheduleCount = moveRightTile(timer, scheduleCount, coordsCounter);
             coordsCounter = 10;
             scheduleCount = moveLeftTile(timer, scheduleCount, coordsCounter);
             coordsCounter = 0;
+        }
+    }
+
+    private void startLeftMovement(){
+        SequentialTransition movement = moveStartLeftTransition();
+        setImage("LEFT");
+        movement.play();
+        Timer timer = new Timer();
+
+        int scheduleCount = 0;
+        int coordsCounter = coords[0];
+        while (scheduleCount < 100) {
+            scheduleCount = moveLeftTile(timer, scheduleCount, coordsCounter);
+            coordsCounter = 0;
+            scheduleCount = moveRightTile(timer, scheduleCount, coordsCounter);
+            coordsCounter = 10;
         }
     }
 
