@@ -443,6 +443,32 @@ public class FlyingAssassin extends NPC {
         return moveDown;
     }
 
+    private void setImage(String direction) {
+        Image assassinImage;
+        switch (direction) {
+            case "Left":
+                assassinImage = new Image(
+                        Objects.requireNonNull(getClass().getResourceAsStream(ASSASSIN_LEFT_PATH)));
+                assassin.setImage(assassinImage);break;
+            case "Right":
+                assassinImage = new Image(
+                        Objects.requireNonNull(getClass().getResourceAsStream(ASSASSIN_RIGHT_PATH)));
+                assassin.setImage(assassinImage);break;
+            case "Up":
+                assassinImage = new Image(
+                        Objects.requireNonNull(getClass().getResourceAsStream(ASSASSIN_UP_PATH)));
+                assassin.setImage(assassinImage);break;
+            default:
+                assassinImage = new Image(
+                        Objects.requireNonNull(getClass().getResourceAsStream(ASSASSIN_DOWN_PATH)));
+                assassin.setImage(assassinImage);
+                break;
+        }
+        assassin.setImage(assassinImage);
+        assassin.setFitWidth(50);
+        assassin.setFitHeight(50);
+    }
+
     private void setImageLeft() {
         Image assassinImage = new Image(
                 Objects.requireNonNull(getClass().getResourceAsStream(ASSASSIN_LEFT_PATH)));
