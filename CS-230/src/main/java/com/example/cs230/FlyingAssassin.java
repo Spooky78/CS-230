@@ -49,19 +49,15 @@ public class FlyingAssassin extends NPC {
         switch (startDirection) {
             case "RIGHT":
                 startRightMovement();
-                //startMovementRightDirection();
                 break;
             case "LEFT":
                 startLeftMovement();
-                //startMovementLeftDirection();
                 break;
             case "DOWN":
-                //startDownMovement();
-                //startMovementDownDirection();
+                startDownMovement();
                 break;
             case "UP":
-                //startUpMovement();
-                //startMovementUpDirection();
+                startUpMovement();
                 break;
         }
     }
@@ -75,13 +71,15 @@ public class FlyingAssassin extends NPC {
         int coordsCounter = coords[0];
         while (scheduleCount < 100) {
             scheduleCount = moveRightTile(timer, scheduleCount, coordsCounter);
-            coordsCounter = 10;
+            coordsCounter = gameBoard.getBoardSizeX();
+            setImage("LEFT");
             scheduleCount = moveLeftTile(timer, scheduleCount, coordsCounter);
             coordsCounter = 0;
+            setImage("RIGHT");
         }
     }
 
-    private void startLeftMovement(){
+    private void startLeftMovement() {
         SequentialTransition movement = moveStartLeftTransition();
         setImage("LEFT");
         movement.play();
@@ -90,16 +88,56 @@ public class FlyingAssassin extends NPC {
         int scheduleCount = 0;
         coords[0] -=1;
         int coordsCounter = coords[0];
-        System.out.println(coords[0]);
+        //System.out.println(coords[0]);
         while (scheduleCount < 100) {
             scheduleCount = moveLeftTile(timer, scheduleCount, coordsCounter);
             coordsCounter = 0;
+            setImage("RIGHT");
             scheduleCount = moveRightTile(timer, scheduleCount, coordsCounter);
-            coordsCounter = 10;
+            coordsCounter = gameBoard.getBoardSizeX();
+            setImage("LEFT");
         }
     }
 
-    private int moveRightTile(Timer timer, int scheduleCount, int coordsCounter){
+    private void startDownMovement() {
+        SequentialTransition movement = moveStartDownTransition();
+        setImage("DOWN");
+        movement.play();
+        Timer timer = new Timer();
+
+        int scheduleCount = 0;
+        int coordsCounter = coords[1];
+        while (scheduleCount < 100) {
+            scheduleCount = moveDownTile(timer, scheduleCount, coordsCounter);
+            coordsCounter = gameBoard.getBoardSizeY();
+            //setImage("UP");
+            scheduleCount = moveUpTile(timer, scheduleCount, coordsCounter);
+            coordsCounter = 0;
+            //setImage("DOWN");
+        }
+    }
+
+    private void startUpMovement() {
+        SequentialTransition movement = moveStartUpTransition();
+        setImage("UP");
+        movement.play();
+        Timer timer = new Timer();
+
+        int scheduleCount = 0;
+        coords[1] -=1;
+        int coordsCounter = coords[1];
+        //System.out.println(coords[1]);
+        while (scheduleCount < 100) {
+            scheduleCount = moveUpTile(timer, scheduleCount, coordsCounter);
+            coordsCounter = 0;
+            //setImage("DOWN");
+            scheduleCount = moveDownTile(timer, scheduleCount, coordsCounter);
+            coordsCounter = gameBoard.getBoardSizeY();
+            //setImage("UP");
+        }
+    }
+
+    private int moveRightTile(Timer timer, int scheduleCount, int coordsCounter) {
         while (coordsCounter < gameBoard.getBoardSizeX()) {
             TimerTask task = new TimerTask() {
                 @Override
@@ -115,13 +153,45 @@ public class FlyingAssassin extends NPC {
         return scheduleCount;
     }
 
-    private int moveLeftTile(Timer timer, int scheduleCount, int coordsCounter){
+    private int moveLeftTile(Timer timer, int scheduleCount, int coordsCounter) {
         while (coordsCounter > 0) {
             TimerTask task = new TimerTask() {
                 @Override
                 public void run() {
                     coords[0] -= 1;
                     System.out.println(coords[0]);
+                }
+            };
+            timer.schedule(task, (long) MILLS_DELAY * scheduleCount);
+            scheduleCount += 1;
+            coordsCounter -= 1;
+        }
+        return scheduleCount;
+    }
+
+    private int moveDownTile(Timer timer, int scheduleCount, int coordsCounter) {
+        while (coordsCounter < gameBoard.getBoardSizeY()) {
+            TimerTask task = new TimerTask() {
+                @Override
+                public void run() {
+                    coords[1] += 1;
+                    System.out.println(coords[1]);
+                }
+            };
+            timer.schedule(task, (long) MILLS_DELAY * scheduleCount);
+            scheduleCount += 1;
+            coordsCounter += 1;
+        }
+        return scheduleCount;
+    }
+
+    private int moveUpTile(Timer timer, int scheduleCount, int coordsCounter) {
+        while (coordsCounter > 0) {
+            TimerTask task = new TimerTask() {
+                @Override
+                public void run() {
+                    coords[1] -= 1;
+                    System.out.println(coords[1]);
                 }
             };
             timer.schedule(task, (long) MILLS_DELAY * scheduleCount);
@@ -262,38 +332,6 @@ public class FlyingAssassin extends NPC {
                 assassin.setImage(assassinImage);
                 break;
         }
-        assassin.setImage(assassinImage);
-        assassin.setFitWidth(50);
-        assassin.setFitHeight(50);
-    }
-
-    private void setImageLeft() {
-        Image assassinImage = new Image(
-                Objects.requireNonNull(getClass().getResourceAsStream(ASSASSIN_LEFT_PATH)));
-        assassin.setImage(assassinImage);
-        assassin.setFitWidth(50);
-        assassin.setFitHeight(50);
-    }
-
-    private void setImageRight() {
-        Image assassinImage = new Image(
-                Objects.requireNonNull(getClass().getResourceAsStream(ASSASSIN_RIGHT_PATH)));
-        assassin.setImage(assassinImage);
-        assassin.setFitWidth(50);
-        assassin.setFitHeight(50);
-    }
-
-    private void setImageUp() {
-        Image assassinImage = new Image(
-                Objects.requireNonNull(getClass().getResourceAsStream(ASSASSIN_UP_PATH)));
-        assassin.setImage(assassinImage);
-        assassin.setFitWidth(50);
-        assassin.setFitHeight(50);
-    }
-
-    private void setImageDown() {
-        Image assassinImage = new Image(
-                Objects.requireNonNull(getClass().getResourceAsStream(ASSASSIN_DOWN_PATH)));
         assassin.setImage(assassinImage);
         assassin.setFitWidth(50);
         assassin.setFitHeight(50);
