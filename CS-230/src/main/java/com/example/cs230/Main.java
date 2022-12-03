@@ -11,27 +11,56 @@ import java.io.FileNotFoundException;
  * @author Vic
  */
 
+//TODO: Player:                                     DONE
+    //TODO: Movement                                DONE
 
-//LAST WEEK TASKS
+//TODO: Assassin:
+    //TODO: Movement                    Vic         DONE
+    //TODO: Collision player            Vic         DONE
+    //TODO: Collision NPCs              Vic
 
-//TODO: crop sprites (make sure as close to image as possible).
+//TODO: Smart Thief:
+//TODO: Draw                            Rex         DONE
+//TODO: Movement
 
+//TODO: Floor Following Thief:
+//TODO: Draw                            Dimitrios   DONE
+//TODO: Movement
 
-//TODO: (for items & NPCs get it at least to draw on screen in correct position)
-//TODO: coin item (coin values 1,3,5,10)?? Omar
-//TODO: lever item chrysis
-//TODO: gate item lewis
-//TODO: clock item lewis
-//TODO: bomb item Arran
-//TODO: smart thief Rex
-//TODO: floor following thief Vic
-//TODO: draw time to screen
-//TODO: finish player movement (jump across tiles)
+//TODO: Coins:
+    //TODO: Draw                        Omar        DONE
+    //TODO: Collision                   Meeting     HALF
+    //TODO: Collision
 
-//If spare time
-//TODO: Resume and Start New Game
-//TODO: Text font, Text boxes will resize when the game window is resized
-//TODO: score
+//TODO: Lever:
+    //TODO: Draw                        Chrysis     DONE
+    //TODO: Collision player/NPC
+
+//TODO: Gate:
+    //TODO: Draw                        Lewis       DONE
+
+//TODO: Door:
+    //TODO: Draw                        Vic         DONE
+    //TODO: Collision
+
+//TODO: Clock:
+    //TODO: Draw                        Lewis       DONE
+    //TODO: Collision/Add Time
+
+//TODO: Bomb:
+    //TODO: Draw                        Arran
+    //TODO: Collision
+
+//TODO: Time
+    //TODO: Draw time to screen
+
+//TODO: Player Profiles:
+    //TODO: Write names to txt file
+    //TODO: Readin names from txt file
+    //TODO: Delete names from txt file
+
+//TODO: End Screen
+
 public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws FileNotFoundException {
