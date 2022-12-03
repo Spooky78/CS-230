@@ -59,7 +59,7 @@ import java.io.FileNotFoundException;
     //TODO: Reading names from txt file
     //TODO: Delete names from txt file
 
-//TODO: End Screen
+//TODO: End Screen                      Vic
 
 public class Main extends Application {
     @Override

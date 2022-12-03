@@ -205,8 +205,8 @@ public class GameViewManager {
         ArrayList<Integer> positionCoords = currentBoard.getGate1Coords();
         for (int i = 0; i < positionCoords.size(); i += 2) {
             int[] positionCoords2 ={positionCoords.get(i), positionCoords.get(i + 1)};
-            Gate gate = new Gate("GOLDEN",currentBoard,positionCoords2);
-            gamePlayPane.getChildren().add(gate.getSilverGatePane());
+            Gate gate = new Gate("GOLD",currentBoard,positionCoords2);
+            gamePlayPane.getChildren().add(gate.getGatePane());
         }
     }
 
@@ -215,7 +215,7 @@ public class GameViewManager {
         for (int i = 0; i < positionCoords.size(); i += 2) {
             int[] positionCoords2 ={positionCoords.get(i), positionCoords.get(i + 1)};
             Gate gate = new Gate("SILVER",currentBoard,positionCoords2);
-            gamePlayPane.getChildren().add(gate.getSilverGatePane());
+            gamePlayPane.getChildren().add(gate.getGatePane());
         }
     }
 

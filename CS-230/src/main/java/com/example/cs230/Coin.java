@@ -61,11 +61,9 @@ public class Coin {
         coin.setFitWidth(COIN_SIZE);
         coin.setFitHeight(COIN_SIZE);
         coinStackPane.getChildren().add(coin);
-        int coordX = position[0];
-        int coordY = position[1];
         int tileSize = gameBoard.getTileSize();
-        coinStackPane.setLayoutX((coordX * tileSize) - (tileSize / 2));
-        coinStackPane.setLayoutY((coordY * tileSize) - (tileSize / 2));
+        coinStackPane.setLayoutX((position[0] * tileSize) - (tileSize / 2));
+        coinStackPane.setLayoutY((position[1] * tileSize) - (tileSize / 2));
 
     }
 

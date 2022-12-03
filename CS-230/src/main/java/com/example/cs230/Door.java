@@ -1,11 +1,14 @@
 package com.example.cs230;
 
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 
+import java.util.Objects;
+
 public class Door {
 
-    private static final String DOOR_PATH = "door.png";
+    private static final String DOOR_PATH = "/Items/door.png";
     private final Board currentBoard;
     private ImageView door;
     StackPane doorPane = new StackPane();
@@ -17,7 +20,9 @@ public class Door {
 
 
     protected void createItem(int[] position) {
-        door = new ImageView(DOOR_PATH);
+        Image gateImage = new Image(
+                Objects.requireNonNull(getClass().getResourceAsStream(DOOR_PATH)));
+        door = new ImageView(gateImage);
         door.setFitWidth(50);
         door.setFitHeight(50);
         doorPane.getChildren().add(door);
