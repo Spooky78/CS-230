@@ -61,6 +61,17 @@ public class FlyingAssassin extends NPC {
                 break;
         }
     }
+
+    public boolean isCollidedPlayer(int[] playerCoords){
+        if (playerCoords[0] +1 == coords[0] && playerCoords[1] +1 == coords[1]) {
+            System.out.println("FUCK");
+            return true;
+        } else {
+            //System.out.println("SHIT");
+            return false;
+        }
+    }
+
     private void startRightMovement() {
         SequentialTransition movement = moveStartRightTransition();
         setImage("RIGHT");

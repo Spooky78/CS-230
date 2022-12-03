@@ -89,7 +89,6 @@ public class GameViewManager {
     }
 
     private void createGameLoop(){
-        //Interactions interactions = new Interactions();
         gameTimer = new AnimationTimer() {
             @Override
             public void handle(long l) {
@@ -97,6 +96,10 @@ public class GameViewManager {
                 updateTopRow();
                 for (int i=0; i<allCoins.size();i++){
                     allCoins.get(i).isCollisionPlayer(currentPlayer.getPlayerCoords());
+                }
+
+                for(int i=0; i<allAssassins.size();i++) {
+                    allAssassins.get(i).isCollidedPlayer(currentPlayer.getPlayerCoords());
                 }
             }
         };
