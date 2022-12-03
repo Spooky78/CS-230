@@ -2,6 +2,7 @@ package com.example.cs230;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 
 import java.util.Objects;
@@ -13,13 +14,15 @@ public class Coin {
     private static final String PLAT_COIN_PATH = "/Items/CoinPlat.png";
 
     private static final int BRONZE_COIN_SCORE = 1;
-    private static final int SILVER_COIN_SCORE = 5;
-    private static final int GOLD_COIN_SCORE = 10;
+    private static final int SILVER_COIN_SCORE = 3;
+    private static final int GOLD_COIN_SCORE = 5;
+    private static final int PLAT_COIN_SCORE = 10;
     private static final int COIN_SIZE = 30;
     private StackPane coinStackPane = new StackPane();
     private Board gameBoard;
     private ImageView coin = new ImageView();
     private int[] coinPosition;
+    private int coinScore;
 
     public Coin(String cointype, Board board, int[] position) {
         gameBoard = board;
@@ -34,21 +37,25 @@ public class Coin {
                 Image bronzeImage = new Image(
                         Objects.requireNonNull(getClass().getResourceAsStream(BRONZE_COIN_PATH)));
                 coin = new ImageView(bronzeImage);
+                coinScore = BRONZE_COIN_SCORE;
                 break;
             case "SILVER":
                 Image silverImage = new Image(
                         Objects.requireNonNull(getClass().getResourceAsStream(SILVER_COIN_PATH)));
                 coin = new ImageView(silverImage);
+                coinScore = SILVER_COIN_SCORE;
                 break;
             case "GOLD":
                 Image goldImage = new Image(
                         Objects.requireNonNull(getClass().getResourceAsStream(GOLD_COIN_PATH)));
                 coin = new ImageView(goldImage);
+                coinScore = GOLD_COIN_SCORE;
                 break;
             case "PLAT":
                 Image platImage = new Image(
                         Objects.requireNonNull(getClass().getResourceAsStream(PLAT_COIN_PATH)));
                 coin = new ImageView(platImage);
+                coinScore = PLAT_COIN_SCORE;
                 break;
         }
         coin.setFitWidth(COIN_SIZE);
@@ -62,11 +69,10 @@ public class Coin {
 
     }
 
-
     public boolean isCollisionPlayer(int[] playerCoords) {
         //System.out.println(playerCoords[0] + " "+playerCoords[1]);
         if (playerCoords[0] +1 == coinPosition[0] && playerCoords[1] +1 == coinPosition[1]) {
-            System.out.println("FU");
+            //System.out.println("FU");
             return true;
         } else {
             //System.out.println("SHIT");
@@ -77,5 +83,6 @@ public class Coin {
     public StackPane getCoinStackPane() {return coinStackPane;}
 
     public ImageView getCoin() {return coin;}
+    public int getCoinScore() {return coinScore;}
 
 }

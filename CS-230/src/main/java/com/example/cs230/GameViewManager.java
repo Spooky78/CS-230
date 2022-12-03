@@ -59,7 +59,6 @@ public class GameViewManager {
         this.menuStage = stage;
         this.menuStage.hide();
         createBackground();
-        updateTopRow();
         createBoard();
         createDoor();
         createClock();
@@ -71,6 +70,7 @@ public class GameViewManager {
         createPlayer(chosenNinja);
         createSmartThief();
 
+        updateTopRow();
         createGameLoop();
         topRow.setAlignment(Pos.CENTER_RIGHT);
         gamePane.getChildren().add(topRow);
@@ -93,9 +93,19 @@ public class GameViewManager {
             @Override
             public void handle(long l) {
                 updateTopRow();
+                ArrayList<Coin> coinsToRemove = new ArrayList<>();
                 for (int i=0; i<allCoins.size();i++){
-                    allCoins.get(i).isCollisionPlayer(currentPlayer.getPlayerCoords());
+                    if (allCoins.get(i).isCollisionPlayer(currentPlayer.getPlayerCoords())){
+                        System.out.println("TEST");
+                        gamePlayPane.getChildren().remove(allCoins.get(i).getCoinStackPane());
+                        coinsToRemove.add(allCoins.get(i));
+                        currentPlayer.setScore(currentPlayer.getScore() + allCoins.get(i).getCoinScore());
+                    }
                 }
+                for (int i=0; i < coinsToRemove.size(); i++){
+                    allCoins.remove(coinsToRemove.get(i));
+                }
+                coinsToRemove.clear();
 
                 for(int i=0; i<allAssassins.size();i++) {
                     allAssassins.get(i).collidedPlayer(currentPlayer.getPlayerCoords(), currentPlayerStack, gamePlayPane);
@@ -174,30 +184,6 @@ public class GameViewManager {
     }
 
 
-
-    private void createBoard() {
-        currentBoard = new Board(0, GAME_WIDTH);
-        gamePlayPane.setLeft(currentBoard.getBoardPane());
-    }
-
-    /**
-     * Creates top row of game window, which contains time left.
-     */
-    private void updateTopRow() {
-        topRow.setPadding(new Insets(20));
-        topRow.setSpacing(20);
-        topRow.getChildren().clear();
-        Text timeCounter = new Text("Time Left: ");
-        timeCounter.setFont(Font.font("Arial", 20));
-        topRow.getChildren().add(timeCounter);
-
-        Text playerScore = new Text("SCORE: " + updateScorePlayer());
-        playerScore.setFont(Font.font("Arial", 20));
-        topRow.getChildren().add(playerScore);
-
-
-    }
-
     private void createDoor() {
         StackPane doorPane = new StackPane();
         int[] positionCoords = currentBoard.getDoorCoords();
@@ -232,8 +218,31 @@ public class GameViewManager {
         }
     }
 
+    private void createBoard() {
+        currentBoard = new Board(0, GAME_WIDTH);
+        gamePlayPane.setLeft(currentBoard.getBoardPane());
+    }
+
+    /**
+     * Creates top row of game window, which contains time left.
+     */
+    private void updateTopRow() {
+        topRow.setPadding(new Insets(20));
+        topRow.setSpacing(20);
+        topRow.getChildren().clear();
+        Text timeCounter = new Text("Time Left: ");
+        timeCounter.setFont(Font.font("Arial", 20));
+        topRow.getChildren().add(timeCounter);
+
+        Text playerScore = new Text("SCORE: " + currentPlayer.getScore());
+        playerScore.setFont(Font.font("Arial", 20));
+        topRow.getChildren().add(playerScore);
+
+
+    }
+
     private int updateScorePlayer(){
-        //
+
         return playerScore;
     }
 

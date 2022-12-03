@@ -19,6 +19,7 @@ public class Player {
     private Board board;
     private Ninja chosenNinja;
     private int[] playerCoords = new int[2];
+    private int score = 0;
 
     public Player(Scene gameScene, Ninja ninja, Board currentBoard) {
         this.movementOffset = 10;
@@ -170,10 +171,17 @@ public class Player {
     public void setMovementOffset(int newOffset) {
         movementOffset = newOffset;
     }
+    public void setScore(int newScore) {
+        score = newScore;
+    }
 
     public StackPane getPlayerStack() {
         return playerStackPane;
     }
 
     public int[] getPlayerCoords(){return playerCoords;}
+
+    public int getScore() {
+        return score;
+    }
 }

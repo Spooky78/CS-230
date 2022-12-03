@@ -29,8 +29,8 @@ import java.io.FileNotFoundException;
 
 //TODO: Coins:
     //TODO: Draw                        Omar        DONE
-    //TODO: Collision                   Meeting     HALF
-    //TODO: Collision
+    //TODO: Collision Player            Meeting     DONE
+    //TODO: Collision NPC
 
 //TODO: Lever:
     //TODO: Draw                        Chrysis     DONE
