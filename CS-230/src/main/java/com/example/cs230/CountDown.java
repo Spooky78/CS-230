@@ -1,42 +1,27 @@
 package com.example.cs230;
 
-public class CountDown implements Runnable {
+public class CountDown {
     private final Object lock = new Object();
-    private Thread thread;
     private int countdown;
-    private boolean runningCountdown = true;
     private boolean pause = false;
 
     public CountDown(int times) {
         countdown = times;
     }
 
-    public void run() {
-        while (runningCountdown && countdown > 0) {
-            if (!pause) {
-                pause();
-            } else {
-                resume();
-            }
+    public void runTime() {
+        while (countdown > 0) {
+            System.out.println(countdown);
             try {
                 Thread.sleep(1000);
-            } catch (Exception ignored) {
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
             countdown--;
-            if (countdown < 0) {
-                runningCountdown = false;
-                System.out.println("You have lost");
-                System.exit(0);
-            }
         }
-    }
-
-    public void start() {
-        run();
-        if (thread == null) {
-            thread = new Thread(this);
-            thread.start();
-        }
+        System.out.println(countdown);
+        System.out.println("You've lost");
+        System.exit(0);
     }
 
     public void pause() {
@@ -54,5 +39,16 @@ public class CountDown implements Runnable {
         synchronized (lock) {
             lock.notify();
         }
+    }
+
+    public String toString() {
+        return "" + countdown + "s";
+    }
+}
+
+class CountDownTester {
+    public static void main(String[] args) {
+        CountDown countDown = new CountDown(10);
+        countDown.runTime();
     }
 }

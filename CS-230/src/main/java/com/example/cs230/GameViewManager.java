@@ -40,6 +40,7 @@ public class GameViewManager {
     private ArrayList<StackPane> allAssassinStacks = new ArrayList<>();
     private ArrayList<FlyingAssassin> allAssassins = new ArrayList<>();
     private ArrayList<Coin> allCoins = new ArrayList<>();
+    private ArrayList<Clock> allClock = new ArrayList<>();
     private int playerScore = 0;
 
     /**
@@ -94,22 +95,36 @@ public class GameViewManager {
             public void handle(long l) {
                 updateTopRow();
                 ArrayList<Coin> coinsToRemove = new ArrayList<>();
-                for (int i=0; i<allCoins.size();i++){
-                    if (allCoins.get(i).isCollisionPlayer(currentPlayer.getPlayerCoords())){
+                ArrayList<Clock> clockToRemove = new ArrayList<>();
+                for (Coin allCoin : allCoins) {
+                    if (allCoin.isCollisionPlayer(currentPlayer.getPlayerCoords())) {
                         System.out.println("TEST");
-                        gamePlayPane.getChildren().remove(allCoins.get(i).getCoinStackPane());
-                        coinsToRemove.add(allCoins.get(i));
-                        currentPlayer.setScore(currentPlayer.getScore() + allCoins.get(i).getCoinScore());
+                        gamePlayPane.getChildren().remove(allCoin.getCoinStackPane());
+                        coinsToRemove.add(allCoin);
+                        currentPlayer.setScore(currentPlayer.getScore() + allCoin.getCoinScore());
                     }
                 }
-                for (int i=0; i < coinsToRemove.size(); i++){
-                    allCoins.remove(coinsToRemove.get(i));
+                for (Coin coin : coinsToRemove) {
+                    allCoins.remove(coin);
                 }
                 coinsToRemove.clear();
 
                 for(int i=0; i<allAssassins.size();i++) {
                     allAssassins.get(i).collidedPlayer(currentPlayer.getPlayerCoords(), currentPlayerStack, gamePlayPane);
                 }
+
+                for (Clock allClocks : allClock) {
+                    if (allClocks.isCollectedByPlayer(currentPlayer.getPlayerCoords())) {
+                        System.out.println("OK");
+                        gamePlayPane.getChildren().remove(allClocks.getClockPane());
+                        clockToRemove.add(allClocks);
+                        currentPlayer.setTime(currentPlayer.getTime() + allClocks.getCurrentTime());
+                    }
+                }
+                for (Clock clock : clockToRemove) {
+                    allClock.remove(clock);
+                }
+                clockToRemove.clear();
             }
         };
         gameTimer.start();
@@ -197,6 +212,7 @@ public class GameViewManager {
         for (int i = 0; i < positionCoords.size(); i += 2) {
             int[] positionCoords2 ={positionCoords.get(i), positionCoords.get(i + 1)};
             Clock clock = new Clock(currentBoard,positionCoords2);
+            allClock.add(clock);
             gamePlayPane.getChildren().add(clock.getClockPane());
         }
     }
@@ -231,15 +247,13 @@ public class GameViewManager {
         topRow.setPadding(new Insets(20));
         topRow.setSpacing(20);
         topRow.getChildren().clear();
-        Text timeCounter = new Text("Time Left: ");
+        Text timeCounter = new Text("Time Left: " + currentPlayer.getTime());
         timeCounter.setFont(Font.font("Arial", 20));
         topRow.getChildren().add(timeCounter);
 
         Text playerScore = new Text("SCORE: " + currentPlayer.getScore());
         playerScore.setFont(Font.font("Arial", 20));
         topRow.getChildren().add(playerScore);
-
-
     }
 
     private int updateScorePlayer(){

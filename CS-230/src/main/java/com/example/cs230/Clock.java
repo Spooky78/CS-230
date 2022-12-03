@@ -9,13 +9,18 @@ import java.util.Objects;
 public class Clock {
     private static final String CLOCK_PATH = "/Items/clock.png";
     private static final int CLOCK_SIZE = 40;
+    private static int TIME_CHANGE = 5;
     private ImageView clock = new ImageView();
     StackPane clockPane = new StackPane();
     private Board currentBoard;
+    private int[] clockPosition;
+    private int currentTime;
 
     public Clock(Board currentBoard, int[] position) {
         this.currentBoard = currentBoard;
+        clockPosition = position;
         createAClock(position);
+        currentTime = TIME_CHANGE;
     }
 
     protected void createAClock(int[] position) {
@@ -30,12 +35,12 @@ public class Clock {
         clockPane.setLayoutY((position[1] * tileSize) - (tileSize / 2.0));
     }
 
-    protected void addingTime() {
-
+    public int getCurrentTime() {
+        return currentTime;
     }
 
-    protected void reducingTime() {
-
+    public boolean isCollectedByPlayer(int[] playerCoords) {
+        return playerCoords[0] + 1 == clockPosition[0] && playerCoords[1] + 1 == clockPosition[1];
     }
 
     public StackPane getClockPane() {
