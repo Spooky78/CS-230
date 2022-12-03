@@ -99,7 +99,7 @@ public class GameViewManager {
                 }
 
                 for(int i=0; i<allAssassins.size();i++) {
-                    allAssassins.get(i).isCollidedPlayer(currentPlayer.getPlayerCoords());
+                    allAssassins.get(i).isCollidedPlayer(currentPlayer.getPlayerCoords(), currentPlayerStack, gamePlayPane);
                 }
             }
         };

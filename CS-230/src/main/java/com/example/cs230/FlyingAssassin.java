@@ -8,6 +8,7 @@ import javafx.animation.SequentialTransition;
 import javafx.animation.TranslateTransition;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
 
@@ -62,9 +63,10 @@ public class FlyingAssassin extends NPC {
         }
     }
 
-    public boolean isCollidedPlayer(int[] playerCoords){
+    public boolean isCollidedPlayer(int[] playerCoords, StackPane player, BorderPane pane){
         if (playerCoords[0] +1 == coords[0] && playerCoords[1] +1 == coords[1]) {
-            System.out.println("FUCK");
+            //System.out.println("FUCK");
+            pane.getChildren().remove(player);
             return true;
         } else {
             //System.out.println("SHIT");
@@ -81,10 +83,10 @@ public class FlyingAssassin extends NPC {
         int scheduleCount = 0;
         int coordsCounter = coords[0];
         while (scheduleCount < 100) {
-            scheduleCount = moveRightTile(timer, scheduleCount, coordsCounter);
+            scheduleCount = moveRightTile(timer, scheduleCount, coordsCounter, movement);
             coordsCounter = gameBoard.getBoardSizeX();
             setImage("LEFT");
-            scheduleCount = moveLeftTile(timer, scheduleCount, coordsCounter);
+            scheduleCount = moveLeftTile(timer, scheduleCount, coordsCounter, movement);
             coordsCounter = 0;
             setImage("RIGHT");
         }
@@ -101,10 +103,10 @@ public class FlyingAssassin extends NPC {
         int coordsCounter = coords[0];
         //System.out.println(coords[0]);
         while (scheduleCount < 100) {
-            scheduleCount = moveLeftTile(timer, scheduleCount, coordsCounter);
+            scheduleCount = moveLeftTile(timer, scheduleCount, coordsCounter, movement);
             coordsCounter = 0;
             setImage("RIGHT");
-            scheduleCount = moveRightTile(timer, scheduleCount, coordsCounter);
+            scheduleCount = moveRightTile(timer, scheduleCount, coordsCounter, movement);
             coordsCounter = gameBoard.getBoardSizeX();
             setImage("LEFT");
         }
@@ -119,10 +121,10 @@ public class FlyingAssassin extends NPC {
         int scheduleCount = 0;
         int coordsCounter = coords[1];
         while (scheduleCount < 100) {
-            scheduleCount = moveDownTile(timer, scheduleCount, coordsCounter);
+            scheduleCount = moveDownTile(timer, scheduleCount, coordsCounter, movement);
             coordsCounter = gameBoard.getBoardSizeY();
             //setImage("UP");
-            scheduleCount = moveUpTile(timer, scheduleCount, coordsCounter);
+            scheduleCount = moveUpTile(timer, scheduleCount, coordsCounter, movement);
             coordsCounter = 0;
             //setImage("DOWN");
         }
@@ -139,22 +141,25 @@ public class FlyingAssassin extends NPC {
         int coordsCounter = coords[1];
         //System.out.println(coords[1]);
         while (scheduleCount < 100) {
-            scheduleCount = moveUpTile(timer, scheduleCount, coordsCounter);
+            scheduleCount = moveUpTile(timer, scheduleCount, coordsCounter, movement);
             coordsCounter = 0;
             //setImage("DOWN");
-            scheduleCount = moveDownTile(timer, scheduleCount, coordsCounter);
+            scheduleCount = moveDownTile(timer, scheduleCount, coordsCounter, movement);
             coordsCounter = gameBoard.getBoardSizeY();
             //setImage("UP");
         }
     }
 
-    private int moveRightTile(Timer timer, int scheduleCount, int coordsCounter) {
+    private int moveRightTile(Timer timer, int scheduleCount, int coordsCounter, SequentialTransition animation) {
         while (coordsCounter < gameBoard.getBoardSizeX()) {
+            int finalScheduleCount = scheduleCount;
             TimerTask task = new TimerTask() {
                 @Override
                 public void run() {
+                    animation.pause();
+                    setImage("RIGHT");
                     coords[0] += 1;
-                    System.out.println(coords[0]);
+                    animation.playFrom(String.valueOf((long) MILLS_DELAY * finalScheduleCount));
                 }
             };
             timer.schedule(task, (long) MILLS_DELAY * scheduleCount);
@@ -164,13 +169,16 @@ public class FlyingAssassin extends NPC {
         return scheduleCount;
     }
 
-    private int moveLeftTile(Timer timer, int scheduleCount, int coordsCounter) {
+    private int moveLeftTile(Timer timer, int scheduleCount, int coordsCounter, SequentialTransition animation) {
         while (coordsCounter > 0) {
+            int finalScheduleCount = scheduleCount;
             TimerTask task = new TimerTask() {
                 @Override
                 public void run() {
+                    animation.pause();
+                    setImage("LEFT");
                     coords[0] -= 1;
-                    System.out.println(coords[0]);
+                    animation.playFrom(String.valueOf((long) MILLS_DELAY * finalScheduleCount));
                 }
             };
             timer.schedule(task, (long) MILLS_DELAY * scheduleCount);
@@ -180,13 +188,16 @@ public class FlyingAssassin extends NPC {
         return scheduleCount;
     }
 
-    private int moveDownTile(Timer timer, int scheduleCount, int coordsCounter) {
+    private int moveDownTile(Timer timer, int scheduleCount, int coordsCounter, SequentialTransition animation) {
         while (coordsCounter < gameBoard.getBoardSizeY()) {
+            int finalScheduleCount = scheduleCount;
             TimerTask task = new TimerTask() {
                 @Override
                 public void run() {
+                    animation.pause();
+                    setImage("DOWN");
                     coords[1] += 1;
-                    System.out.println(coords[1]);
+                    animation.playFrom(String.valueOf(MILLS_DELAY* finalScheduleCount));
                 }
             };
             timer.schedule(task, (long) MILLS_DELAY * scheduleCount);
@@ -196,13 +207,16 @@ public class FlyingAssassin extends NPC {
         return scheduleCount;
     }
 
-    private int moveUpTile(Timer timer, int scheduleCount, int coordsCounter) {
+    private int moveUpTile(Timer timer, int scheduleCount, int coordsCounter, SequentialTransition animation) {
         while (coordsCounter > 0) {
+            int finalScheduleCount = scheduleCount;
             TimerTask task = new TimerTask() {
                 @Override
                 public void run() {
+                    animation.pause();
+                    setImage("UP");
                     coords[1] -= 1;
-                    System.out.println(coords[1]);
+                    animation.playFrom(String.valueOf(MILLS_DELAY* finalScheduleCount));
                 }
             };
             timer.schedule(task, (long) MILLS_DELAY * scheduleCount);
