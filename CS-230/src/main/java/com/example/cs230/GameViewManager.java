@@ -175,10 +175,11 @@ public class GameViewManager {
     }
 
     private void createLever() {
+        ArrayList<String> colours = currentBoard.getLeverColours();
         ArrayList<Integer> positionCoords = currentBoard.getLeverCoords();
-        for (int i = 0; i < positionCoords.size(); i += 2) {
-            int[] currentLeverCoords = {positionCoords.get(i), positionCoords.get(i+1)};
-            Lever lever = new Lever(currentBoard, currentLeverCoords);
+        for (int i = 0; i < colours.size(); i += 1) {
+            int[] currentLeverCoords = {positionCoords.get(i * 2), positionCoords.get(i * 2 + 1)};
+            Lever lever = new Lever(currentBoard, currentLeverCoords, colours.get(i));
             gamePlayPane.getChildren().add(lever.getLeverPane());
         }
     }

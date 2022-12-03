@@ -1,13 +1,13 @@
 package com.example.cs230;
 
 public enum Ninja {
-    BLUE("ninjaBlue.png", "/Players/BlueNinjaPlayerDown.png", "/Players/BlueNinjaPlayerUp.png",
+    BLUE("/Players/ninjaBlue.png", "/Players/BlueNinjaPlayerDown.png", "/Players/BlueNinjaPlayerUp.png",
             "/Players/BlueNinjaPlayerRight.png", "/Players/BlueNinjaPlayerLeft.png"),
-    GREY("ninjaGrey.png", "/Players/GreyNinjaPlayerDown.png", "/Players/GreyNinjaPlayerUp.png",
+    GREY("/Players/ninjaGrey.png", "/Players/GreyNinjaPlayerDown.png", "/Players/GreyNinjaPlayerUp.png",
             "/Players/GreyNinjaPlayerRight.png", "/Players/GreyNinjaPlayerLeft.png"),
-    BLACK("ninjaBlack.png", "/Players/BlackNinjaPlayerDown.png", "/Players/BlackNinjaPlayerUp.png",
+    BLACK("/Players/ninjaBlack.png", "/Players/BlackNinjaPlayerDown.png", "/Players/BlackNinjaPlayerUp.png",
             "/Players/BlackNinjaPlayerRight.png", "/Players/BlackNinjaPlayerLeft.png"),
-    RED("ninjaRed.png", "/Players/RedNinjaPlayerDown.png", "/Players/RedNinjaPlayerUp.png",
+    RED("/Players/ninjaRed.png", "/Players/RedNinjaPlayerDown.png", "/Players/RedNinjaPlayerUp.png",
             "/Players/RedNinjaPlayerRight.png", "/Players/RedNinjaPlayerLeft.png");
 
     private final String urlNinjaFaceSet;

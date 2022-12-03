@@ -56,7 +56,7 @@ import java.io.FileNotFoundException;
 
 //TODO: Player Profiles:
     //TODO: Write names to txt file
-    //TODO: Readin names from txt file
+    //TODO: Reading names from txt file
     //TODO: Delete names from txt file
 
 //TODO: End Screen

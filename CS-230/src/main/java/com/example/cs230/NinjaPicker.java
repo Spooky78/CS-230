@@ -5,6 +5,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 
+import java.util.Objects;
+
 /**
  * Responsible for the picking player character.
  */
@@ -18,7 +20,9 @@ public class NinjaPicker extends VBox {
 
     public NinjaPicker(Ninja ninjaCharacter) {
         boxImage = new ImageView(BOX_NOT_CHOSEN);
-        ImageView shipImage = new ImageView(ninjaCharacter.getNinjaFaceset());
+        Image image = new Image(
+                Objects.requireNonNull(getClass().getResourceAsStream(ninjaCharacter.getNinjaFaceset())));
+        ImageView shipImage = new ImageView(image);
         this.ninja = ninjaCharacter;
         isBoxChosen = false;
         this.setAlignment(Pos.CENTER);
