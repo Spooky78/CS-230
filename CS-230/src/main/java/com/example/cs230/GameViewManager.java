@@ -92,14 +92,13 @@ public class GameViewManager {
         gameTimer = new AnimationTimer() {
             @Override
             public void handle(long l) {
-                //assassinKill();
                 updateTopRow();
                 for (int i=0; i<allCoins.size();i++){
                     allCoins.get(i).isCollisionPlayer(currentPlayer.getPlayerCoords());
                 }
 
                 for(int i=0; i<allAssassins.size();i++) {
-                    allAssassins.get(i).isCollidedPlayer(currentPlayer.getPlayerCoords(), currentPlayerStack, gamePlayPane);
+                    allAssassins.get(i).collidedPlayer(currentPlayer.getPlayerCoords(), currentPlayerStack, gamePlayPane);
                 }
             }
         };

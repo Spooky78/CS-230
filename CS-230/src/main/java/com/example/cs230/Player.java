@@ -1,9 +1,12 @@
 package com.example.cs230;
 
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.StackPane;
+
+import java.util.Objects;
 
 public class Player {
     private boolean isLeftKeyPressed = false;
@@ -14,17 +17,21 @@ public class Player {
     private StackPane playerStackPane = new StackPane();
     private ImageView player;
     private Board board;
+    private Ninja chosenNinja;
     private int[] playerCoords = new int[2];
 
-    public Player(Scene gameScene, Ninja chosenNinja, Board currentBoard) {
+    public Player(Scene gameScene, Ninja ninja, Board currentBoard) {
         this.movementOffset = 10;
         board = currentBoard;
+        this.chosenNinja = ninja;
         createKeyListeners(gameScene);
         createPlayer(chosenNinja);
     }
 
     private void createPlayer(Ninja chosenNinja) {
-        player = new ImageView(chosenNinja.getUrlNinja());
+        Image playerImage = new Image(
+                Objects.requireNonNull(getClass().getResourceAsStream(chosenNinja.getUrlNinjaDown())));
+        player = new ImageView(playerImage);
         player.setFitWidth(50);
         player.setFitHeight(50);
 
@@ -63,6 +70,7 @@ public class Player {
     private void movePlayer() {
         if (isLeftKeyPressed && (!isRightKeyPressed && !isDownKeyPressed && !isUpKeyPressed)) {
             try {
+                setImage("LEFT");
                 boolean canMove = board.canMove(playerCoords, new int[]{playerCoords[0] - 1, playerCoords[1]});
                 int currentOffset = 1;
                 while (!canMove) {
@@ -80,6 +88,7 @@ public class Player {
 
         if (isRightKeyPressed && (!isLeftKeyPressed && !isDownKeyPressed && !isUpKeyPressed)) {
             try {
+                setImage("RIGHT");
                 boolean canMove = board.canMove(playerCoords, new int[]{playerCoords[0] + 1, playerCoords[1]});
                 int currentOffset = 1;
                 while (!canMove) {
@@ -99,6 +108,7 @@ public class Player {
 
         if (isUpKeyPressed && (!isLeftKeyPressed && !isDownKeyPressed && !isRightKeyPressed)) {
             try {
+                setImage("UP");
                 boolean canMove = board.canMove(playerCoords, new int[]{playerCoords[0], playerCoords[1] - 1});
                 int currentOffset = 1;
                 while (!canMove) {
@@ -116,6 +126,7 @@ public class Player {
 
         if (isDownKeyPressed && (!isLeftKeyPressed && !isRightKeyPressed && !isUpKeyPressed)) {
             try {
+                setImage("DOWN");
                 boolean canMove = board.canMove(playerCoords, new int[]{playerCoords[0], playerCoords[1] + 1});
                 int currentOffset = 1;
                 while (!canMove) {
@@ -131,6 +142,29 @@ public class Player {
             }
         }
 
+    }
+
+    private void setImage(String direction) {
+        playerStackPane.getChildren().remove(player);
+        Image playerImage;
+        switch (direction) {
+            case "LEFT":
+                playerImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream(chosenNinja.getUrlNinjaLeft())));
+                break;
+            case "RIGHT":
+                playerImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream(chosenNinja.getUrlNinjaRight())));
+                break;
+            case "UP":
+                playerImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream(chosenNinja.getUrlNinjaUp())));
+                break;
+            default:
+                playerImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream(chosenNinja.getUrlNinjaDown())));
+                break;
+        }
+        player = new ImageView(playerImage);
+        player.setFitWidth(50);
+        player.setFitHeight(50);
+        playerStackPane.getChildren().add(player);
     }
 
     public void setMovementOffset(int newOffset) {

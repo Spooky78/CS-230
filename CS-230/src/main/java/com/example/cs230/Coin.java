@@ -1,13 +1,16 @@
 package com.example.cs230;
 
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 
+import java.util.Objects;
+
 public class Coin {
-    private static final String BRONZE_COIN_PATH = "CoinBronze.png";
-    private static final String SILVER_COIN_PATH = "CoinSilver.png";
-    private static final String GOLD_COIN_PATH = "CoinGold.png";
-    private static final String PLAT_COIN_PATH = "CoinPlat.png";
+    private static final String BRONZE_COIN_PATH = "/Items/CoinBronze.png";
+    private static final String SILVER_COIN_PATH = "/Items/CoinSilver.png";
+    private static final String GOLD_COIN_PATH = "/Items/CoinGold.png";
+    private static final String PLAT_COIN_PATH = "/Items/CoinPlat.png";
 
     private static final int BRONZE_COIN_SCORE = 1;
     private static final int SILVER_COIN_SCORE = 5;
@@ -28,16 +31,24 @@ public class Coin {
 
         switch (cointype) {
             case "BRONZE":
-                coin = new ImageView(BRONZE_COIN_PATH);
+                Image bronzeImage = new Image(
+                        Objects.requireNonNull(getClass().getResourceAsStream(BRONZE_COIN_PATH)));
+                coin = new ImageView(bronzeImage);
                 break;
             case "SILVER":
-                coin = new ImageView(SILVER_COIN_PATH);
+                Image silverImage = new Image(
+                        Objects.requireNonNull(getClass().getResourceAsStream(SILVER_COIN_PATH)));
+                coin = new ImageView(silverImage);
                 break;
             case "GOLD":
-                coin = new ImageView(GOLD_COIN_PATH);
+                Image goldImage = new Image(
+                        Objects.requireNonNull(getClass().getResourceAsStream(GOLD_COIN_PATH)));
+                coin = new ImageView(goldImage);
                 break;
             case "PLAT":
-                coin = new ImageView(PLAT_COIN_PATH);
+                Image platImage = new Image(
+                        Objects.requireNonNull(getClass().getResourceAsStream(PLAT_COIN_PATH)));
+                coin = new ImageView(platImage);
                 break;
         }
         coin.setFitWidth(COIN_SIZE);

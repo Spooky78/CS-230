@@ -63,14 +63,9 @@ public class FlyingAssassin extends NPC {
         }
     }
 
-    public boolean isCollidedPlayer(int[] playerCoords, StackPane player, BorderPane pane){
-        if (playerCoords[0] +1 == coords[0] && playerCoords[1] +1 == coords[1]) {
-            //System.out.println("FUCK");
-            pane.getChildren().remove(player);
-            return true;
-        } else {
-            //System.out.println("SHIT");
-            return false;
+    public void collidedPlayer(int[] killableCoords, StackPane killable, BorderPane pane){
+        if (killableCoords[0] +1 == coords[0] && killableCoords[1] +1 == coords[1]) {
+            pane.getChildren().remove(killable);
         }
     }
 
@@ -342,19 +337,18 @@ public class FlyingAssassin extends NPC {
             case "LEFT":
                 assassinImage = new Image(
                         Objects.requireNonNull(getClass().getResourceAsStream(ASSASSIN_LEFT_PATH)));
-                assassin.setImage(assassinImage);break;
+                break;
             case "RIGHT":
                 assassinImage = new Image(
                         Objects.requireNonNull(getClass().getResourceAsStream(ASSASSIN_RIGHT_PATH)));
-                assassin.setImage(assassinImage);break;
+                break;
             case "UP":
                 assassinImage = new Image(
                         Objects.requireNonNull(getClass().getResourceAsStream(ASSASSIN_UP_PATH)));
-                assassin.setImage(assassinImage);break;
+                break;
             default:
                 assassinImage = new Image(
                         Objects.requireNonNull(getClass().getResourceAsStream(ASSASSIN_DOWN_PATH)));
-                assassin.setImage(assassinImage);
                 break;
         }
         assassin.setImage(assassinImage);

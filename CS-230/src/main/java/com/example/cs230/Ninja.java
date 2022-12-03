@@ -1,24 +1,39 @@
 package com.example.cs230;
 
 public enum Ninja {
-    BLUE("ninjaBlue.png", "player.png"),
-    GREY("ninjaGrey.png", "GreyNinjaPlayer.png"),
-    BLACK("ninjaBlack.png", "BlackNinjaPlayer.png"),
-    RED("ninjaRed.png", "RedNinjaPlayer.png");
+    BLUE("ninjaBlue.png", "/Players/BlueNinjaPlayerDown.png", "/Players/BlueNinjaPlayerUp.png",
+            "/Players/BlueNinjaPlayerRight.png", "/Players/BlueNinjaPlayerLeft.png"),
+    GREY("ninjaGrey.png", "/Players/GreyNinjaPlayerDown.png", "/Players/GreyNinjaPlayerUp.png",
+            "/Players/GreyNinjaPlayerRight.png", "/Players/GreyNinjaPlayerLeft.png"),
+    BLACK("ninjaBlack.png", "/Players/BlackNinjaPlayerDown.png", "/Players/BlackNinjaPlayerUp.png",
+            "/Players/BlackNinjaPlayerRight.png", "/Players/BlackNinjaPlayerLeft.png"),
+    RED("ninjaRed.png", "/Players/RedNinjaPlayerDown.png", "/Players/RedNinjaPlayerUp.png",
+            "/Players/RedNinjaPlayerRight.png", "/Players/RedNinjaPlayerLeft.png");
 
     private final String urlNinjaFaceSet;
-    private final String urlNinja;
+    private final String urlNinjaDown;
+    private final String urlNinjaUp;
+    private final String urlNinjaRight;
+    private final String urlNinjaLeft;
 
-    Ninja(String urlNinjaFaceSet, String urlNinja) {
+
+    Ninja(String urlNinjaFaceSet, String urlNinjaDown, String urlNinjaUp, String urlNinjaRight, String urlNinjaLeft) {
         this.urlNinjaFaceSet = urlNinjaFaceSet;
-        this.urlNinja = urlNinja;
+        this.urlNinjaDown = urlNinjaDown;
+        this.urlNinjaUp = urlNinjaUp;
+        this.urlNinjaRight = urlNinjaRight;
+        this.urlNinjaLeft = urlNinjaLeft;
     }
 
     public String getNinjaFaceset() {
         return urlNinjaFaceSet;
     }
 
-    public String getUrlNinja() {
-        return urlNinja;
+    public String getUrlNinjaDown() {
+        return urlNinjaDown;
     }
+
+    public String getUrlNinjaUp() {return  urlNinjaUp;}
+    public String getUrlNinjaRight() {return urlNinjaRight;}
+    public String getUrlNinjaLeft() {return urlNinjaLeft;}
 }
