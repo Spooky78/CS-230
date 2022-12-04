@@ -2,6 +2,8 @@ package com.example.cs230;
 
 import java.util.ArrayList;
 import java.util.Stack;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javafx.animation.AnimationTimer;
 import javafx.geometry.Insets;
@@ -42,8 +44,7 @@ public class GameViewManager {
     private ArrayList<FlyingAssassin> allAssassins = new ArrayList<>();
     private ArrayList<Coin> allCoins = new ArrayList<>();
     private ArrayList<Clock> allClock = new ArrayList<>();
-    private int playerScore = 0;
-    private boolean isGameOver = false;
+    private int timeLeft;
     private GameOverViewManager gameOver;
 
     /**
@@ -79,6 +80,7 @@ public class GameViewManager {
 
         updateTopRow();
         createGameLoop();
+        startTimer();
         topRow.setAlignment(Pos.CENTER_RIGHT);
         gamePane.getChildren().add(topRow);
         gamePane.getChildren().add(gamePlayPane);
@@ -185,8 +187,8 @@ public class GameViewManager {
             int[] currentCoords = {coords.get(i * 2), coords.get(i * 2 + 1)};
             StackPane currentStackPane = new StackPane();
             FlyingAssassin currentAssassin = new FlyingAssassin(currentBoard, currentCoords, currentStackPane, gameOver, i);
-            //allAssassinStacks.add(currentStackPane);
-            //allAssassins.add(currentAssassin);
+            allAssassinStacks.add(currentStackPane);
+            allAssassins.add(currentAssassin);
             currentStackPane.getChildren().add(currentAssassin.getAssassin());
             gamePlayPane.getChildren().add(currentStackPane);
         }
@@ -272,7 +274,7 @@ public class GameViewManager {
         topRow.setPadding(new Insets(20));
         topRow.setSpacing(20);
         topRow.getChildren().clear();
-        Text timeCounter = new Text("Time Left: " + currentPlayer.getTime());
+        Text timeCounter = new Text("Time Left: " + timeLeft);
         timeCounter.setFont(Font.font("Arial", 20));
         topRow.getChildren().add(timeCounter);
 
@@ -283,9 +285,20 @@ public class GameViewManager {
 
     }
 
-    private int updateScorePlayer(){
-
-        return playerScore;
+    private void startTimer() {
+        timeLeft = currentBoard.getSeconds();
+        System.out.println(timeLeft);
+        Timer timer = new Timer();
+        for (int i = 0; i < 75; i++) {
+            TimerTask countDown1Sec = new TimerTask() {
+                @Override
+                public void run() {
+                    System.out.println(timeLeft);
+                    timeLeft -=1;
+                }
+            };
+            timer.schedule(countDown1Sec, (long) 1000*i);
+        }
     }
 
     /**

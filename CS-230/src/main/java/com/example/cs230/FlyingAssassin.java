@@ -131,10 +131,10 @@ public class FlyingAssassin extends NPC {
         while (scheduleCount < 100) {
             scheduleCount = moveDownTile(timer, scheduleCount, coordsCounter, movement);
             coordsCounter = gameBoard.getBoardSizeY();
-            //setImage("UP");
+            setImage("UP");
             scheduleCount = moveUpTile(timer, scheduleCount, coordsCounter, movement);
             coordsCounter = 0;
-            //setImage("DOWN");
+            setImage("DOWN");
         }
     }
 
@@ -151,10 +151,10 @@ public class FlyingAssassin extends NPC {
         while (scheduleCount < 100) {
             scheduleCount = moveUpTile(timer, scheduleCount, coordsCounter, movement);
             coordsCounter = 0;
-            //setImage("DOWN");
+            setImage("DOWN");
             scheduleCount = moveDownTile(timer, scheduleCount, coordsCounter, movement);
             coordsCounter = gameBoard.getBoardSizeY();
-            //setImage("UP");
+            setImage("UP");
         }
     }
 
