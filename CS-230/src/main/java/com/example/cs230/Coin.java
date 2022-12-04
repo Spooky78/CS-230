@@ -68,12 +68,9 @@ public class Coin {
     }
 
     public boolean isCollisionPlayer(int[] playerCoords) {
-        //System.out.println(playerCoords[0] + " "+playerCoords[1]);
         if (playerCoords[0] +1 == coinPosition[0] && playerCoords[1] +1 == coinPosition[1]) {
-            //System.out.println("FU");
             return true;
         } else {
-            //System.out.println("SHIT");
             return false;
         }
     }

@@ -27,12 +27,12 @@ import javafx.stage.Stage;
  * @author Everybody
  */
 public class ViewManager {
-    private static final int WIDTH = 1000;
-    private static final int HEIGHT = 800;
+    private static final int WIDTH = 800;
+    private static final int HEIGHT = 780;
     private static final String BACKGROUND_PATH = "treesBackground.png";
     private final BorderPane mainPane;
     private final Scene mainScene;
-    private final Stage mainStage;
+    private Stage mainStage;
     private static ArrayList<PlayerProfile> allProfiles = new ArrayList<>();
     private static VBox buttonPane;
     private static VBox logoPane;
@@ -53,13 +53,25 @@ public class ViewManager {
     public ViewManager() throws FileNotFoundException {
         mainPane = new BorderPane();
         mainScene = new Scene(mainPane, WIDTH, HEIGHT);
-        mainStage = new Stage();
+        //mainStage = new Stage();
+        //mainStage.setScene(mainScene);
+//        createSubScenes();
+//        createBackground();
+//        createLogo();
+//        createMsgOfTheDay();
+//        createButtons();
+    }
+
+    public void createNewMenu(Stage stage) throws FileNotFoundException {
+        this.mainStage = stage;
+        this.mainStage.hide();
         mainStage.setScene(mainScene);
         createSubScenes();
         createBackground();
         createLogo();
         createMsgOfTheDay();
         createButtons();
+        mainStage.show();
     }
 
     /**
@@ -67,7 +79,7 @@ public class ViewManager {
      */
     private void createSubScenes() throws FileNotFoundException {
         subscenePane = new StackPane();
-        subscenePane.setPadding(new Insets(50));
+        subscenePane.setPadding(new Insets(20));
         creditsSubScene = new MainMenuSubScene();
         helpSubScene = new MainMenuSubScene();
         scoreSubScene = new MainMenuSubScene();
@@ -371,10 +383,10 @@ public class ViewManager {
         items.setUnderline(true);
         thieves.setFont(Font.font("Arial", FontWeight.BOLD, FontPosture.ITALIC, 15));
         thieves.setUnderline(true);
-        objInstruction.setWrappingWidth(400);
-        playInstruction.setWrappingWidth(400);
-        itemsInstruction.setWrappingWidth(400);
-        thievesInstruction.setWrappingWidth(400);
+        objInstruction.setWrappingWidth(450);
+        playInstruction.setWrappingWidth(450);
+        itemsInstruction.setWrappingWidth(450);
+        thievesInstruction.setWrappingWidth(450);
         instructions.getChildren().add(objective);
         instructions.getChildren().add(objInstruction);
         instructions.getChildren().add(how2Play);
@@ -404,7 +416,7 @@ public class ViewManager {
         buttonPane = new VBox();
         buttonPane.setSpacing(20);
         buttonPane.setAlignment(Pos.CENTER_LEFT);
-        buttonPane.setPadding(new Insets(0, 20, 20, 60));
+        buttonPane.setPadding(new Insets(0, 20, 20, 20));
         mainPane.setLeft(buttonPane);
         createStartButton();
         createScoreButton();

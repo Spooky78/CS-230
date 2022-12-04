@@ -10,6 +10,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class FlyingAssassin extends NPC {
@@ -23,12 +24,15 @@ public class FlyingAssassin extends NPC {
     private Board gameBoard;
     private StackPane assassinStackPane;
     private int[] coords;
+    private boolean isKilled = false;
+    private GameOverViewManager gameOver;
 
     //private StackPane assassinStack;
-    public FlyingAssassin(Board board, int[] startCoords, StackPane stackPane) {
+    public FlyingAssassin(Board board, int[] startCoords, StackPane stackPane, GameOverViewManager gameOver) {
         gameBoard = board;
         coords = startCoords;
         assassinStackPane = stackPane;
+        this.gameOver = gameOver;
         createNPC();
         move();
     }
@@ -63,9 +67,16 @@ public class FlyingAssassin extends NPC {
         }
     }
 
-    public void collidedPlayer(int[] killableCoords, StackPane killable, BorderPane pane){
-        if (killableCoords[0] +1 == coords[0] && killableCoords[1] +1 == coords[1]) {
+    public boolean collidedPlayer(int[] killableCoords, StackPane killable, BorderPane pane, Stage gameStage){
+        if (killableCoords[0] +1 == coords[0] && killableCoords[1] +1 == coords[1] && !isKilled) {
             pane.getChildren().remove(killable);
+            System.out.println("DIE");
+            isKilled = true;
+//            GameOverViewManager gameOver = new GameOverViewManager();
+            gameOver.createGameOver(gameStage);
+            return true;
+        } else {
+            return false;
         }
     }
 

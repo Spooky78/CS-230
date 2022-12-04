@@ -61,12 +61,20 @@ import java.io.FileNotFoundException;
 
 //TODO: End Screen                      Vic
 
+//TODO: Save File (maybe do together near end of week):
+    //TODO: write save txt file
+    //TODO: read save txt file
+
+
 public class Main extends Application {
+    //private Stage mainStage;
     @Override
     public void start(Stage primaryStage) throws FileNotFoundException {
+        final Stage mainStage = new Stage();
         ViewManager manager = new ViewManager();
-        primaryStage = manager.getMainStage();
-        primaryStage.show();
+        manager.createNewMenu(mainStage);
+        //primaryStage = manager.getMainStage();
+        //primaryStage.show();
     }
 
     /**
@@ -77,4 +85,5 @@ public class Main extends Application {
     public static void main(String[] args) {
         launch(args);
     }
+
 }
