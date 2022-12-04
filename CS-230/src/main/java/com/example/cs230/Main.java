@@ -25,7 +25,7 @@ import java.io.FileNotFoundException;
 
 //TODO: Floor Following Thief:
 //TODO: Draw                            Dimitrios   DONE
-//TODO: Movement
+//TODO: Movement                        Vic
 
 //TODO: Coins:
     //TODO: Draw                        Omar        DONE
@@ -59,7 +59,7 @@ import java.io.FileNotFoundException;
     //TODO: Reading names from txt file
     //TODO: Delete names from txt file
 
-//TODO: End Screen                      Vic
+//TODO: End Screen                      Vic         DONE
 
 //TODO: Save File (maybe do together near end of week):
     //TODO: write save txt file

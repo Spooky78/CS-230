@@ -26,12 +26,14 @@ public class FlyingAssassin extends NPC {
     private int[] coords;
     private boolean isKilled = false;
     private GameOverViewManager gameOver;
+    private final int indexID;
 
     //private StackPane assassinStack;
-    public FlyingAssassin(Board board, int[] startCoords, StackPane stackPane, GameOverViewManager gameOver) {
+    public FlyingAssassin(Board board, int[] startCoords, StackPane stackPane, GameOverViewManager gameOver, int indexID) {
         gameBoard = board;
         coords = startCoords;
         assassinStackPane = stackPane;
+        this.indexID = indexID;
         this.gameOver = gameOver;
         createNPC();
         move();
@@ -50,7 +52,7 @@ public class FlyingAssassin extends NPC {
     }
 
     protected void move() {
-        String startDirection = gameBoard.getAssassinStartDirection();
+        String startDirection = gameBoard.getAssassinStartDirection().get(indexID);
         switch (startDirection) {
             case "RIGHT":
                 startRightMovement();

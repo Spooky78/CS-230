@@ -1,6 +1,7 @@
 package com.example.cs230;
 
 import java.util.ArrayList;
+import java.util.Stack;
 
 import javafx.animation.AnimationTimer;
 import javafx.geometry.Insets;
@@ -71,6 +72,7 @@ public class GameViewManager {
         createLever();
         createCoins();
         createAssassin();
+        createFloorFollowingThief();
         createPlayer(chosenNinja);
         createSmartThief();
 
@@ -100,7 +102,6 @@ public class GameViewManager {
                 ArrayList<Coin> coinsToRemove = new ArrayList<>();
                 for (int i=0; i<allCoins.size();i++){
                     if (allCoins.get(i).isCollisionPlayer(currentPlayer.getPlayerCoords())){
-                        System.out.println("TEST");
                         gamePlayPane.getChildren().remove(allCoins.get(i).getCoinStackPane());
                         coinsToRemove.add(allCoins.get(i));
                         currentPlayer.setScore(currentPlayer.getScore() + allCoins.get(i).getCoinScore());
@@ -149,17 +150,28 @@ public class GameViewManager {
         }
     }
 
+    private void createFloorFollowingThief() {
+        ArrayList<String> colours = currentBoard.getFloorFollowingThiefColours();
+        ArrayList<Integer> coords = currentBoard.getFloorFollowingThiefStartCoords();
+        for (int i = 0; i <colours.size(); i++){
+            int[] currentCoords = {coords.get(i * 2), coords.get(i * 2 +1 )};
+            StackPane ffThiefStack = new StackPane();
+            FloorFollowingThief currentThief = new FloorFollowingThief(currentBoard, currentCoords, ffThiefStack, i);
+            ffThiefStack.getChildren().add(currentThief.getffThief());
+            gamePlayPane.getChildren().add(ffThiefStack);
+        }
+    }
+
     private void createAssassin() {
+        ArrayList<String> direction = currentBoard.getAssassinStartDirection();
         ArrayList<Integer> coords = currentBoard.getAssassinStartCoords();
         //Each iteration of loop creates new assassin.
-        for (int i = 0; i < coords.size(); i += 2) {
-            int[] currentCoords = new int[2];
-            currentCoords[0] = coords.get(i);
-            currentCoords[1] = coords.get(i + 1);
+        for (int i = 0; i < direction.size(); i += 1) {
+            int[] currentCoords = {coords.get(i * 2), coords.get(i * 2 + 1)};
             StackPane currentStackPane = new StackPane();
-            FlyingAssassin currentAssassin = new FlyingAssassin(currentBoard, currentCoords, currentStackPane, gameOver);
-            allAssassinStacks.add(currentStackPane);
-            allAssassins.add(currentAssassin);
+            FlyingAssassin currentAssassin = new FlyingAssassin(currentBoard, currentCoords, currentStackPane, gameOver, i);
+            //allAssassinStacks.add(currentStackPane);
+            //allAssassins.add(currentAssassin);
             currentStackPane.getChildren().add(currentAssassin.getAssassin());
             gamePlayPane.getChildren().add(currentStackPane);
         }

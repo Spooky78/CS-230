@@ -8,10 +8,10 @@ import javafx.scene.layout.StackPane;
 
 public class FloorFollowingThief extends Thief {
 
-    private static final String FFTHIEF_DOWN_PATH = "/Skeleton/skeletonDown.png";
-    private static final String FFTHIEF_UP_PATH = "/Skeleton/skeletonUp.png";
-    private static final String FFTHIEF_LEFT_PATH = "/Skeleton/skeletonLeft.png";
-    private static final String FFTHIEF_RIGHT_PATH = "/Skeleton/skeletonRight.png";
+    private static final String FFTHIEF_DOWN_PATH = "/Skeleton/SkeletonDown.png";
+    private static final String FFTHIEF_UP_PATH = "/Skeleton/keletonUp.png";
+    private static final String FFTHIEF_LEFT_PATH = "/Skeleton/SkeletonLeft.png";
+    private static final String FFTHIEF_RIGHT_PATH = "/Skeleton/SkeletonRight.png";
     private static final int MILLS_DELAY = 500;
     private static final int SCHEDULING_DELAY = 200;
     private ImageView ffThief;
@@ -27,7 +27,7 @@ public class FloorFollowingThief extends Thief {
      * @author Dimitrios
      */
     //private StackPane ffThiefStack;
-    public FloorFollowingThief (Board board, int[] startCoords, StackPane stackPane) {
+    public FloorFollowingThief (Board board, int[] startCoords, StackPane stackPane, int indexID) {
         gameBoard = board;
         coords = startCoords;
         ffThiefStackPane = stackPane;
