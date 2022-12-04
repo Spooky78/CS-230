@@ -70,6 +70,7 @@ public class GameViewManager {
         createSilverGate();
         createLever();
         createCoins();
+        createBomb();
         createAssassin();
         createPlayer(chosenNinja);
         createSmartThief();
@@ -220,6 +221,15 @@ public class GameViewManager {
             int[] positionCoords2 ={positionCoords.get(i), positionCoords.get(i + 1)};
             Gate gate = new Gate("SILVER",currentBoard,positionCoords2);
             gamePlayPane.getChildren().add(gate.getGatePane());
+        }
+    }
+
+    private void createBomb() {
+        ArrayList<Integer> positionCoords = currentBoard.getBombCoords();
+        for (int i = 0; i < positionCoords.size(); i += 2) {
+           int[] positionCoords2 ={positionCoords.get(i), positionCoords.get(i + 1)};
+            Bomb bomb = new Bomb(currentBoard,positionCoords2);
+            gamePlayPane.getChildren().add(bomb.getBombPane());
         }
     }
 
