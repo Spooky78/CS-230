@@ -1,6 +1,7 @@
 package com.example.cs230;
 
 import java.util.ArrayList;
+import java.util.Stack;
 
 import javafx.animation.AnimationTimer;
 import javafx.geometry.Insets;
@@ -72,6 +73,7 @@ public class GameViewManager {
         createCoins();
         createBomb();
         createAssassin();
+        createFloorFollowingThief();
         createPlayer(chosenNinja);
         createSmartThief();
 
@@ -99,9 +101,9 @@ public class GameViewManager {
             public void handle(long l) {
                 updateTopRow();
                 ArrayList<Coin> coinsToRemove = new ArrayList<>();
+                ArrayList<Clock> clockToRemove = new ArrayList<>();
                 for (int i=0; i<allCoins.size();i++){
                     if (allCoins.get(i).isCollisionPlayer(currentPlayer.getPlayerCoords())){
-                        System.out.println("TEST");
                         gamePlayPane.getChildren().remove(allCoins.get(i).getCoinStackPane());
                         coinsToRemove.add(allCoins.get(i));
                         currentPlayer.setScore(currentPlayer.getScore() + allCoins.get(i).getCoinScore());
@@ -115,6 +117,19 @@ public class GameViewManager {
                 for(int i=0; i<allAssassins.size();i++) {
                     allAssassins.get(i).collidedPlayer(currentPlayer.getPlayerCoords(), currentPlayerStack, gamePlayPane, gameStage, currentPlayer);
                 }
+
+                for (Clock allClocks : allClock) {
+                    if (allClocks.isCollectedByPlayer(currentPlayer.getPlayerCoords())) {
+                        System.out.println("OK");
+                        gamePlayPane.getChildren().remove(allClocks.getClockPane());
+                        clockToRemove.add(allClocks);
+                        currentPlayer.setTime(currentPlayer.getTime() + allClocks.getCurrentTime());
+                    }
+                }
+                for (Clock clock : clockToRemove) {
+                    allClock.remove(clock);
+                }
+                clockToRemove.clear();
             }
         };
         gameTimer.start();
@@ -150,17 +165,28 @@ public class GameViewManager {
         }
     }
 
+    private void createFloorFollowingThief() {
+        ArrayList<String> colours = currentBoard.getFloorFollowingThiefColours();
+        ArrayList<Integer> coords = currentBoard.getFloorFollowingThiefStartCoords();
+        for (int i = 0; i <colours.size(); i++){
+            int[] currentCoords = {coords.get(i * 2), coords.get(i * 2 +1 )};
+            StackPane ffThiefStack = new StackPane();
+            FloorFollowingThief currentThief = new FloorFollowingThief(currentBoard, currentCoords, ffThiefStack, i);
+            ffThiefStack.getChildren().add(currentThief.getffThief());
+            gamePlayPane.getChildren().add(ffThiefStack);
+        }
+    }
+
     private void createAssassin() {
+        ArrayList<String> direction = currentBoard.getAssassinStartDirection();
         ArrayList<Integer> coords = currentBoard.getAssassinStartCoords();
         //Each iteration of loop creates new assassin.
-        for (int i = 0; i < coords.size(); i += 2) {
-            int[] currentCoords = new int[2];
-            currentCoords[0] = coords.get(i);
-            currentCoords[1] = coords.get(i + 1);
+        for (int i = 0; i < direction.size(); i += 1) {
+            int[] currentCoords = {coords.get(i * 2), coords.get(i * 2 + 1)};
             StackPane currentStackPane = new StackPane();
-            FlyingAssassin currentAssassin = new FlyingAssassin(currentBoard, currentCoords, currentStackPane, gameOver);
-            allAssassinStacks.add(currentStackPane);
-            allAssassins.add(currentAssassin);
+            FlyingAssassin currentAssassin = new FlyingAssassin(currentBoard, currentCoords, currentStackPane, gameOver, i);
+            //allAssassinStacks.add(currentStackPane);
+            //allAssassins.add(currentAssassin);
             currentStackPane.getChildren().add(currentAssassin.getAssassin());
             gamePlayPane.getChildren().add(currentStackPane);
         }
@@ -202,6 +228,7 @@ public class GameViewManager {
         for (int i = 0; i < positionCoords.size(); i += 2) {
             int[] positionCoords2 ={positionCoords.get(i), positionCoords.get(i + 1)};
             Clock clock = new Clock(currentBoard,positionCoords2);
+            allClock.add(clock);
             gamePlayPane.getChildren().add(clock.getClockPane());
         }
     }
@@ -245,7 +272,7 @@ public class GameViewManager {
         topRow.setPadding(new Insets(20));
         topRow.setSpacing(20);
         topRow.getChildren().clear();
-        Text timeCounter = new Text("Time Left: ");
+        Text timeCounter = new Text("Time Left: " + currentPlayer.getTime());
         timeCounter.setFont(Font.font("Arial", 20));
         topRow.getChildren().add(timeCounter);
 

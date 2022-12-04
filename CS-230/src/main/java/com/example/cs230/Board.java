@@ -19,8 +19,12 @@ public class Board {
     private int boardSizeY;
     private ArrayList<Tile> boardTile = new ArrayList<>();
     private int[] playerStartCoords = new int[2];
+    private ArrayList<String> assassinStartDirection = new ArrayList<>();
     private ArrayList<Integer> assassinStartCoords = new ArrayList<>();
     private ArrayList<Integer> smartThiefStartCoords = new ArrayList<>();
+    private ArrayList<String> floorFollowingThiefColours = new ArrayList<>();
+    private ArrayList<String> floorFollowingThiefDirectionStart = new ArrayList<>();
+    private ArrayList<String> floorFollowingThiefDirectionTurn = new ArrayList<>();
     private ArrayList<Integer> floorFollowingThiefStartCoords = new ArrayList<>();
     private ArrayList<String> coinColor = new ArrayList<>();
 
@@ -34,7 +38,6 @@ public class Board {
     private ArrayList<Integer> gate1Coords = new ArrayList<>();
     private ArrayList<Integer> gate2Coords = new ArrayList<>();
     private ArrayList<Integer> bombCoords = new ArrayList<>();
-    private String assassinStartDirection;
     private int seconds;
 
     public Board(int currentLevel, int screenWidth) {
@@ -69,6 +72,7 @@ public class Board {
                     break;
                 case "FFTHIEF":
                     ffThiefCoordsReader(params);
+                    break;
                 case "COIN":
                     coinCoordsReader(params);
                     //run 11 times
@@ -115,7 +119,7 @@ public class Board {
     }
 
     private void assassinCoordsReader(String[] params) {
-        assassinStartDirection = params[1];
+        assassinStartDirection.add(params[1]);
         assassinStartCoords.add(Integer.parseInt(params[2]));
         assassinStartCoords.add(Integer.parseInt(params[3]));
 
@@ -128,8 +132,11 @@ public class Board {
     }
 
     private void ffThiefCoordsReader(String[] params) {
-        floorFollowingThiefStartCoords.add(Integer.parseInt(params[1]));
-        floorFollowingThiefStartCoords.add(Integer.parseInt(params[2]));
+        floorFollowingThiefColours.add(params[1]);
+        floorFollowingThiefDirectionStart.add(params[2]);
+        floorFollowingThiefDirectionTurn.add(params[3]);
+        floorFollowingThiefStartCoords.add(Integer.parseInt(params[4]));
+        floorFollowingThiefStartCoords.add(Integer.parseInt(params[5]));
     }
 
     private void coinCoordsReader(String[] params) {
@@ -225,7 +232,7 @@ public class Board {
         return playerStartCoords;
     }
 
-    public String getAssassinStartDirection() {
+    public ArrayList<String> getAssassinStartDirection() {
         return assassinStartDirection;
     }
 
@@ -236,6 +243,7 @@ public class Board {
     public ArrayList<Integer> getSmartThiefStartCoords() {
         return smartThiefStartCoords;
     }
+    public ArrayList<String> getFloorFollowingThiefColours() {return floorFollowingThiefColours;}
 
     public ArrayList<Integer> getFloorFollowingThiefStartCoords() {
         return floorFollowingThiefStartCoords;
