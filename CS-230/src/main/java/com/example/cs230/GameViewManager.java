@@ -29,6 +29,7 @@ import javafx.stage.Stage;
 public class GameViewManager {
     private static final int GAME_WIDTH = 600;
     private static final int GAME_HEIGHT = 600;
+    private static final int SECOND = 1000;
     private VBox gamePane;
     private HBox topRow = new HBox();
 
@@ -101,31 +102,29 @@ public class GameViewManager {
         gameTimer = new AnimationTimer() {
             @Override
             public void handle(long l) {
+                for (FlyingAssassin allAssassin : allAssassins) {
+                    allAssassin.collidedPlayer(currentPlayer.getPlayerCoords(), currentPlayerStack, gamePlayPane, gameStage, currentPlayer);
+                }
                 updateTopRow();
                 ArrayList<Coin> coinsToRemove = new ArrayList<>();
                 ArrayList<Clock> clockToRemove = new ArrayList<>();
-                for (int i=0; i<allCoins.size();i++){
-                    if (allCoins.get(i).isCollisionPlayer(currentPlayer.getPlayerCoords())){
-                        gamePlayPane.getChildren().remove(allCoins.get(i).getCoinStackPane());
-                        coinsToRemove.add(allCoins.get(i));
-                        currentPlayer.setScore(currentPlayer.getScore() + allCoins.get(i).getCoinScore());
+                for (Coin allCoin : allCoins) {
+                    if (allCoin.isCollisionPlayer(currentPlayer.getPlayerCoords())) {
+                        gamePlayPane.getChildren().remove(allCoin.getCoinStackPane());
+                        coinsToRemove.add(allCoin);
+                        currentPlayer.setScore(currentPlayer.getScore() + allCoin.getCoinScore());
                     }
                 }
-                for (int i=0; i < coinsToRemove.size(); i++){
-                    allCoins.remove(coinsToRemove.get(i));
+                for (Coin coin : coinsToRemove) {
+                    allCoins.remove(coin);
                 }
                 coinsToRemove.clear();
 
-                for(int i=0; i<allAssassins.size();i++) {
-                    allAssassins.get(i).collidedPlayer(currentPlayer.getPlayerCoords(), currentPlayerStack, gamePlayPane, gameStage, currentPlayer);
-                }
-
                 for (Clock allClocks : allClock) {
                     if (allClocks.isCollectedByPlayer(currentPlayer.getPlayerCoords())) {
-                        System.out.println("OK");
                         gamePlayPane.getChildren().remove(allClocks.getClockPane());
                         clockToRemove.add(allClocks);
-                        currentPlayer.setTime(currentPlayer.getTime() + allClocks.getCurrentTime());
+                        timeLeft += 5;
                     }
                 }
                 for (Clock clock : clockToRemove) {
@@ -287,17 +286,16 @@ public class GameViewManager {
 
     private void startTimer() {
         timeLeft = currentBoard.getSeconds();
-        System.out.println(timeLeft);
+         int timeForGame = timeLeft;
         Timer timer = new Timer();
-        for (int i = 0; i < 75; i++) {
+        for (int i = 0; i < timeForGame; i++) {
             TimerTask countDown1Sec = new TimerTask() {
                 @Override
                 public void run() {
-                    System.out.println(timeLeft);
                     timeLeft -=1;
                 }
             };
-            timer.schedule(countDown1Sec, (long) 1000*i);
+            timer.schedule(countDown1Sec, (long) SECOND * i);
         }
     }
 
