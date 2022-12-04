@@ -55,11 +55,11 @@ public class GameOverViewManager {
      *
      * @param stage       The previous stage (usually menuStage).
      */
-    public void createGameOver(Stage stage) {
+    public void createGameOver(Stage stage, Player player) {
         this.menuOverStage = stage;
         this.menuOverStage.hide();
         createBackground();
-        createText();
+        createText(player);
         HBox buttonsPane = new HBox();
         buttonsPane.setSpacing(20);
         buttonsPane.setAlignment(Pos.CENTER);
@@ -68,10 +68,11 @@ public class GameOverViewManager {
 
         gameOverPane.getChildren().add(buttonsPane);
         gameOverPane.setAlignment(Pos.CENTER);
+        gameOverPane.setSpacing(20);
         gameOverStage.show();
     }
 
-    private void createText() {
+    private void createText(Player player) {
         Text gameOverText = new Text("GAME OVER!");
         try {
             gameOverText.setFont(Font.loadFont(new FileInputStream(FONT_PATH), FONT_SIZE));
@@ -79,6 +80,13 @@ public class GameOverViewManager {
             gameOverText.setFont(Font.font("Verdana", FONT_SIZE));
         }
         gameOverPane.getChildren().add(gameOverText);
+        Text  scoreText = new Text("Your Score:" + player.getScore());
+        try {
+            scoreText.setFont(Font.loadFont(new FileInputStream(FONT_PATH), 30));
+        } catch (FileNotFoundException e) {
+            scoreText.setFont(Font.font("Verdana", 30));
+        }
+        gameOverPane.getChildren().add(scoreText);
     }
 
     private void createMainMenuButton(HBox buttonsPane) {

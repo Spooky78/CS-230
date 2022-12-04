@@ -112,7 +112,7 @@ public class GameViewManager {
                 coinsToRemove.clear();
 
                 for(int i=0; i<allAssassins.size();i++) {
-                    allAssassins.get(i).collidedPlayer(currentPlayer.getPlayerCoords(), currentPlayerStack, gamePlayPane, gameStage);
+                    allAssassins.get(i).collidedPlayer(currentPlayer.getPlayerCoords(), currentPlayerStack, gamePlayPane, gameStage, currentPlayer);
                 }
             }
         };

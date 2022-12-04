@@ -67,13 +67,13 @@ public class FlyingAssassin extends NPC {
         }
     }
 
-    public boolean collidedPlayer(int[] killableCoords, StackPane killable, BorderPane pane, Stage gameStage){
+    public boolean collidedPlayer(int[] killableCoords, StackPane killable, BorderPane pane, Stage gameStage, Player player){
         if (killableCoords[0] +1 == coords[0] && killableCoords[1] +1 == coords[1] && !isKilled) {
             pane.getChildren().remove(killable);
             System.out.println("DIE");
             isKilled = true;
 //            GameOverViewManager gameOver = new GameOverViewManager();
-            gameOver.createGameOver(gameStage);
+            gameOver.createGameOver(gameStage, player);
             return true;
         } else {
             return false;
