@@ -46,6 +46,7 @@ public class GameViewManager {
     private ArrayList<Coin> allCoins = new ArrayList<>();
     private ArrayList<Clock> allClock = new ArrayList<>();
     private int timeLeft;
+    private boolean isLose = false;
     private GameOverViewManager gameOver;
 
     /**
@@ -102,6 +103,10 @@ public class GameViewManager {
         gameTimer = new AnimationTimer() {
             @Override
             public void handle(long l) {
+                if (timeLeft == 0 && !isLose) {
+                    gameOver.createGameOver(gameStage, currentPlayer);
+                    isLose = true;
+                }
                 for (FlyingAssassin allAssassin : allAssassins) {
                     allAssassin.collidedPlayer(currentPlayer.getPlayerCoords(), currentPlayerStack, gamePlayPane, gameStage, currentPlayer);
                 }

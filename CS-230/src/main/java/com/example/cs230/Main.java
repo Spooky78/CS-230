@@ -41,7 +41,7 @@ import java.io.FileNotFoundException;
 
 //TODO: Door:
     //TODO: Draw                        Vic         DONE
-    //TODO: Collision
+    //TODO: Collision/next level        Omar
 
 //TODO: Clock:
     //TODO: Draw                        Lewis       DONE
@@ -52,12 +52,15 @@ import java.io.FileNotFoundException;
     //TODO: Collision
 
 //TODO: Time
-    //TODO: Draw time to screen
+    //TODO: Draw time to screen         Vic         DONE
 
 //TODO: Player Profiles:
     //TODO: Write names to txt file
     //TODO: Reading names from txt file
     //TODO: Delete names from txt file
+
+//TODO: Scoreboard:
+    //TODO: compare and edit scoreboard
 
 //TODO: End Screen                      Vic         DONE
 
