@@ -244,6 +244,8 @@ public class Board {
         return smartThiefStartCoords;
     }
     public ArrayList<String> getFloorFollowingThiefColours() {return floorFollowingThiefColours;}
+    public ArrayList<String> getFloorFollowingThiefDirectionStart() {return floorFollowingThiefDirectionStart;}
+    public ArrayList<String> getFloorFollowingThiefDirectionTurn() {return floorFollowingThiefDirectionTurn;}
 
     public ArrayList<Integer> getFloorFollowingThiefStartCoords() {
         return floorFollowingThiefStartCoords;

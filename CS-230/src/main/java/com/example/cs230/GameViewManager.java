@@ -223,7 +223,6 @@ public class GameViewManager {
 
 
     private void createDoor() {
-        StackPane doorPane = new StackPane();
         int[] positionCoords = currentBoard.getDoorCoords();
         Door door = new Door(currentBoard, positionCoords);
         gamePlayPane.getChildren().add(door.getDoorPane());
