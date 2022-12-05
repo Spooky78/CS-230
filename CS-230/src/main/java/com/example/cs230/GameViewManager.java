@@ -146,6 +146,7 @@ public class GameViewManager {
                         gamePlayPane.getChildren().remove(door.getDoorPane());
                         currentLevel += 1;
                         System.out.println(currentLevel);
+                        nextLevel();
                     }
 
 
@@ -287,9 +288,10 @@ public class GameViewManager {
     }
 
     private void nextLevel(){
-        String inoutLevel = "level0" + currentLevel +".txt";
+        String inputLevel = "level0" + currentLevel +".txt";
         gamePlayPane.getChildren().remove(currentBoard);
-        //currentBoard = new Board();
+        currentBoard = new Board(inputLevel,GAME_WIDTH);
+        gamePlayPane.getChildren().add(currentBoard.getBoardPane());
 
     }
 
