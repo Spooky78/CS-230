@@ -109,7 +109,10 @@ public class GameViewManager {
             @Override
             public void handle(long l) {
                 for (FlyingAssassin allAssassin : allAssassins) {
-                    allAssassin.collidedPlayer(currentPlayer.getPlayerCoords(), currentPlayerStack, gamePlayPane, gameStage, currentPlayer);
+                    if (allAssassin.collidedPlayer(currentPlayer.getPlayerCoords(), currentPlayerStack, gamePlayPane, gameStage, currentPlayer)) {
+                        gameOver.createGameOver(gameStage, currentPlayer);
+                        allAssassin.setLose();
+                    }
                 }
                 updateTopRow();
                 ArrayList<Coin> coinsToRemove = new ArrayList<>();
@@ -203,7 +206,7 @@ public class GameViewManager {
         for (int i = 0; i < direction.size(); i += 1) {
             int[] currentCoords = {coords.get(i * 2), coords.get(i * 2 + 1)};
             StackPane currentStackPane = new StackPane();
-            FlyingAssassin currentAssassin = new FlyingAssassin(currentBoard, currentCoords, currentStackPane, gameOver, i);
+            FlyingAssassin currentAssassin = new FlyingAssassin(currentBoard, currentCoords, currentStackPane, this, i);
             allAssassinStacks.add(currentStackPane);
             allAssassins.add(currentAssassin);
             currentStackPane.getChildren().add(currentAssassin.getAssassin());
@@ -317,6 +320,10 @@ public class GameViewManager {
         Background background = new Background(new BackgroundFill(
                 Color.SANDYBROWN, CornerRadii.EMPTY, Insets.EMPTY));
         gamePane.setBackground(background);
+    }
+
+    public boolean isLose() {
+        return isLose;
     }
 
 }

@@ -20,12 +20,14 @@ import java.io.FileNotFoundException;
     //TODO: Collision NPCs              Vic
 
 //TODO: Smart Thief:
-//TODO: Draw                            Rex         DONE
-//TODO: Movement
+    //TODO: Draw                        Rex         DONE
+    //TODO: Movement Transitions
+    //TODO: Movement Animation
 
 //TODO: Floor Following Thief:
-//TODO: Draw                            Dimitrios   DONE
-//TODO: Movement                        Vic
+    //TODO: Draw                        Dimitrios   DONE
+    //TODO: Movement Transitions        Vic         DONE
+    //TODO: Movement Animation
 
 //TODO: Coins:
     //TODO: Draw                        Omar        DONE
@@ -34,7 +36,7 @@ import java.io.FileNotFoundException;
 
 //TODO: Lever:
     //TODO: Draw                        Chrysis     DONE
-    //TODO: Collision player/NPC
+    //TODO: Collision player/NPC        Lewis
 
 //TODO: Gate:
     //TODO: Draw                        Lewis       DONE
@@ -45,7 +47,7 @@ import java.io.FileNotFoundException;
 
 //TODO: Clock:
     //TODO: Draw                        Lewis       DONE
-    //TODO: Collision/Add Time          Lewis       DONE
+    //TODO: Collision/Add Time
 
 //TODO: Bomb:
     //TODO: Draw                        Arran

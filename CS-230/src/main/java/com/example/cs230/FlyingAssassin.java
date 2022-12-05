@@ -25,11 +25,13 @@ public class FlyingAssassin extends NPC {
     private StackPane assassinStackPane;
     private int[] coords;
     private boolean isKilled = false;
-    private GameOverViewManager gameOver;
+    private GameViewManager gameOver;
     private final int indexID;
+    private boolean isLose;
+    private Timer timer;
 
     //private StackPane assassinStack;
-    public FlyingAssassin(Board board, int[] startCoords, StackPane stackPane, GameOverViewManager gameOver, int indexID) {
+    public FlyingAssassin(Board board, int[] startCoords, StackPane stackPane, GameViewManager gameOver, int indexID) {
         gameBoard = board;
         coords = startCoords;
         assassinStackPane = stackPane;
@@ -75,8 +77,10 @@ public class FlyingAssassin extends NPC {
             pane.getChildren().remove(killable);
             System.out.println("DIE");
             isKilled = true;
+            timer.cancel();
+            timer.purge();
 //            GameOverViewManager gameOver = new GameOverViewManager();
-            gameOver.createGameOver(gameStage, player);
+            //
             return true;
         } else {
             return false;
@@ -87,7 +91,7 @@ public class FlyingAssassin extends NPC {
         SequentialTransition movement = moveStartRightTransition();
         setImage("RIGHT");
         movement.play();
-        Timer timer = new Timer();
+        timer = new Timer();
 
         int scheduleCount = 0;
         int coordsCounter = coords[0];
@@ -105,12 +109,11 @@ public class FlyingAssassin extends NPC {
         SequentialTransition movement = moveStartLeftTransition();
         setImage("LEFT");
         movement.play();
-        Timer timer = new Timer();
+        timer = new Timer();
 
         int scheduleCount = 0;
         coords[0] -=1;
         int coordsCounter = coords[0];
-        //System.out.println(coords[0]);
         while (scheduleCount < 100) {
             scheduleCount = moveLeftTile(timer, scheduleCount, coordsCounter, movement);
             coordsCounter = 0;
@@ -125,7 +128,7 @@ public class FlyingAssassin extends NPC {
         SequentialTransition movement = moveStartDownTransition();
         setImage("DOWN");
         movement.play();
-        Timer timer = new Timer();
+        timer = new Timer();
 
         int scheduleCount = 0;
         int coordsCounter = coords[1];
@@ -143,12 +146,11 @@ public class FlyingAssassin extends NPC {
         SequentialTransition movement = moveStartUpTransition();
         setImage("UP");
         movement.play();
-        Timer timer = new Timer();
+        timer = new Timer();
 
         int scheduleCount = 0;
         coords[1] -=1;
         int coordsCounter = coords[1];
-        //System.out.println(coords[1]);
         while (scheduleCount < 100) {
             scheduleCount = moveUpTile(timer, scheduleCount, coordsCounter, movement);
             coordsCounter = 0;
@@ -361,6 +363,9 @@ public class FlyingAssassin extends NPC {
         assassin.setFitHeight(50);
     }
 
+    public void setLose() {
+        isLose = true;
+    }
     public ImageView getAssassin() {
         return assassin;
     }
