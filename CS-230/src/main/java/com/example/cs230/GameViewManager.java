@@ -48,6 +48,8 @@ public class GameViewManager {
     private int timeLeft;
     private boolean isLose = false;
     private GameOverViewManager gameOver;
+    private Timer timer;
+    private boolean isTimerEnd = false;
 
     /**
      * Creates a GameViewManager.
@@ -82,7 +84,6 @@ public class GameViewManager {
 
         updateTopRow();
         createGameLoop();
-        startTimer();
         topRow.setAlignment(Pos.CENTER_RIGHT);
         gamePane.getChildren().add(topRow);
         gamePane.getChildren().add(gamePlayPane);
@@ -103,10 +104,6 @@ public class GameViewManager {
         gameTimer = new AnimationTimer() {
             @Override
             public void handle(long l) {
-                if (timeLeft == 0 && !isLose) {
-                    gameOver.createGameOver(gameStage, currentPlayer);
-                    isLose = true;
-                }
                 for (FlyingAssassin allAssassin : allAssassins) {
                     allAssassin.collidedPlayer(currentPlayer.getPlayerCoords(), currentPlayerStack, gamePlayPane, gameStage, currentPlayer);
                 }
@@ -286,21 +283,6 @@ public class GameViewManager {
         topRow.getChildren().add(playerScore);
 
 
-    }
-
-    private void startTimer() {
-        timeLeft = currentBoard.getSeconds();
-         int timeForGame = timeLeft;
-        Timer timer = new Timer();
-        for (int i = 0; i < timeForGame; i++) {
-            TimerTask countDown1Sec = new TimerTask() {
-                @Override
-                public void run() {
-                    timeLeft -=1;
-                }
-            };
-            timer.schedule(countDown1Sec, (long) SECOND * i);
-        }
     }
 
     /**

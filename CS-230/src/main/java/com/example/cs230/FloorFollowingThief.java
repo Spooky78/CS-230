@@ -1,6 +1,9 @@
 package com.example.cs230;
 
+import java.util.ArrayList;
 import java.util.Objects;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javafx.animation.SequentialTransition;
 import javafx.animation.TranslateTransition;
@@ -12,7 +15,7 @@ import javafx.util.Duration;
 public class FloorFollowingThief extends NPC {
 
     private static final String FFTHIEF_DOWN_PATH = "/Skeleton/SkeletonDown.png";
-    private static final String FFTHIEF_UP_PATH = "/Skeleton/keletonUp.png";
+    private static final String FFTHIEF_UP_PATH = "/Skeleton/SkeletonUp.png";
     private static final String FFTHIEF_LEFT_PATH = "/Skeleton/SkeletonLeft.png";
     private static final String FFTHIEF_RIGHT_PATH = "/Skeleton/SkeletonRight.png";
     private static final int MILLS_DELAY_TILE = 1000;
@@ -23,6 +26,7 @@ public class FloorFollowingThief extends NPC {
     private int[] coords;
     private int[] animationCoords;
     private int indexID;
+    private ArrayList<Integer> timings = new ArrayList<>();
 
     public FloorFollowingThief (Board board, int[] startCoords, StackPane stackPane, int indexID) {
         gameBoard = board;
@@ -54,8 +58,8 @@ public class FloorFollowingThief extends NPC {
         System.out.println(direction);
         switch (direction) {
             case "RIGHT ANTICLOCKWISE":
-                //startRightMovement();
-                startRightAnticlockwiseTransition();
+                startRightAnticlockwiseMovement();
+                //startRightAnticlockwiseTransition();
                 break;
             case "LEFT":
                 //startLeftMovement();
@@ -70,18 +74,30 @@ public class FloorFollowingThief extends NPC {
 
     }
 
-    private void startRightAnticlockwiseTransition() {
-        SequentialTransition startRightTransition = new SequentialTransition();
+    private void startRightAnticlockwiseMovement() {
+        SequentialTransition animation = startRightAnticlockwiseTransition();
+        int previous = 0;
+        Timer timer = new Timer();
+        setImage("RIGHT");
 
+
+    }
+
+    private SequentialTransition startRightAnticlockwiseTransition() {
+        SequentialTransition startRightTransition = new SequentialTransition();
         int count = 0;
         while (count < 100) {
+            int currentTiming = 0;
             //right movement
             int[] currentCoords = new int[]{animationCoords[0] - 1, animationCoords[1] - 1};
             int[] rightTile = new int[]{animationCoords[0], animationCoords[1] - 1};
             while (animationCoords[0] < gameBoard.getBoardSizeX() && gameBoard.canMove(currentCoords, rightTile)) {
                 startRightTransition.getChildren().add(moveRightTile());
                 rightTile[0] += 1;
+                currentTiming +=1;
             }
+            timings.add(currentTiming);
+            currentTiming = 0;
 
             //Up movement
             currentCoords = new int[]{animationCoords[0] - 1, animationCoords[1] - 1};
@@ -89,7 +105,10 @@ public class FloorFollowingThief extends NPC {
             while (animationCoords[1] - 1 > 0 && gameBoard.canMove(currentCoords, upTile)) {
                 startRightTransition.getChildren().add(moveUpTile());
                 upTile[1] -= 1;
+                currentTiming += 1;
             }
+            timings.add(currentTiming);
+            currentTiming = 0;
 
             //Left movement
             currentCoords = new int[]{animationCoords[0] - 1, animationCoords[1] - 1};
@@ -97,18 +116,24 @@ public class FloorFollowingThief extends NPC {
             while (animationCoords[0] - 1 > 0 && gameBoard.canMove(currentCoords, leftTile)) {
                 startRightTransition.getChildren().add(moveLeftTile());
                 leftTile[0] -= 1;
+                currentTiming += 1;
             }
+            timings.add(currentTiming);
+            currentTiming = 0;
 
-            //DOwn movement
+            //Down movement
             currentCoords = new int[]{animationCoords[0] - 1, animationCoords[1] - 1};
             int[] downTile = new int[]{animationCoords[0] - 1, animationCoords[1]};
             while (animationCoords[1] < gameBoard.getBoardSizeY() && gameBoard.canMove(currentCoords, downTile)) {
                 startRightTransition.getChildren().add(moveDownTile());
                 upTile[1] += 1;
+                currentTiming += 1;
             }
+            timings.add(currentTiming);
             count +=1;
         }
         startRightTransition.play();
+        return startRightTransition;
     }
 
     private TranslateTransition moveRightTile() {
@@ -141,6 +166,22 @@ public class FloorFollowingThief extends NPC {
         moveUp.setByY(-gameBoard.getTileSize());
         animationCoords[1] -= 1;
         return moveUp;
+    }
+
+    private void setImage(String direction) {
+        Image ffThiefImage = switch (direction) {
+            case "LEFT" -> new Image(
+                    Objects.requireNonNull(getClass().getResourceAsStream(FFTHIEF_LEFT_PATH)));
+            case "RIGHT" -> new Image(
+                    Objects.requireNonNull(getClass().getResourceAsStream(FFTHIEF_RIGHT_PATH)));
+            case "UP" -> new Image(
+                    Objects.requireNonNull(getClass().getResourceAsStream(FFTHIEF_UP_PATH)));
+            default -> new Image(
+                    Objects.requireNonNull(getClass().getResourceAsStream(FFTHIEF_DOWN_PATH)));
+        };
+        ffThief.setImage(ffThiefImage);
+        ffThief.setFitWidth(50);
+        ffThief.setFitHeight(50);
     }
 
     public ImageView getffThief() {

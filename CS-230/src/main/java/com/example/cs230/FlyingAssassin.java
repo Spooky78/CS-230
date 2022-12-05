@@ -35,6 +35,7 @@ public class FlyingAssassin extends NPC {
         assassinStackPane = stackPane;
         this.indexID = indexID;
         this.gameOver = gameOver;
+        isKilled = false;
         createNPC();
         move();
     }
@@ -70,7 +71,7 @@ public class FlyingAssassin extends NPC {
     }
 
     public boolean collidedPlayer(int[] killableCoords, StackPane killable, BorderPane pane, Stage gameStage, Player player){
-        if (killableCoords[0] +1 == coords[0] && killableCoords[1] +1 == coords[1] && !isKilled) {
+        if (killableCoords[0] +1 == coords[0] && killableCoords[1] +1 == coords[1] & !isKilled) {
             pane.getChildren().remove(killable);
             System.out.println("DIE");
             isKilled = true;
@@ -345,25 +346,16 @@ public class FlyingAssassin extends NPC {
     }
 
     private void setImage(String direction) {
-        Image assassinImage;
-        switch (direction) {
-            case "LEFT":
-                assassinImage = new Image(
-                        Objects.requireNonNull(getClass().getResourceAsStream(ASSASSIN_LEFT_PATH)));
-                break;
-            case "RIGHT":
-                assassinImage = new Image(
-                        Objects.requireNonNull(getClass().getResourceAsStream(ASSASSIN_RIGHT_PATH)));
-                break;
-            case "UP":
-                assassinImage = new Image(
-                        Objects.requireNonNull(getClass().getResourceAsStream(ASSASSIN_UP_PATH)));
-                break;
-            default:
-                assassinImage = new Image(
-                        Objects.requireNonNull(getClass().getResourceAsStream(ASSASSIN_DOWN_PATH)));
-                break;
-        }
+        Image assassinImage = switch (direction) {
+            case "LEFT" -> new Image(
+                    Objects.requireNonNull(getClass().getResourceAsStream(ASSASSIN_LEFT_PATH)));
+            case "RIGHT" -> new Image(
+                    Objects.requireNonNull(getClass().getResourceAsStream(ASSASSIN_RIGHT_PATH)));
+            case "UP" -> new Image(
+                    Objects.requireNonNull(getClass().getResourceAsStream(ASSASSIN_UP_PATH)));
+            default -> new Image(
+                    Objects.requireNonNull(getClass().getResourceAsStream(ASSASSIN_DOWN_PATH)));
+        };
         assassin.setImage(assassinImage);
         assassin.setFitWidth(50);
         assassin.setFitHeight(50);
