@@ -33,6 +33,8 @@ public class GameViewManager {
     private VBox gamePane;
     private HBox topRow = new HBox();
 
+    private int currentLevel;
+
     private BorderPane gamePlayPane = new BorderPane();
     private Scene gameScene;
     private Stage gameStage;
@@ -41,6 +43,8 @@ public class GameViewManager {
     private Player currentPlayer;
     private StackPane currentPlayerStack;
     private Board currentBoard;
+    private Board newBoard;
+    private Door door;
     private ArrayList<StackPane> allAssassinStacks = new ArrayList<>();
     private ArrayList<FlyingAssassin> allAssassins = new ArrayList<>();
     private ArrayList<Coin> allCoins = new ArrayList<>();
@@ -133,6 +137,18 @@ public class GameViewManager {
                     allClock.remove(clock);
                 }
                 clockToRemove.clear();
+
+
+                    if (door.isCollectedByPlayer(currentPlayer.getPlayerCoords())) {
+                        gamePlayPane.getChildren().remove(door.getDoorPane());
+                        currentLevel += 1;
+                        System.out.println(currentLevel);
+                        nextLevel();
+                    }
+
+
+
+
             }
         };
         gameTimer.start();
@@ -221,7 +237,7 @@ public class GameViewManager {
 
     private void createDoor() {
         int[] positionCoords = currentBoard.getDoorCoords();
-        Door door = new Door(currentBoard, positionCoords);
+        door = new Door(currentBoard, positionCoords);
         gamePlayPane.getChildren().add(door.getDoorPane());
     }
 
@@ -263,8 +279,17 @@ public class GameViewManager {
     }
 
     private void createBoard() {
-        currentBoard = new Board(0, GAME_WIDTH);
+        currentLevel = 0;
+        currentBoard = new Board("Level00.txt", GAME_WIDTH);
         gamePlayPane.setLeft(currentBoard.getBoardPane());
+    }
+
+    private void nextLevel(){
+        String inputLevel = "level0" + currentLevel +".txt";
+        gamePlayPane.getChildren().remove(currentBoard);
+        currentBoard = new Board(inputLevel,GAME_WIDTH);
+        gamePlayPane.getChildren().add(currentBoard.getBoardPane());
+
     }
 
     /**

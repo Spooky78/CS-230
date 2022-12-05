@@ -40,10 +40,9 @@ public class Board {
     private ArrayList<Integer> bombCoords = new ArrayList<>();
     private int seconds;
 
-    public Board(int currentLevel, int screenWidth) {
-        currentLevelID = currentLevel;
+    public Board(String currentLevel, int screenWidth) {
         this.screenWidth = screenWidth;
-        String filename = "CS-230/src/main/resources/Levels/Level00.txt";
+        String filename = "CS-230/src/main/resources/Levels/" + currentLevel;
         try {
             File circles = new File(filename);
             Scanner in = new Scanner(circles);
