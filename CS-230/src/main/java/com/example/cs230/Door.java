@@ -12,6 +12,7 @@ public class Door {
     private final Board currentBoard;
     private ImageView door;
     StackPane doorPane = new StackPane();
+    private int[] doorPosition;
 
     public Door(Board currentBoard, int[] position) {
         this.currentBoard = currentBoard;
@@ -29,6 +30,19 @@ public class Door {
         int tileSize = currentBoard.getTileSize();
         doorPane.setLayoutX((position[0] * tileSize) - (tileSize / 2));
         doorPane.setLayoutY((position[1] * tileSize) - (tileSize / 2));
+        doorPosition = currentBoard.getDoorCoords();
+    }
+
+    public boolean isCollisionPlayer(int[] playerCoords) {
+        if (playerCoords[0] +1 == doorPosition[0] && playerCoords[1] +1 == doorPosition[1]) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean isCollectedByPlayer(int[] playerCoords) {
+        return playerCoords[0] + 1 == doorPosition[0] && playerCoords[1] + 1 == doorPosition[1];
     }
 
     public StackPane getDoorPane() {
