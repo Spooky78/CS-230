@@ -36,8 +36,6 @@ public class FloorFollowingThief extends NPC {
         this.indexID = indexID;
         createNPC();
         move();
-//        TranslateTransition test = moveRightTile();
-//        test.play();
     }
 
     protected void createNPC() {
@@ -58,28 +56,31 @@ public class FloorFollowingThief extends NPC {
         System.out.println(direction);
         switch (direction) {
             case "RIGHT ANTICLOCKWISE":
-                startRightAnticlockwiseMovement();
-                //startRightAnticlockwiseTransition();
+                //startRightAnticlockwiseMovement();
+                startRightAnticlockwiseTransition();
                 break;
-            case "LEFT":
-                //startLeftMovement();
+            case "RIGHT CLOCKWISE":
+                startRightClockwiseTransition();
                 break;
-            case "DOWN":
-                //startDownMovement();
+            case "LEFT ANTICLOCKWISE":
+                startLeftAntiClockwiseTransition();
                 break;
-            case "UP":
-                //startUpMovement();
+            case "LEFT CLOCKWISE":
+                startLeftClockwiseTransition();
+                break;
+            case "DOWN ANTICLOCKWISE":
+                startDownAntiClockwiseTransition();
+                break;
+            case "DOWN CLOCKWISE":
+                startDownClockwiseTransition();
+                break;
+            case "UP ANTICLOCKWISE":
+                startUpAntiClockwiseTransition();
+                break;
+            case "UP CLOCKWISE":
+                startUpClockwiseTransition();
                 break;
         }
-
-    }
-
-    private void startRightAnticlockwiseMovement() {
-        SequentialTransition animation = startRightAnticlockwiseTransition();
-        int previous = 0;
-        Timer timer = new Timer();
-        setImage("RIGHT");
-
 
     }
 
@@ -87,53 +88,224 @@ public class FloorFollowingThief extends NPC {
         SequentialTransition startRightTransition = new SequentialTransition();
         int count = 0;
         while (count < 100) {
-            int currentTiming = 0;
             //right movement
-            int[] currentCoords = new int[]{animationCoords[0] - 1, animationCoords[1] - 1};
-            int[] rightTile = new int[]{animationCoords[0], animationCoords[1] - 1};
-            while (animationCoords[0] < gameBoard.getBoardSizeX() && gameBoard.canMove(currentCoords, rightTile)) {
-                startRightTransition.getChildren().add(moveRightTile());
-                rightTile[0] += 1;
-                currentTiming +=1;
-            }
+            int currentTiming = rightTransitionLoop(startRightTransition);
             timings.add(currentTiming);
-            currentTiming = 0;
-
             //Up movement
-            currentCoords = new int[]{animationCoords[0] - 1, animationCoords[1] - 1};
-            int[] upTile = new int[]{animationCoords[0] - 1, animationCoords[1] - 2};
-            while (animationCoords[1] - 1 > 0 && gameBoard.canMove(currentCoords, upTile)) {
-                startRightTransition.getChildren().add(moveUpTile());
-                upTile[1] -= 1;
-                currentTiming += 1;
-            }
+            currentTiming = upTransitionLoop(startRightTransition);
             timings.add(currentTiming);
-            currentTiming = 0;
-
             //Left movement
-            currentCoords = new int[]{animationCoords[0] - 1, animationCoords[1] - 1};
-            int[] leftTile = new int[]{animationCoords[0] - 2, animationCoords[1] - 1};
-            while (animationCoords[0] - 1 > 0 && gameBoard.canMove(currentCoords, leftTile)) {
-                startRightTransition.getChildren().add(moveLeftTile());
-                leftTile[0] -= 1;
-                currentTiming += 1;
-            }
+            currentTiming = leftTransitionLoop(startRightTransition);
             timings.add(currentTiming);
-            currentTiming = 0;
-
             //Down movement
-            currentCoords = new int[]{animationCoords[0] - 1, animationCoords[1] - 1};
-            int[] downTile = new int[]{animationCoords[0] - 1, animationCoords[1]};
-            while (animationCoords[1] < gameBoard.getBoardSizeY() && gameBoard.canMove(currentCoords, downTile)) {
-                startRightTransition.getChildren().add(moveDownTile());
-                upTile[1] += 1;
-                currentTiming += 1;
-            }
+            currentTiming = downTransitionLoop(startRightTransition);
             timings.add(currentTiming);
             count +=1;
         }
         startRightTransition.play();
         return startRightTransition;
+    }
+
+    private SequentialTransition startRightClockwiseTransition(){
+        SequentialTransition startRightTransition = new SequentialTransition();
+        int count = 0;
+        while (count < 100) {
+            //right movement
+            int currentTiming = rightTransitionLoop(startRightTransition);
+            timings.add(currentTiming);
+            //Down movement
+            currentTiming = downTransitionLoop(startRightTransition);
+            timings.add(currentTiming);
+            //Left movement
+            currentTiming = leftTransitionLoop(startRightTransition);
+            timings.add(currentTiming);
+            //Up movement
+            currentTiming = upTransitionLoop(startRightTransition);
+            timings.add(currentTiming);
+            count +=1;
+        }
+        startRightTransition.play();
+        return startRightTransition;
+    }
+
+    private SequentialTransition startLeftAntiClockwiseTransition() {
+        SequentialTransition startLeftAntiClockwiseTransition = new SequentialTransition();
+        int count = 0;
+        while (count < 100) {
+            //Left movement
+            int currentTiming = leftTransitionLoop(startLeftAntiClockwiseTransition);
+            timings.add(currentTiming);
+            //Down movement
+            currentTiming = downTransitionLoop(startLeftAntiClockwiseTransition);
+            timings.add(currentTiming);
+            //Right movement
+            currentTiming = rightTransitionLoop(startLeftAntiClockwiseTransition);
+            timings.add(currentTiming);
+            //Up movement
+            currentTiming = upTransitionLoop(startLeftAntiClockwiseTransition);
+            timings.add(currentTiming);
+            count += 1;
+        }
+        startLeftAntiClockwiseTransition.play();
+        return startLeftAntiClockwiseTransition;
+    }
+
+    private SequentialTransition startLeftClockwiseTransition() {
+        SequentialTransition startLeftClockwiseTransition = new SequentialTransition();
+        int count = 0;
+        while (count < 100) {
+            //Left movement
+            int currentTiming = leftTransitionLoop(startLeftClockwiseTransition);
+            timings.add(currentTiming);
+            //Up movement
+            currentTiming = upTransitionLoop(startLeftClockwiseTransition);
+            timings.add(currentTiming);
+            //Right movement
+            currentTiming = rightTransitionLoop(startLeftClockwiseTransition);
+            timings.add(currentTiming);
+            //Down movement
+            currentTiming = downTransitionLoop(startLeftClockwiseTransition);
+            timings.add(currentTiming);
+            count += 1;
+        }
+        startLeftClockwiseTransition.play();
+        return startLeftClockwiseTransition;
+    }
+
+    private SequentialTransition startUpAntiClockwiseTransition() {
+        SequentialTransition startUpAntiClockwiseTransition = new SequentialTransition();
+        int count = 0;
+        while (count < 100) {
+            //Up movement
+            int currentTiming = upTransitionLoop(startUpAntiClockwiseTransition);
+            timings.add(currentTiming);
+            //Left movement
+            currentTiming = leftTransitionLoop(startUpAntiClockwiseTransition);
+            timings.add(currentTiming);
+            //Down movement
+            currentTiming = downTransitionLoop(startUpAntiClockwiseTransition);
+            timings.add(currentTiming);
+            //Right movement
+            currentTiming = rightTransitionLoop(startUpAntiClockwiseTransition);
+            timings.add(currentTiming);
+            count += 0;
+        }
+        startUpAntiClockwiseTransition.play();
+        return startUpAntiClockwiseTransition;
+    }
+
+    private SequentialTransition startUpClockwiseTransition() {
+        SequentialTransition startUpClockwiseTransition = new SequentialTransition();
+        int count = 0;
+        while (count < 100) {
+            //Up movement
+            int currentTiming = upTransitionLoop(startUpClockwiseTransition);
+            timings.add(currentTiming);
+            //Right movement
+            currentTiming = rightTransitionLoop(startUpClockwiseTransition);
+            timings.add(currentTiming);
+            count += 1;
+            //Down movement
+            currentTiming = downTransitionLoop(startUpClockwiseTransition);
+            timings.add(currentTiming);
+            //Left movement
+            currentTiming = leftTransitionLoop(startUpClockwiseTransition);
+            timings.add(currentTiming);
+        }
+        startUpClockwiseTransition.play();
+        return startUpClockwiseTransition;
+    }
+
+    private SequentialTransition startDownAntiClockwiseTransition() {
+        SequentialTransition startDownAntiClockwiseTransition = new SequentialTransition();
+        int count = 0;
+        while (count < 100) {
+            //Down movement
+            int currentTiming = downTransitionLoop(startDownAntiClockwiseTransition);
+            timings.add(currentTiming);
+            //Right movement
+            currentTiming = rightTransitionLoop(startDownAntiClockwiseTransition);
+            timings.add(currentTiming);
+            //Up movement
+            currentTiming = upTransitionLoop(startDownAntiClockwiseTransition);
+            timings.add(currentTiming);
+            //Left movement
+            currentTiming = leftTransitionLoop(startDownAntiClockwiseTransition);
+            timings.add(currentTiming);
+            count += 1;
+        }
+        startDownAntiClockwiseTransition.play();
+        return startDownAntiClockwiseTransition;
+    }
+
+    private SequentialTransition startDownClockwiseTransition() {
+        SequentialTransition startDownClockwiseTransition = new SequentialTransition();
+        int count = 0;
+        while (count < 100) {
+            //Down movement
+            int currentTiming = downTransitionLoop(startDownClockwiseTransition);
+            timings.add(currentTiming);
+            //Left movement
+            currentTiming = leftTransitionLoop(startDownClockwiseTransition);
+            timings.add(currentTiming);
+            //Up movement
+            currentTiming = upTransitionLoop(startDownClockwiseTransition);
+            timings.add(currentTiming);
+            //Right movement
+            currentTiming = rightTransitionLoop(startDownClockwiseTransition);
+            timings.add(currentTiming);
+            count += 1;
+        }
+        startDownClockwiseTransition.play();
+        return startDownClockwiseTransition;
+    }
+
+    private int rightTransitionLoop(SequentialTransition transition) {
+        int currentTiming = 0;
+        int[] currentCoords = new int[]{animationCoords[0] - 1, animationCoords[1] - 1};
+        int[] rightTile = new int[]{animationCoords[0], animationCoords[1] - 1};
+        while (animationCoords[0] < gameBoard.getBoardSizeX() && gameBoard.canMove(currentCoords, rightTile)) {
+            transition.getChildren().add(moveRightTile());
+            rightTile[0] += 1;
+            currentTiming +=1;
+        }
+        return currentTiming;
+    }
+
+    private int leftTransitionLoop(SequentialTransition transition) {
+        int currentTiming = 0;
+        int[] currentCoords = new int[]{animationCoords[0] - 1, animationCoords[1] - 1};
+        int[] leftTile = new int[]{animationCoords[0] - 2, animationCoords[1] - 1};
+        while (animationCoords[0] - 1 > 0 && gameBoard.canMove(currentCoords, leftTile)) {
+            transition.getChildren().add(moveLeftTile());
+            leftTile[0] -= 1;
+            currentTiming += 1;
+        }
+        return currentTiming;
+    }
+
+    private int upTransitionLoop(SequentialTransition transition) {
+        int currentTiming = 0;
+        int[] currentCoords = new int[]{animationCoords[0] - 1, animationCoords[1] - 1};
+        int[] upTile = new int[]{animationCoords[0] - 1, animationCoords[1] - 2};
+        while (animationCoords[1] - 1 > 0 && gameBoard.canMove(currentCoords, upTile)) {
+            transition.getChildren().add(moveUpTile());
+            upTile[1] -= 1;
+            currentTiming += 1;
+        }
+        return currentTiming;
+    }
+
+    private int downTransitionLoop(SequentialTransition transition) {
+        int currentTiming = 0;
+        int[] currentCoords = new int[]{animationCoords[0] - 1, animationCoords[1] - 1};
+        int[] downTile = new int[]{animationCoords[0] - 1, animationCoords[1]};
+        while (animationCoords[1] < gameBoard.getBoardSizeY() && gameBoard.canMove(currentCoords, downTile)) {
+            transition.getChildren().add(moveDownTile());
+            downTile[1] += 1;
+            currentTiming += 1;
+        }
+        return currentTiming;
     }
 
     private TranslateTransition moveRightTile() {
