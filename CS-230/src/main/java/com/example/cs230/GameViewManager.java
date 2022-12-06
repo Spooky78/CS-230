@@ -1,15 +1,18 @@
 package com.example.cs230;
 
-import java.util.ArrayList;
-import java.util.Stack;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 import javafx.animation.AnimationTimer;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.layout.*;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -29,7 +32,7 @@ public class GameViewManager {
 
     private int currentLevel;
 
-    private BorderPane gamePlayPane = new BorderPane();
+    private final BorderPane gamePlayPane = new BorderPane();
     private Scene gameScene;
     private Stage gameStage;
     private Stage menuStage;
@@ -44,16 +47,16 @@ public class GameViewManager {
     private final ArrayList<NPC> allKillable = new ArrayList<>();
     private final ArrayList<Coin> allCoins = new ArrayList<>();
     private final ArrayList<Clock> allClock = new ArrayList<>();
-    private final ArrayList<Bomb> allBomb = new ArrayList<>();
-    private final ArrayList<Item> allItems = new ArrayList<>();
-
+    private final ArrayList<Lever> allLever = new ArrayList<>();
+    private final ArrayList<Gate> allGates = new ArrayList<>();
+    private Gate goldenGate;
+    private Gate silverGate;
     private int timeLeft;
     private final boolean isLose = false;
     private GameOverViewManager gameOver;
 
     private Timer timer;
     private final boolean isTimerEnd = false;
-    private Ninja chosenNinja;
 
     /**
      * Creates a GameViewManager.
@@ -69,34 +72,11 @@ public class GameViewManager {
      * @param chosenNinja The player character.
      */
     public void createNewGame(Stage stage, Ninja chosenNinja) {
-        this.chosenNinja = chosenNinja;
         this.menuStage = stage;
         this.menuStage.hide();
         gameOver = new GameOverViewManager();
         createBackground();
         createBoard();
-        createStuff();
-//        createDoor();
-//        createClock();
-//        createGoldenGate();
-//        createSilverGate();
-//        createLever();
-//        createCoins();
-//        createBomb();
-//        createAssassin();
-//        createFloorFollowingThief();
-//        createPlayer(chosenNinja);
-//        createSmartThief();
-//
-//        updateTopRow();
-//        createGameLoop();
-        topRow.setAlignment(Pos.CENTER_RIGHT);
-        gamePane.getChildren().add(topRow);
-        gamePane.getChildren().add(gamePlayPane);
-        gameStage.show();
-    }
-
-    private void createStuff(){
         createDoor();
         createClock();
         createGoldenGate();
@@ -132,8 +112,7 @@ public class GameViewManager {
             @Override
             public void handle(long l) {
                 for (FlyingAssassin allAssassin : allAssassins) {
-                    if (allAssassin.collidedPlayer(currentPlayer.getPlayerCoords(),
-                            currentPlayerStack, gamePlayPane, gameStage)) {
+                    if (allAssassin.collidedPlayer(currentPlayer.getPlayerCoords(), currentPlayerStack, gamePlayPane, gameStage)) {
                         gameOver.createGameOver(gameStage, currentPlayer);
                         allAssassin.setLose();
                     }
@@ -146,6 +125,8 @@ public class GameViewManager {
                 updateTopRow();
                 ArrayList<Coin> coinsToRemove = new ArrayList<>();
                 ArrayList<Clock> clockToRemove = new ArrayList<>();
+                ArrayList<Lever> leverToRemove = new ArrayList<>();
+                ArrayList<Gate> gateToRemove = new ArrayList<>();
                 for (Coin allCoin : allCoins) {
                     if (allCoin.isCollisionPlayer(currentPlayer.getPlayerCoords())) {
                         gamePlayPane.getChildren().remove(allCoin.getCoinStackPane());
@@ -169,11 +150,6 @@ public class GameViewManager {
                     allClock.remove(clock);
                 }
                 clockToRemove.clear();
-
-                for (Bomb allBombs : allBomb ){
-                    allBombs.isCollisionPlayer(currentPlayer.getPlayerCoords());
-                        // gamePlayPane.getChildren().remove(allBomb.getBombPane());
-                    }
 
 
                 if (door.isCollectedByPlayer(currentPlayer.getPlayerCoords())) {
@@ -320,8 +296,12 @@ public class GameViewManager {
         ArrayList<Integer> positionCoords = currentBoard.getLeverCoords();
         for (int i = 0; i < colours.size(); i += 1) {
             int[] currentLeverCoords = {positionCoords.get(i * 2), positionCoords.get(i * 2 + 1)};
-            Lever lever = new Lever(currentBoard, currentLeverCoords, colours.get(i));
-            gamePlayPane.getChildren().add(lever.getLeverPane());
+            Lever goldLever = new Lever(currentBoard, currentLeverCoords, colours.get(i));
+            allLever.add(goldLever);
+            gamePlayPane.getChildren().add(goldLever.getLeverPane());
+            Lever silverLever = new Lever(currentBoard, currentLeverCoords, colours.get(i));
+            allLever.add(silverLever);
+            gamePlayPane.getChildren().add(silverLever.getLeverPane());
         }
     }
 
@@ -379,10 +359,10 @@ public class GameViewManager {
     }
 
     private void nextLevel() {
-        String inputLevel = "level0" + currentLevel + ".txt";
-        gamePlayPane.getChildren().remove(currentBoard);
+        String inputLevel = "Level0" + currentLevel + ".txt";
+        gamePlayPane.getChildren().clear();
         currentBoard = new Board(inputLevel, GAME_WIDTH);
-        gamePlayPane.getChildren().add(currentBoard.getBoardPane());
+        gamePlayPane.setLeft(currentBoard.getBoardPane());
 
     }
 
