@@ -6,19 +6,24 @@ import javafx.scene.layout.StackPane;
 
 import java.util.Objects;
 
-public class Gate extends Item{
+public class Gate {
     private static final String GOLDEN_GATE_PATH = "/Items/goldGate.png";
     private static final String SILVER_GATE_PATH = "/Items/silverGate.png";
     private static final int GATE_SIZE = 50;
-    private ImageView gate = new ImageView();
+    private ImageView goldenGate = new ImageView();
+    private ImageView silverGate = new ImageView();
     private StackPane gatePane = new StackPane();
+    private int[] goldenGatePosition;
+    private int[] silverGatePosition;
+    private boolean canPass;
     private final Board currentBoard;
-    private int[] coords;
 
     public Gate(String gateType, Board board, int[] position) {
         this.currentBoard = board;
-        coords = position;
+        goldenGatePosition = position;
+        silverGatePosition = position;
         createAGate(gateType, position);
+        canPass = false;
     }
 
     protected void createAGate(String gateType, int[] position) {
@@ -26,33 +31,40 @@ public class Gate extends Item{
         int tileSize = currentBoard.getTileSize();
         Image gateImage;
         switch (gateType) {
-            case "GOLD":
+            case "GOLD" -> {
                 gateImage = new Image(
                         Objects.requireNonNull(getClass().getResourceAsStream(GOLDEN_GATE_PATH)));
-                gate = new ImageView(gateImage);
-                break;
-            case "SILVER":
+                goldenGate = new ImageView(gateImage);
+            }
+            case "SILVER" -> {
                 gateImage = new Image(
                         Objects.requireNonNull(getClass().getResourceAsStream(SILVER_GATE_PATH)));
-                gate = new ImageView(gateImage);
-                break;
+                silverGate = new ImageView(gateImage);
+            }
         }
-        gate.setFitWidth(GATE_SIZE);
-        gate.setFitHeight(GATE_SIZE);
-        gatePane.getChildren().add(gate);
-        gatePane.setLayoutX((position[0] * tileSize) - (tileSize / 2));
-        gatePane.setLayoutY((position[1] * tileSize) - (tileSize / 2));
+        goldenGate.setFitWidth(GATE_SIZE);
+        goldenGate.setFitHeight(GATE_SIZE);
+        silverGate.setFitWidth(GATE_SIZE);
+        silverGate.setFitHeight(GATE_SIZE);
+        gatePane.getChildren().add(goldenGate);
+        gatePane.getChildren().add(silverGate);
+        gatePane.setLayoutX((position[0] * tileSize) - (tileSize / 2.0));
+        gatePane.setLayoutY((position[1] * tileSize) - (tileSize / 2.0));
     }
 
-    public StackPane getGatePane() { return gatePane; }
+    public boolean isCollisionPlayer1(int[] playerCoords) {
+        return playerCoords[0] == goldenGatePosition[0] + 1 && playerCoords[1] == goldenGatePosition[1];
+    }
 
-    @Override
-    protected StackPane getStackPane() {
+    public boolean isCollisionPlayer2(int[] playerCoords) {
+        return playerCoords[0] == silverGatePosition[0] + 1 && playerCoords[1] == silverGatePosition[1];
+    }
+
+    public boolean getCanPass() {
+        return canPass;
+    }
+
+    public StackPane getGatePane() {
         return gatePane;
-    }
-
-    @Override
-    protected int[] getCoords() {
-        return coords;
     }
 }

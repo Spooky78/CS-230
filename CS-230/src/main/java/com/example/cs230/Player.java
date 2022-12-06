@@ -21,6 +21,7 @@ public class Player {
     private int[] playerCoords = new int[2];
     private int score = 0;
     private int time = 0;
+    boolean canMove;
 
     public Player(Scene gameScene, Ninja ninja, Board currentBoard) {
         this.movementOffset = 10;
@@ -73,7 +74,7 @@ public class Player {
         if (isLeftKeyPressed && (!isRightKeyPressed && !isDownKeyPressed && !isUpKeyPressed)) {
             try {
                 setImage("LEFT");
-                boolean canMove = board.canMove(playerCoords, new int[]{playerCoords[0] - 1, playerCoords[1]});
+                canMove = board.canMove(playerCoords, new int[]{playerCoords[0] - 1, playerCoords[1]});
                 int currentOffset = 1;
                 while (!canMove) {
                     currentOffset++;
@@ -148,21 +149,14 @@ public class Player {
 
     private void setImage(String direction) {
         playerStackPane.getChildren().remove(player);
-        Image playerImage;
-        switch (direction) {
-            case "LEFT":
-                playerImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream(chosenNinja.getUrlNinjaLeft())));
-                break;
-            case "RIGHT":
-                playerImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream(chosenNinja.getUrlNinjaRight())));
-                break;
-            case "UP":
-                playerImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream(chosenNinja.getUrlNinjaUp())));
-                break;
-            default:
-                playerImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream(chosenNinja.getUrlNinjaDown())));
-                break;
-        }
+        Image playerImage = switch (direction) {
+            case "LEFT" ->
+                    new Image(Objects.requireNonNull(getClass().getResourceAsStream(chosenNinja.getUrlNinjaLeft())));
+            case "RIGHT" ->
+                    new Image(Objects.requireNonNull(getClass().getResourceAsStream(chosenNinja.getUrlNinjaRight())));
+            case "UP" -> new Image(Objects.requireNonNull(getClass().getResourceAsStream(chosenNinja.getUrlNinjaUp())));
+            default -> new Image(Objects.requireNonNull(getClass().getResourceAsStream(chosenNinja.getUrlNinjaDown())));
+        };
         player = new ImageView(playerImage);
         player.setFitWidth(50);
         player.setFitHeight(50);
@@ -172,6 +166,7 @@ public class Player {
     public void setMovementOffset(int newOffset) {
         movementOffset = newOffset;
     }
+
     public void setScore(int newScore) {
         score = newScore;
     }
@@ -184,11 +179,14 @@ public class Player {
         return playerStackPane;
     }
 
-    public int[] getPlayerCoords(){return playerCoords;}
+    public int[] getPlayerCoords() {
+        return playerCoords;
+    }
 
     public int getScore() {
         return score;
     }
+
     public int getTime() {
         return time;
     }
