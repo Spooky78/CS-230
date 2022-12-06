@@ -14,30 +14,31 @@ public class Board {
     private TilePane boardPane;
     private Tile[][] board;
     private int currentLevelID;
-    private int screenWidth;
+    private final int screenWidth;
     private int boardSizeX;
     private int boardSizeY;
-    private ArrayList<Tile> boardTile = new ArrayList<>();
-    private int[] playerStartCoords = new int[2];
-    private ArrayList<String> assassinStartDirection = new ArrayList<>();
-    private ArrayList<Integer> assassinStartCoords = new ArrayList<>();
-    private ArrayList<Integer> smartThiefStartCoords = new ArrayList<>();
-    private ArrayList<String> floorFollowingThiefColours = new ArrayList<>();
-    private ArrayList<String> floorFollowingThiefDirectionStart = new ArrayList<>();
-    private ArrayList<String> floorFollowingThiefDirectionTurn = new ArrayList<>();
-    private ArrayList<Integer> floorFollowingThiefStartCoords = new ArrayList<>();
-    private ArrayList<String> coinColor = new ArrayList<>();
+    private final ArrayList<Tile> boardTile = new ArrayList<>();
+    private final int[] playerStartCoords = new int[2];
+    private final ArrayList<String> assassinStartDirection = new ArrayList<>();
+    private final ArrayList<Integer> assassinStartCoords = new ArrayList<>();
+    private final ArrayList<Integer> smartThiefStartCoords = new ArrayList<>();
+    private final ArrayList<String> floorFollowingThiefColours = new ArrayList<>();
+    private final ArrayList<String> floorFollowingThiefDirectionStart = new ArrayList<>();
+    private final ArrayList<String> floorFollowingThiefDirectionTurn = new ArrayList<>();
+    private final ArrayList<Integer> floorFollowingThiefStartCoords = new ArrayList<>();
+    private final ArrayList<String> coinColor = new ArrayList<>();
 
-    private ArrayList<Integer> coinCoords = new ArrayList<>();
-    private ArrayList<Integer> clockCoords = new ArrayList<>();
-    private int[] doorCoords = new int[2];
+    private final ArrayList<Integer> coinCoords = new ArrayList<>();
+    private final ArrayList<Integer> clockCoords = new ArrayList<>();
+    private final int[] doorCoords = new int[2];
 
     //index of coords is /2 for colour (e.g) colour index2 has coords at index2,3
-    private ArrayList<String> leverColours = new ArrayList<>();
-    private ArrayList<Integer> leverCoords = new ArrayList<>();
-    private ArrayList<Integer> gate1Coords = new ArrayList<>();
-    private ArrayList<Integer> gate2Coords = new ArrayList<>();
-    private ArrayList<Integer> bombCoords = new ArrayList<>();
+    private final ArrayList<String> leverColours = new ArrayList<>();
+    private final ArrayList<Integer> leverCoords = new ArrayList<>();
+    private final ArrayList<Integer> gate1Coords = new ArrayList<>();
+    private final ArrayList<Integer> gate2Coords = new ArrayList<>();
+    private final ArrayList<Integer> bombCoords = new ArrayList<>();
+    private final ArrayList<Integer> playerCoords = new ArrayList<>();
     private int seconds;
 
     public Board(String currentLevel, int screenWidth) {
@@ -206,13 +207,34 @@ public class Board {
         }
     }
 
+    public boolean isLocked(int[] newTile) {
+        for (int i = 0; i <= newTile.length; i += 2) {
+            if (newTile[0] + 1 == getBombCoords().get(0) &&
+                    newTile[1] + 1 == getBombCoords().get(1)) {
+                System.out.println("GO BACK");
+                return true;
+            }
+            if (newTile[0] + 1 == getGate1Coords().get(0) &&
+                    newTile[1] + 1 == getGate1Coords().get(1) ||
+                    newTile[0] + 1 == getGate2Coords().get(0) &&
+                            newTile[1] + 1 == getGate2Coords().get(1)) {
+                System.out.println("GO BACK");
+                return true;
+            }
+
+        }
+        return false;
+    }
+
     public boolean canMove(int[] currentTile, int[] newTile) {
         int currentX = currentTile[0];
         int currentY = currentTile[1];
         int newX = newTile[0];
         int newY = newTile[1];
+
         board = new Tile[boardSizeX][boardSizeY];
         int index = 0;
+
         for (int i = 0; i < boardSizeY; i++) {
             for (int j = 0; j < boardSizeX; j++) {
                 board[j][i] = boardTile.get(index);
@@ -220,11 +242,7 @@ public class Board {
             }
         }
         char[] newIds = board[newX][newY].getTileIds();
-        if (board[currentX][currentY].hasSubTile(newIds)) {
-            return true;
-        } else {
-            return false;
-        }
+        return board[currentX][currentY].hasSubTile(newIds) && !isLocked(newTile);
     }
 
     public int[] getPlayerStartCoords() {
@@ -242,19 +260,34 @@ public class Board {
     public ArrayList<Integer> getSmartThiefStartCoords() {
         return smartThiefStartCoords;
     }
-    public ArrayList<String> getFloorFollowingThiefColours() {return floorFollowingThiefColours;}
-    public ArrayList<String> getFloorFollowingThiefDirectionStart() {return floorFollowingThiefDirectionStart;}
-    public ArrayList<String> getFloorFollowingThiefDirectionTurn() {return floorFollowingThiefDirectionTurn;}
+
+    public ArrayList<String> getFloorFollowingThiefColours() {
+        return floorFollowingThiefColours;
+    }
+
+    public ArrayList<String> getFloorFollowingThiefDirectionStart() {
+        return floorFollowingThiefDirectionStart;
+    }
+
+    public ArrayList<String> getFloorFollowingThiefDirectionTurn() {
+        return floorFollowingThiefDirectionTurn;
+    }
 
     public ArrayList<Integer> getFloorFollowingThiefStartCoords() {
         return floorFollowingThiefStartCoords;
     }
 
-    public ArrayList<Integer> getCoinCoords() {return coinCoords;}
+    public ArrayList<Integer> getCoinCoords() {
+        return coinCoords;
+    }
+
     public ArrayList<Integer> getClockCoords() {
         return clockCoords;
     }
-    public ArrayList<String> getLeverColours(){return leverColours;}
+
+    public ArrayList<String> getLeverColours() {
+        return leverColours;
+    }
 
     public ArrayList<Integer> getLeverCoords() {
         return leverCoords;
@@ -288,7 +321,9 @@ public class Board {
         return boardSizeY;
     }
 
-    public ArrayList<String> getCoinColor() {return coinColor;}
+    public ArrayList<String> getCoinColor() {
+        return coinColor;
+    }
 
     public ArrayList<Tile> getBoardTile() {
         return boardTile;
