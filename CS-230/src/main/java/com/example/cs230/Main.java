@@ -27,7 +27,7 @@ import java.io.FileNotFoundException;
 //TODO: Floor Following Thief:
     //TODO: Draw                        Dimitrios   DONE
     //TODO: Movement Transitions        Vic         DONE
-    //TODO: Movement Animation
+    //TODO: Movement Animation          Vic         DONE
 
 //TODO: Coins:
     //TODO: Draw                        Omar        DONE

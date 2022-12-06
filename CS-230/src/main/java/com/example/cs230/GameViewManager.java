@@ -57,6 +57,7 @@ public class GameViewManager {
 
     private Timer timer;
     private final boolean isTimerEnd = false;
+    private Ninja chosenNinja;
 
     /**
      * Creates a GameViewManager.
@@ -72,25 +73,13 @@ public class GameViewManager {
      * @param chosenNinja The player character.
      */
     public void createNewGame(Stage stage, Ninja chosenNinja) {
+        this.chosenNinja = chosenNinja;
         this.menuStage = stage;
         this.menuStage.hide();
         gameOver = new GameOverViewManager();
         createBackground();
         createBoard();
-        createDoor();
-        createClock();
-        createGoldenGate();
-        createSilverGate();
-        createLever();
-        createCoins();
-        createBomb();
-        createAssassin();
-        createFloorFollowingThief();
-        createPlayer(chosenNinja);
-        createSmartThief();
-
-        updateTopRow();
-        createGameLoop();
+        createStuff();
         topRow.setAlignment(Pos.CENTER_RIGHT);
         gamePane.getChildren().add(topRow);
         gamePane.getChildren().add(gamePlayPane);
@@ -105,6 +94,23 @@ public class GameViewManager {
         gameScene = new Scene(gamePane, GAME_WIDTH, GAME_HEIGHT);
         gameStage = new Stage();
         gameStage.setScene(gameScene);
+    }
+
+    private void createStuff() {
+        createDoor();
+        createClock();
+        createGoldenGate();
+        createSilverGate();
+        createLever();
+        createCoins();
+        createBomb();
+        createAssassin();
+        createFloorFollowingThief();
+        createPlayer(chosenNinja);
+        createSmartThief();
+
+        updateTopRow();
+        createGameLoop();
     }
 
     private void createGameLoop() {
@@ -363,6 +369,7 @@ public class GameViewManager {
         gamePlayPane.getChildren().clear();
         currentBoard = new Board(inputLevel, GAME_WIDTH);
         gamePlayPane.setLeft(currentBoard.getBoardPane());
+        createStuff();
 
     }
 

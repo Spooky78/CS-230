@@ -24,6 +24,7 @@ public class FloorFollowingThief extends NPC {
     private Board gameBoard;
     private StackPane ffThiefStackPane;
     private int[] coords;
+    int[] coordsFinal = new int[2];
     private int[] animationCoords;
     private int indexID;
     int previous = 0;
@@ -41,7 +42,8 @@ public class FloorFollowingThief extends NPC {
 
     protected void createNPC() {
         Image ffThiefImage = new Image(
-                Objects.requireNonNull(getClass().getResourceAsStream(FFTHIEF_DOWN_PATH)));
+                Objects.requireNonNull(getClass().getResourceAsStream(FFTHIEF_UP_PATH)));
+        System.out.println("FUCKKK");
         ffThief = new ImageView(ffThiefImage);
         ffThief.setFitWidth(50);
         ffThief.setFitHeight(50);
@@ -54,29 +56,30 @@ public class FloorFollowingThief extends NPC {
         String startDirection = gameBoard.getFloorFollowingThiefDirectionStart().get(indexID);
         String turnDirection = gameBoard.getFloorFollowingThiefDirectionTurn().get(indexID);
         String direction = startDirection + " " + turnDirection;
-        System.out.println(direction);
         switch (direction) {
             case "RIGHT ANTICLOCKWISE":
-                //startRightAnitclockwiseAnimation();
-                startRightAnticlockwiseTransition();
+                startRightAnitclockwiseAnimation();
                 break;
             case "RIGHT CLOCKWISE":
                 startRightClockwiseTransition();
                 break;
             case "LEFT ANTICLOCKWISE":
-                startLeftAntiClockwiseTransition();
+                //startLeftAntiClockwiseTransition();
+                startLeftAnticlockwiseAnimation();
                 break;
             case "LEFT CLOCKWISE":
                 startLeftClockwiseTransition();
                 break;
             case "DOWN ANTICLOCKWISE":
-                startDownAntiClockwiseTransition();
+                //startDownAntiClockwiseTransition();
+                startDownAntiClockwiseAnimation();
                 break;
             case "DOWN CLOCKWISE":
                 startDownClockwiseTransition();
                 break;
             case "UP ANTICLOCKWISE":
-                startUpAntiClockwiseTransition();
+                //startUpAntiClockwiseTransition();
+                startUpAnticloackwiseAnimation();
                 break;
             case "UP CLOCKWISE":
                 startUpClockwiseTransition();
@@ -84,37 +87,171 @@ public class FloorFollowingThief extends NPC {
         }
 
     }
-
     private void startRightAnitclockwiseAnimation() {
         SequentialTransition animation = startRightAnticlockwiseTransition();
+        coordsFinal = new int[]{gameBoard.getFloorFollowingThiefStartCoords().get(indexID*2),
+                gameBoard.getFloorFollowingThiefStartCoords().get((indexID*2)+1)};
         setImage("RIGHT");
+        animation.play();
         Timer timer = new Timer();
         int scheduleCount = 0;
-        int coordsCounter = coords[0];
+
         while (scheduleCount < 100) {
-            scheduleCount = moveRightTile(timer, scheduleCount, coordsCounter, animation);
-            setImage("DOWN");
+            moveRightTile(timer, scheduleCount, animation);
+            scheduleCount += 1;
+            moveUpTile(timer, scheduleCount, animation);
+            scheduleCount += 1;
+            moveLeftTile(timer, scheduleCount, animation);
+            scheduleCount += 1;
+            moveDownTile(timer, scheduleCount, animation);
+            scheduleCount += 1;
         }
     }
 
-    private int moveRightTile(Timer timer, int scheduleCount, int coordsCounter, SequentialTransition animation) {
+    private void startUpAnticloackwiseAnimation() {
+        SequentialTransition animation = startUpAntiClockwiseTransition();
+        coordsFinal = new int[]{gameBoard.getFloorFollowingThiefStartCoords().get(indexID*2),
+                gameBoard.getFloorFollowingThiefStartCoords().get((indexID*2)+1)};
+        setImage("UP");
+        animation.play();
+        Timer timer = new Timer();
+        int scheduleCount = 0;
+
+        while (scheduleCount < 100) {
+            moveUpTile(timer, scheduleCount, animation);
+            scheduleCount += 1;
+            moveLeftTile(timer, scheduleCount, animation);
+            scheduleCount += 1;
+            moveDownTile(timer, scheduleCount, animation);
+            scheduleCount += 1;
+            moveRightTile(timer, scheduleCount, animation);
+            scheduleCount += 1;
+        }
+    }
+
+    private void startLeftAnticlockwiseAnimation() {
+        SequentialTransition animation = startLeftAntiClockwiseTransition();
+        coordsFinal = new int[]{gameBoard.getFloorFollowingThiefStartCoords().get(indexID*2),
+                gameBoard.getFloorFollowingThiefStartCoords().get((indexID*2)+1)};
+        setImage("LEFT");
+        animation.play();
+        Timer timer = new Timer();
+        int scheduleCount = 0;
+
+        while (scheduleCount < 100) {
+            moveLeftTile(timer, scheduleCount, animation);
+            scheduleCount += 1;
+            moveDownTile(timer, scheduleCount, animation);
+            scheduleCount += 1;
+            moveRightTile(timer, scheduleCount, animation);
+            scheduleCount += 1;
+            moveUpTile(timer, scheduleCount, animation);
+            scheduleCount += 1;
+        }
+    }
+
+    private void startDownAntiClockwiseAnimation() {
+        SequentialTransition animation = startLeftAntiClockwiseTransition();
+        coordsFinal = new int[]{gameBoard.getFloorFollowingThiefStartCoords().get(indexID*2),
+                gameBoard.getFloorFollowingThiefStartCoords().get((indexID*2)+1)};
+        setImage("DOWN");
+        animation.play();
+        Timer timer = new Timer();
+        int scheduleCount = 0;
+
+        while (scheduleCount < 100) {
+            moveLeftTile(timer, scheduleCount, animation);
+            scheduleCount += 1;
+            moveDownTile(timer, scheduleCount, animation);
+            scheduleCount += 1;
+            moveRightTile(timer, scheduleCount, animation);
+            scheduleCount += 1;
+            moveUpTile(timer, scheduleCount, animation);
+            scheduleCount += 1;
+        }
+    }
+
+    private int moveRightTile(Timer timer, int scheduleCount, SequentialTransition animation) {
         int counter = 0;
         while(counter < timings.get(scheduleCount)) {
-            int finalScheduleCount = scheduleCount;
+            int finalCount = counter;
             TimerTask task = new TimerTask() {
                 @Override
                 public void run() {
                     animation.pause();
                     setImage("RIGHT");
-                    coords[0] += 1;
-                    animation.playFrom(String.valueOf(MILLS_DELAY_TILE * (timings.get(finalScheduleCount) + previous)));
+                    coordsFinal[0] += 1;
+                    System.out.println(coordsFinal[0] + " "+coordsFinal[1]);
+                    animation.playFrom(String.valueOf(MILLS_DELAY_TILE * (finalCount + previous)));
                 }
             };
-            timer.schedule(task, (long)MILLS_DELAY_TILE * (timings.get(scheduleCount)));
-            scheduleCount += 1;
-            previous += timings.get(scheduleCount);
-            coordsCounter += 1;
+            timer.schedule(task, (long)MILLS_DELAY_TILE * (counter + previous));
+            counter +=1;
         }
+        previous += timings.get(scheduleCount);
+        return scheduleCount;
+    }
+
+    private int moveLeftTile(Timer timer, int scheduleCount, SequentialTransition animation) {
+        int counter = 0;
+        while(counter < timings.get(scheduleCount)) {
+            int finalCount = counter;
+            TimerTask task = new TimerTask() {
+                @Override
+                public void run() {
+                    animation.pause();
+                    setImage("LEFT");
+                    coordsFinal[0] -= 1;
+                    System.out.println(coordsFinal[0] + " "+coordsFinal[1]);
+                    animation.playFrom(String.valueOf(MILLS_DELAY_TILE * (finalCount + previous)));
+                }
+            };
+            timer.schedule(task, (long)MILLS_DELAY_TILE * (counter + previous));
+            counter +=1;
+        }
+        previous += timings.get(scheduleCount);
+        return scheduleCount;
+    }
+
+    private int moveUpTile(Timer timer, int scheduleCount, SequentialTransition animation){
+        int counter = 0;
+        while(counter < timings.get(scheduleCount)){
+            int finalCount = counter;
+            TimerTask task = new TimerTask() {
+                @Override
+                public void run() {
+                    animation.pause();
+                    setImage("UP");
+                    coordsFinal[1] -= 1;
+                    System.out.println(coordsFinal[0] + " "+coordsFinal[1]);
+                    animation.playFrom(String.valueOf(MILLS_DELAY_TILE * (finalCount+previous)));
+                }
+            };
+            timer.schedule(task, (long)MILLS_DELAY_TILE * (counter+previous));
+            counter +=1;
+        }
+        previous += timings.get(scheduleCount);
+        return scheduleCount;
+    }
+
+    private int moveDownTile(Timer timer, int scheduleCount, SequentialTransition animation){
+        int counter = 1;
+        while(counter <= timings.get(scheduleCount)){
+            int finalCount = counter;
+            TimerTask task = new TimerTask() {
+                @Override
+                public void run() {
+                    animation.pause();
+                    setImage("DOWN");
+                    coordsFinal[1] += 1;
+                    System.out.println(coordsFinal[0] + " "+coordsFinal[1]);
+                    animation.playFrom(String.valueOf(MILLS_DELAY_TILE * (finalCount+previous)));
+                }
+            };
+            timer.schedule(task, (long)MILLS_DELAY_TILE * (counter+previous));
+            counter += 1;
+        }
+        previous += timings.get(scheduleCount);
         return scheduleCount;
     }
 
@@ -136,7 +273,6 @@ public class FloorFollowingThief extends NPC {
             timings.add(currentTiming);
             count +=1;
         }
-        startRightTransition.play();
         return startRightTransition;
     }
 
@@ -180,7 +316,7 @@ public class FloorFollowingThief extends NPC {
             timings.add(currentTiming);
             count += 1;
         }
-        startLeftAntiClockwiseTransition.play();
+        //startLeftAntiClockwiseTransition.play();
         return startLeftAntiClockwiseTransition;
     }
 
@@ -222,9 +358,9 @@ public class FloorFollowingThief extends NPC {
             //Right movement
             currentTiming = rightTransitionLoop(startUpAntiClockwiseTransition);
             timings.add(currentTiming);
-            count += 0;
+            count += 1;
         }
-        startUpAntiClockwiseTransition.play();
+        //startUpAntiClockwiseTransition.play();
         return startUpAntiClockwiseTransition;
     }
 
@@ -245,6 +381,7 @@ public class FloorFollowingThief extends NPC {
             //Left movement
             currentTiming = leftTransitionLoop(startUpClockwiseTransition);
             timings.add(currentTiming);
+            count += 1;
         }
         startUpClockwiseTransition.play();
         return startUpClockwiseTransition;
@@ -268,7 +405,7 @@ public class FloorFollowingThief extends NPC {
             timings.add(currentTiming);
             count += 1;
         }
-        startDownAntiClockwiseTransition.play();
+        //startDownAntiClockwiseTransition.play();
         return startDownAntiClockwiseTransition;
     }
 
@@ -375,15 +512,23 @@ public class FloorFollowingThief extends NPC {
     }
 
     private void setImage(String direction) {
-        Image ffThiefImage = switch (direction) {
-            case "LEFT" -> new Image(
-                    Objects.requireNonNull(getClass().getResourceAsStream(FFTHIEF_LEFT_PATH)));
-            case "RIGHT" -> new Image(
+        Image ffThiefImage = null;
+        switch (direction) {
+            case "LEFT":
+                ffThiefImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream(FFTHIEF_LEFT_PATH)));
+                break;
+            case "RIGHT":
+                ffThiefImage = new Image(
                     Objects.requireNonNull(getClass().getResourceAsStream(FFTHIEF_RIGHT_PATH)));
-            case "UP" -> new Image(
+                break;
+            case "UP":
+                ffThiefImage = new Image(
                     Objects.requireNonNull(getClass().getResourceAsStream(FFTHIEF_UP_PATH)));
-            default -> new Image(
+                break;
+            default:
+                ffThiefImage = new Image(
                     Objects.requireNonNull(getClass().getResourceAsStream(FFTHIEF_DOWN_PATH)));
+                break;
         };
         ffThief.setImage(ffThiefImage);
         ffThief.setFitWidth(50);
@@ -401,6 +546,6 @@ public class FloorFollowingThief extends NPC {
 
     @Override
     public int[] getCoords() {
-        return coords;
+        return coordsFinal;
     }
 }
