@@ -359,4 +359,14 @@ public class FloorFollowingThief extends NPC {
     public ImageView getffThief() {
         return ffThief;
     }
+
+    @Override
+    public StackPane getStackPane() {
+        return ffThiefStackPane;
+    }
+
+    @Override
+    public int[] getCoords() {
+        return coords;
+    }
 }

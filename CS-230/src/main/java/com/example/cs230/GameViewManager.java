@@ -47,6 +47,7 @@ public class GameViewManager {
     private Door door;
     private ArrayList<StackPane> allAssassinStacks = new ArrayList<>();
     private ArrayList<FlyingAssassin> allAssassins = new ArrayList<>();
+    private ArrayList<NPC> allKillable = new ArrayList<>();
     private ArrayList<Coin> allCoins = new ArrayList<>();
     private ArrayList<Clock> allClock = new ArrayList<>();
     private int timeLeft;
@@ -109,10 +110,15 @@ public class GameViewManager {
             @Override
             public void handle(long l) {
                 for (FlyingAssassin allAssassin : allAssassins) {
-                    if (allAssassin.collidedPlayer(currentPlayer.getPlayerCoords(), currentPlayerStack, gamePlayPane, gameStage, currentPlayer)) {
+                    if (allAssassin.collidedPlayer(currentPlayer.getPlayerCoords(), currentPlayerStack, gamePlayPane, gameStage)) {
                         gameOver.createGameOver(gameStage, currentPlayer);
                         allAssassin.setLose();
                     }
+//                    for(int i=0; i<allKillable.size(); i++) {
+//                        if (allAssassin.collidedPlayer(allKillable.get(i).getCoords(), allKillable.get(i).getStackPane(), gamePlayPane, gameStage)) {
+//
+//                        }
+//                    }
                 }
                 updateTopRow();
                 ArrayList<Coin> coinsToRemove = new ArrayList<>();
@@ -169,7 +175,6 @@ public class GameViewManager {
         int playerStartY = playerStart[1];
         currentPlayerStack.setLayoutX(playerStartX * tileSize + (tileSize / 2.0));
         currentPlayerStack.setLayoutY(playerStartY * tileSize + (tileSize / 2.0));
-
         gamePlayPane.getChildren().add(currentPlayerStack);
     }
 
@@ -183,6 +188,7 @@ public class GameViewManager {
             StackPane currentStackPane = new StackPane();
             SmartThief currentSmartThief = new SmartThief(currentBoard, currentCoords, currentStackPane);
             currentStackPane.getChildren().add(currentSmartThief.getSmartThief());
+            allKillable.add(currentSmartThief);
             gamePlayPane.getChildren().add(currentStackPane);
         }
     }

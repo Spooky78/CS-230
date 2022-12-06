@@ -40,6 +40,16 @@ public class SmartThief extends NPC {
     protected void move() {
     }
 
+    @Override
+    protected StackPane getStackPane() {
+        return sThiefStackPane;
+    }
+
+    @Override
+    public int[] getCoords() {
+        return coords;
+    }
+
     public ImageView getSmartThief() {
         return sThief;
     }

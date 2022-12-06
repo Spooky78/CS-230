@@ -72,15 +72,23 @@ public class FlyingAssassin extends NPC {
         }
     }
 
-    public boolean collidedPlayer(int[] killableCoords, StackPane killable, BorderPane pane, Stage gameStage, Player player){
+    @Override
+    public StackPane getStackPane() {
+        return assassinStackPane;
+    }
+
+    @Override
+    public int[] getCoords() {
+        return coords;
+    }
+
+    public boolean collidedPlayer(int[] killableCoords, StackPane killable, BorderPane pane, Stage gameStage){
         if (killableCoords[0] +1 == coords[0] && killableCoords[1] +1 == coords[1] & !isKilled) {
             pane.getChildren().remove(killable);
             System.out.println("DIE");
             isKilled = true;
             timer.cancel();
             timer.purge();
-//            GameOverViewManager gameOver = new GameOverViewManager();
-            //
             return true;
         } else {
             return false;
