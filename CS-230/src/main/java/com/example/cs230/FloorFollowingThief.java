@@ -26,6 +26,7 @@ public class FloorFollowingThief extends NPC {
     private int[] coords;
     private int[] animationCoords;
     private int indexID;
+    int previous = 0;
     private ArrayList<Integer> timings = new ArrayList<>();
 
     public FloorFollowingThief (Board board, int[] startCoords, StackPane stackPane, int indexID) {
@@ -56,8 +57,8 @@ public class FloorFollowingThief extends NPC {
         System.out.println(direction);
         switch (direction) {
             case "RIGHT ANTICLOCKWISE":
-                //startRightAnticlockwiseMovement();
-                startRightAnticlockwiseTransition();
+                startRightAnitclockwiseAnimation();
+                //startRightAnticlockwiseTransition();
                 break;
             case "RIGHT CLOCKWISE":
                 startRightClockwiseTransition();
@@ -82,6 +83,40 @@ public class FloorFollowingThief extends NPC {
                 break;
         }
 
+    }
+
+    private void startRightAnitclockwiseAnimation() {
+        SequentialTransition animation = startRightAnticlockwiseTransition();
+        setImage("RIGHT");
+        Timer timer = new Timer();
+        int scheduleCount = 0;
+        int coordsCounter = coords[0];
+//        while (scheduleCount < 100) {
+//
+//            scheduleCount = moveRightTile(timer, scheduleCount, coordsCounter, animation);
+//            setImage("DOWN");
+//        }
+    }
+
+    private int moveRightTile(Timer timer, int scheduleCount, int coordsCounter, SequentialTransition animation) {
+        int counter = 0;
+        while(counter < timings.get(scheduleCount)) {
+            int finalScheduleCount = scheduleCount;
+            TimerTask task = new TimerTask() {
+                @Override
+                public void run() {
+                    animation.pause();
+                    setImage("RIGHT");
+                    coords[0] += 1;
+                    animation.playFrom(String.valueOf(MILLS_DELAY_TILE * (timings.get(finalScheduleCount) + previous)));
+                }
+            };
+            timer.schedule(task, (long)MILLS_DELAY_TILE * (timings.get(scheduleCount)));
+            scheduleCount += 1;
+            previous += timings.get(scheduleCount);
+            coordsCounter += 1;
+        }
+        return scheduleCount;
     }
 
     private SequentialTransition startRightAnticlockwiseTransition() {
