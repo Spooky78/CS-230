@@ -27,12 +27,21 @@ public class GameViewManager {
     private static final int GAME_WIDTH = 600;
     private static final int GAME_HEIGHT = 600;
     private static final int SECOND = 1000;
-    private VBox gamePane;
     private final HBox topRow = new HBox();
-
-    private int currentLevel;
-
     private final BorderPane gamePlayPane = new BorderPane();
+    private final ArrayList<StackPane> allAssassinStacks = new ArrayList<>();
+    private final ArrayList<FlyingAssassin> allAssassins = new ArrayList<>();
+    private final ArrayList<NPC> allThieves = new ArrayList<>();
+    private final ArrayList<Coin> allCoins = new ArrayList<>();
+    private final ArrayList<Clock> allClock = new ArrayList<>();
+    private final ArrayList<Lever> allLever = new ArrayList<>();
+    private final ArrayList<Gate> allGates = new ArrayList<>();
+    private final ArrayList<Bomb> allBomb = new ArrayList<>();
+    private final ArrayList<Item> allItems = new ArrayList<>();
+    private final boolean isLose = false;
+    private final boolean isTimerEnd = false;
+    private VBox gamePane;
+    private int currentLevel;
     private Scene gameScene;
     private Stage gameStage;
     private Stage menuStage;
@@ -42,21 +51,11 @@ public class GameViewManager {
     private Board currentBoard;
     private Board newBoard;
     private Door door;
-    private final ArrayList<StackPane> allAssassinStacks = new ArrayList<>();
-    private final ArrayList<FlyingAssassin> allAssassins = new ArrayList<>();
-    private final ArrayList<NPC> allThieves = new ArrayList<>();
-    private final ArrayList<Coin> allCoins = new ArrayList<>();
-    private final ArrayList<Clock> allClock = new ArrayList<>();
-    private final ArrayList<Lever> allLever = new ArrayList<>();
-    private final ArrayList<Gate> allGates = new ArrayList<>();
     private Gate goldenGate;
     private Gate silverGate;
     private int timeLeft;
-    private final boolean isLose = false;
     private GameOverViewManager gameOver;
-
     private Timer timer;
-    private final boolean isTimerEnd = false;
     private Ninja chosenNinja;
 
     /**
@@ -118,7 +117,8 @@ public class GameViewManager {
             @Override
             public void handle(long l) {
                 for (FlyingAssassin allAssassin : allAssassins) {
-                    if (allAssassin.collidedPlayer(currentPlayer.getPlayerCoords(), currentPlayerStack, gamePlayPane, gameStage)) {
+                    if (allAssassin.collidedPlayer(currentPlayer.getPlayerCoords(),
+                            currentPlayerStack, gamePlayPane, gameStage)) {
                         gameOver.createGameOver(gameStage, currentPlayer);
                         allAssassin.setLose();
                     }
@@ -134,11 +134,12 @@ public class GameViewManager {
                         coinsToRemove.add(allCoin);
                         currentPlayer.setScore(currentPlayer.getScore() + allCoin.getCoinScore());
                     }
-                    for (int i = 0; i< allThieves.size(); i++){
+                    for (int i = 0; i < allThieves.size(); i++) {
                         if (allCoin.isCollisionNPC(allThieves.get(i).getCoords())) {
                             gamePlayPane.getChildren().remove(allCoin.getCoinStackPane());
                             coinsToRemove.add(allCoin);
-                            currentPlayer.setScore(currentPlayer.getScore() + allCoin.getCoinScore());
+                            currentPlayer.setScore(
+                                    currentPlayer.getScore() + allCoin.getCoinScore());
                         }
                     }
                 }
@@ -168,14 +169,16 @@ public class GameViewManager {
                 }
 
                 for (Gate goldenGate : allGates) {
-                    if (goldenGate.getCanPass() && goldenGate.isCollisionPlayer1(currentPlayer.getPlayerCoords())) {
+                    if (goldenGate.getCanPass() &&
+                            goldenGate.isCollisionPlayer1(currentPlayer.getPlayerCoords())) {
                         currentPlayer.canMove = false;
                         System.out.println("Error");
                     }
                 }
 
                 for (Gate silverGate : allGates) {
-                    if (silverGate.getCanPass() && silverGate.isCollisionPlayer2(currentPlayer.getPlayerCoords())) {
+                    if (silverGate.getCanPass() &&
+                            silverGate.isCollisionPlayer2(currentPlayer.getPlayerCoords())) {
                         currentPlayer.canMove = false;
                         System.out.println("Error");
                     }
@@ -221,6 +224,20 @@ public class GameViewManager {
                 }
                 leverToRemove.clear();
 
+                for (Bomb allBombs : allBomb) {
+                    if (allBombs.isCollisionPlayer(currentPlayer.getPlayerCoords())) {
+                        int[] currentBomb = allBombs.getCoords();
+                        for (Item allitems : allItems) {
+                            int[] currentItem = allitems.getCoords();
+                            if (currentItem[0] == currentBomb[0] ||
+                                    currentItem[1] == currentBomb[1]) {
+                                System.out.println("test");
+                            }
+                        }
+
+                    }
+
+                }
             }
         };
         gameTimer.start();
@@ -296,6 +313,7 @@ public class GameViewManager {
             int[] currentCoinCoords = {coords.get(i * 2), coords.get((i * 2) + 1)};
             Coin currentCoin = new Coin(coinColor.get(i), currentBoard, currentCoinCoords);
             allCoins.add(currentCoin);
+            allItems.add(currentCoin);
             gamePlayPane.getChildren().add(currentCoin.getCoinStackPane());
         }
     }
@@ -318,6 +336,7 @@ public class GameViewManager {
     private void createDoor() {
         int[] positionCoords = currentBoard.getDoorCoords();
         door = new Door(currentBoard, positionCoords);
+        allItems.add(door);
         gamePlayPane.getChildren().add(door.getDoorPane());
     }
 
@@ -327,6 +346,7 @@ public class GameViewManager {
             int[] positionCoords2 = {positionCoords.get(i), positionCoords.get(i + 1)};
             Clock clock = new Clock(currentBoard, positionCoords2);
             allClock.add(clock);
+            allItems.add(clock);
             gamePlayPane.getChildren().add(clock.getClockPane());
         }
     }
@@ -347,6 +367,7 @@ public class GameViewManager {
             int[] positionCoords2 = {positionCoords.get(i), positionCoords.get(i + 1)};
             silverGate = new Gate("SILVER", currentBoard, positionCoords2);
             allGates.add(silverGate);
+
             gamePlayPane.getChildren().add(silverGate.getGatePane());
         }
     }
@@ -356,6 +377,7 @@ public class GameViewManager {
         for (int i = 0; i < positionCoords.size(); i += 2) {
             int[] positionCoords2 = {positionCoords.get(i), positionCoords.get(i + 1)};
             Bomb bomb = new Bomb(currentBoard, positionCoords2);
+            allBomb.add(bomb);
 
             gamePlayPane.getChildren().add(bomb.getBombPane());
         }
