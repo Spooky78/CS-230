@@ -44,7 +44,7 @@ public class GameViewManager {
     private Door door;
     private final ArrayList<StackPane> allAssassinStacks = new ArrayList<>();
     private final ArrayList<FlyingAssassin> allAssassins = new ArrayList<>();
-    private final ArrayList<NPC> allKillable = new ArrayList<>();
+    private final ArrayList<NPC> allThieves = new ArrayList<>();
     private final ArrayList<Coin> allCoins = new ArrayList<>();
     private final ArrayList<Clock> allClock = new ArrayList<>();
     private final ArrayList<Lever> allLever = new ArrayList<>();
@@ -122,11 +122,6 @@ public class GameViewManager {
                         gameOver.createGameOver(gameStage, currentPlayer);
                         allAssassin.setLose();
                     }
-//                    for(int i=0; i<allKillable.size(); i++) {
-//                        if (allAssassin.collidedPlayer(allKillable.get(i).getCoords(), allKillable.get(i).getStackPane(), gamePlayPane, gameStage)) {
-//
-//                        }
-//                    }
                 }
                 updateTopRow();
                 ArrayList<Coin> coinsToRemove = new ArrayList<>();
@@ -138,6 +133,13 @@ public class GameViewManager {
                         gamePlayPane.getChildren().remove(allCoin.getCoinStackPane());
                         coinsToRemove.add(allCoin);
                         currentPlayer.setScore(currentPlayer.getScore() + allCoin.getCoinScore());
+                    }
+                    for (int i = 0; i< allThieves.size(); i++){
+                        if (allCoin.isCollisionNPC(allThieves.get(i).getCoords())) {
+                            gamePlayPane.getChildren().remove(allCoin.getCoinStackPane());
+                            coinsToRemove.add(allCoin);
+                            currentPlayer.setScore(currentPlayer.getScore() + allCoin.getCoinScore());
+                        }
                     }
                 }
                 for (Coin coin : coinsToRemove) {
@@ -250,7 +252,7 @@ public class GameViewManager {
             SmartThief currentSmartThief =
                     new SmartThief(currentBoard, currentCoords, currentStackPane);
             currentStackPane.getChildren().add(currentSmartThief.getSmartThief());
-            allKillable.add(currentSmartThief);
+            allThieves.add(currentSmartThief);
             gamePlayPane.getChildren().add(currentStackPane);
         }
     }
@@ -264,6 +266,7 @@ public class GameViewManager {
             FloorFollowingThief currentThief =
                     new FloorFollowingThief(currentBoard, currentCoords, ffThiefStack, i);
             ffThiefStack.getChildren().add(currentThief.getffThief());
+            allThieves.add(currentThief);
             gamePlayPane.getChildren().add(ffThiefStack);
         }
     }
