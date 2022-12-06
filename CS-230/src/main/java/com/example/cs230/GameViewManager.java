@@ -31,11 +31,11 @@ public class GameViewManager {
     private static final int GAME_HEIGHT = 600;
     private static final int SECOND = 1000;
     private VBox gamePane;
-    private HBox topRow = new HBox();
+    private final HBox topRow = new HBox();
 
     private int currentLevel;
 
-    private BorderPane gamePlayPane = new BorderPane();
+    private final BorderPane gamePlayPane = new BorderPane();
     private Scene gameScene;
     private Stage gameStage;
     private Stage menuStage;
@@ -45,16 +45,16 @@ public class GameViewManager {
     private Board currentBoard;
     private Board newBoard;
     private Door door;
-    private ArrayList<StackPane> allAssassinStacks = new ArrayList<>();
-    private ArrayList<FlyingAssassin> allAssassins = new ArrayList<>();
-    private ArrayList<NPC> allKillable = new ArrayList<>();
-    private ArrayList<Coin> allCoins = new ArrayList<>();
-    private ArrayList<Clock> allClock = new ArrayList<>();
+    private final ArrayList<StackPane> allAssassinStacks = new ArrayList<>();
+    private final ArrayList<FlyingAssassin> allAssassins = new ArrayList<>();
+    private final ArrayList<NPC> allKillable = new ArrayList<>();
+    private final ArrayList<Coin> allCoins = new ArrayList<>();
+    private final ArrayList<Clock> allClock = new ArrayList<>();
     private int timeLeft;
-    private boolean isLose = false;
+    private final boolean isLose = false;
     private GameOverViewManager gameOver;
     private Timer timer;
-    private boolean isTimerEnd = false;
+    private final boolean isTimerEnd = false;
 
     /**
      * Creates a GameViewManager.
@@ -105,12 +105,13 @@ public class GameViewManager {
         gameStage.setScene(gameScene);
     }
 
-    private void createGameLoop(){
+    private void createGameLoop() {
         gameTimer = new AnimationTimer() {
             @Override
             public void handle(long l) {
                 for (FlyingAssassin allAssassin : allAssassins) {
-                    if (allAssassin.collidedPlayer(currentPlayer.getPlayerCoords(), currentPlayerStack, gamePlayPane, gameStage)) {
+                    if (allAssassin.collidedPlayer(currentPlayer.getPlayerCoords(),
+                            currentPlayerStack, gamePlayPane, gameStage)) {
                         gameOver.createGameOver(gameStage, currentPlayer);
                         allAssassin.setLose();
                     }
@@ -148,14 +149,12 @@ public class GameViewManager {
                 clockToRemove.clear();
 
 
-                    if (door.isCollectedByPlayer(currentPlayer.getPlayerCoords())) {
-                        gamePlayPane.getChildren().remove(door.getDoorPane());
-                        currentLevel += 1;
-                        System.out.println(currentLevel);
-                        nextLevel();
-                    }
-
-
+                if (door.isCollectedByPlayer(currentPlayer.getPlayerCoords())) {
+                    gamePlayPane.getChildren().remove(door.getDoorPane());
+                    currentLevel += 1;
+                    System.out.println(currentLevel);
+                    nextLevel();
+                }
 
 
             }
@@ -186,7 +185,8 @@ public class GameViewManager {
             currentCoords[0] = coords.get(i);
             currentCoords[1] = coords.get(i + 1);
             StackPane currentStackPane = new StackPane();
-            SmartThief currentSmartThief = new SmartThief(currentBoard, currentCoords, currentStackPane);
+            SmartThief currentSmartThief =
+                    new SmartThief(currentBoard, currentCoords, currentStackPane);
             currentStackPane.getChildren().add(currentSmartThief.getSmartThief());
             allKillable.add(currentSmartThief);
             gamePlayPane.getChildren().add(currentStackPane);
@@ -196,10 +196,11 @@ public class GameViewManager {
     private void createFloorFollowingThief() {
         ArrayList<String> colours = currentBoard.getFloorFollowingThiefColours();
         ArrayList<Integer> coords = currentBoard.getFloorFollowingThiefStartCoords();
-        for (int i = 0; i <colours.size(); i++){
-            int[] currentCoords = {coords.get(i * 2), coords.get(i * 2 +1 )};
+        for (int i = 0; i < colours.size(); i++) {
+            int[] currentCoords = {coords.get(i * 2), coords.get(i * 2 + 1)};
             StackPane ffThiefStack = new StackPane();
-            FloorFollowingThief currentThief = new FloorFollowingThief(currentBoard, currentCoords, ffThiefStack, i);
+            FloorFollowingThief currentThief =
+                    new FloorFollowingThief(currentBoard, currentCoords, ffThiefStack, i);
             ffThiefStack.getChildren().add(currentThief.getffThief());
             gamePlayPane.getChildren().add(ffThiefStack);
         }
@@ -212,7 +213,8 @@ public class GameViewManager {
         for (int i = 0; i < direction.size(); i += 1) {
             int[] currentCoords = {coords.get(i * 2), coords.get(i * 2 + 1)};
             StackPane currentStackPane = new StackPane();
-            FlyingAssassin currentAssassin = new FlyingAssassin(currentBoard, currentCoords, currentStackPane, this, i);
+            FlyingAssassin currentAssassin =
+                    new FlyingAssassin(currentBoard, currentCoords, currentStackPane, this, i);
             allAssassinStacks.add(currentStackPane);
             allAssassins.add(currentAssassin);
             currentStackPane.getChildren().add(currentAssassin.getAssassin());
@@ -253,8 +255,8 @@ public class GameViewManager {
     private void createClock() {
         ArrayList<Integer> positionCoords = currentBoard.getClockCoords();
         for (int i = 0; i < positionCoords.size(); i += 2) {
-            int[] positionCoords2 ={positionCoords.get(i), positionCoords.get(i + 1)};
-            Clock clock = new Clock(currentBoard,positionCoords2);
+            int[] positionCoords2 = {positionCoords.get(i), positionCoords.get(i + 1)};
+            Clock clock = new Clock(currentBoard, positionCoords2);
             allClock.add(clock);
             gamePlayPane.getChildren().add(clock.getClockPane());
         }
@@ -263,8 +265,8 @@ public class GameViewManager {
     private void createGoldenGate() {
         ArrayList<Integer> positionCoords = currentBoard.getGate1Coords();
         for (int i = 0; i < positionCoords.size(); i += 2) {
-            int[] positionCoords2 ={positionCoords.get(i), positionCoords.get(i + 1)};
-            Gate gate = new Gate("GOLD",currentBoard,positionCoords2);
+            int[] positionCoords2 = {positionCoords.get(i), positionCoords.get(i + 1)};
+            Gate gate = new Gate("GOLD", currentBoard, positionCoords2);
             gamePlayPane.getChildren().add(gate.getGatePane());
         }
     }
@@ -272,8 +274,8 @@ public class GameViewManager {
     private void createSilverGate() {
         ArrayList<Integer> positionCoords = currentBoard.getGate2Coords();
         for (int i = 0; i < positionCoords.size(); i += 2) {
-            int[] positionCoords2 ={positionCoords.get(i), positionCoords.get(i + 1)};
-            Gate gate = new Gate("SILVER",currentBoard,positionCoords2);
+            int[] positionCoords2 = {positionCoords.get(i), positionCoords.get(i + 1)};
+            Gate gate = new Gate("SILVER", currentBoard, positionCoords2);
             gamePlayPane.getChildren().add(gate.getGatePane());
         }
     }
@@ -281,8 +283,9 @@ public class GameViewManager {
     private void createBomb() {
         ArrayList<Integer> positionCoords = currentBoard.getBombCoords();
         for (int i = 0; i < positionCoords.size(); i += 2) {
-           int[] positionCoords2 ={positionCoords.get(i), positionCoords.get(i + 1)};
-            Bomb bomb = new Bomb(currentBoard,positionCoords2);
+            int[] positionCoords2 = {positionCoords.get(i), positionCoords.get(i + 1)};
+            Bomb bomb = new Bomb(currentBoard, positionCoords2);
+
             gamePlayPane.getChildren().add(bomb.getBombPane());
         }
     }
@@ -293,10 +296,10 @@ public class GameViewManager {
         gamePlayPane.setLeft(currentBoard.getBoardPane());
     }
 
-    private void nextLevel(){
-        String inputLevel = "level0" + currentLevel +".txt";
+    private void nextLevel() {
+        String inputLevel = "level0" + currentLevel + ".txt";
         gamePlayPane.getChildren().remove(currentBoard);
-        currentBoard = new Board(inputLevel,GAME_WIDTH);
+        currentBoard = new Board(inputLevel, GAME_WIDTH);
         gamePlayPane.getChildren().add(currentBoard.getBoardPane());
 
     }
