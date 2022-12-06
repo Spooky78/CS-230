@@ -6,17 +6,19 @@ import javafx.scene.layout.StackPane;
 
 import java.util.Objects;
 
-public class Lever {
+public class Lever extends Item{
     private static final String LEVER_GOLD_PATH = "/Items/goldKey.png";
     private static final String LEVER_SILVER_PATH = "/Items/silverKey.png";
     private ImageView lever;
     private StackPane leverPane = new StackPane();
     private Board currentBoard;
     private String leverColour;
+    private int[] coords;
 
     public Lever(Board currentBoard, int[] position, String colour) {
         this.currentBoard = currentBoard;
         this.leverColour = colour;
+        coords = position;
         createItem(position);
     }
 
@@ -44,5 +46,15 @@ public class Lever {
         return leverPane;
     }
     public String getLeverColour() {return leverColour;}
+
+    @Override
+    protected StackPane getStackPane() {
+        return leverPane;
+    }
+
+    @Override
+    protected int[] getCoords() {
+        return coords;
+    }
 }
 

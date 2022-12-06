@@ -6,18 +6,18 @@ import javafx.scene.layout.StackPane;
 
 import java.util.Objects;
 
-public class Gate {
+public class Gate extends Item{
     private static final String GOLDEN_GATE_PATH = "/Items/goldGate.png";
     private static final String SILVER_GATE_PATH = "/Items/silverGate.png";
     private static final int GATE_SIZE = 50;
     private ImageView gate = new ImageView();
-    private ImageView silverGate = new ImageView();
-    private StackPane silverGatePane = new StackPane();
     private StackPane gatePane = new StackPane();
     private final Board currentBoard;
+    private int[] coords;
 
     public Gate(String gateType, Board board, int[] position) {
         this.currentBoard = board;
+        coords = position;
         createAGate(gateType, position);
     }
 
@@ -46,4 +46,13 @@ public class Gate {
 
     public StackPane getGatePane() { return gatePane; }
 
+    @Override
+    protected StackPane getStackPane() {
+        return gatePane;
+    }
+
+    @Override
+    protected int[] getCoords() {
+        return coords;
+    }
 }

@@ -6,14 +6,14 @@ import javafx.scene.layout.StackPane;
 
 import java.util.Objects;
 
-public class Door {
+public class Door extends Item{
 
     private boolean isPicked = false;
     private static final String DOOR_PATH = "/Items/door.png";
     private final Board currentBoard;
     private ImageView door;
     StackPane doorPane = new StackPane();
-    private int[] doorPosition;
+    private int[] coords;
 
     public Door(Board currentBoard, int[] position) {
         this.currentBoard = currentBoard;
@@ -31,11 +31,11 @@ public class Door {
         int tileSize = currentBoard.getTileSize();
         doorPane.setLayoutX((position[0] * tileSize) - (tileSize / 2));
         doorPane.setLayoutY((position[1] * tileSize) - (tileSize / 2));
-        doorPosition = currentBoard.getDoorCoords();
+        coords = currentBoard.getDoorCoords();
     }
 
     public boolean isCollectedByPlayer(int[] playerCoords) {
-        if (playerCoords[0] +1 == doorPosition[0] && playerCoords[1] +1 == doorPosition[1] && !isPicked) {
+        if (playerCoords[0] +1 == coords[0] && playerCoords[1] +1 == coords[1] && !isPicked) {
 
             isPicked = true;
             return true;
@@ -49,5 +49,14 @@ public class Door {
         return doorPane;
     }
 
+    @Override
+    protected StackPane getStackPane() {
+        return doorPane;
+    }
+
+    @Override
+    protected int[] getCoords() {
+        return coords;
+    }
 }
 

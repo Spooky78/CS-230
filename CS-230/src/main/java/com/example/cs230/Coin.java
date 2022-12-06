@@ -7,7 +7,7 @@ import javafx.scene.layout.StackPane;
 
 import java.util.Objects;
 
-public class Coin {
+public class Coin extends  Item{
     private static final String BRONZE_COIN_PATH = "/Items/CoinBronze.png";
     private static final String SILVER_COIN_PATH = "/Items/CoinSilver.png";
     private static final String GOLD_COIN_PATH = "/Items/CoinGold.png";
@@ -80,4 +80,13 @@ public class Coin {
     public ImageView getCoin() {return coin;}
     public int getCoinScore() {return coinScore;}
 
+    @Override
+    protected StackPane getStackPane() {
+        return coinStackPane;
+    }
+
+    @Override
+    protected int[] getCoords() {
+        return coinPosition;
+    }
 }

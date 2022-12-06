@@ -5,14 +5,16 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import java.util.Objects;
 
-public class Bomb {
+public class Bomb extends Item{
     private static final String BOMB_PATH = "/Items/bomb.png";
     private ImageView bomb = new ImageView();
     private StackPane bombPane = new StackPane();
     private Board currentBoard;
+    private int[] coords;
 
     public Bomb(Board currentBoard, int[] position) {
         this.currentBoard = currentBoard;
+        coords = position;
         createItem(position);
     }
     protected void createItem(int[] position) {
@@ -28,4 +30,14 @@ public class Bomb {
     }
 
     public StackPane getBombPane() { return bombPane; }
+
+    @Override
+    protected StackPane getStackPane() {
+        return bombPane;
+    }
+
+    @Override
+    protected int[] getCoords() {
+        return coords;
+    }
 }

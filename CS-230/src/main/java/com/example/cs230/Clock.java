@@ -6,7 +6,7 @@ import javafx.scene.layout.StackPane;
 
 import java.util.Objects;
 
-public class Clock {
+public class Clock extends Item{
     private static final String CLOCK_PATH = "/Items/clock.png";
     private static final int CLOCK_SIZE = 40;
     private static int TIME_CHANGE = 5;
@@ -45,5 +45,15 @@ public class Clock {
 
     public StackPane getClockPane() {
         return clockPane;
+    }
+
+    @Override
+    protected StackPane getStackPane() {
+        return clockPane;
+    }
+
+    @Override
+    protected int[] getCoords() {
+        return clockPosition;
     }
 }

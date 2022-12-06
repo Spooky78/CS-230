@@ -371,6 +371,10 @@ public class FlyingAssassin extends NPC {
         assassin.setFitHeight(50);
     }
 
+    public void killTimer(){
+        timer.cancel();
+        timer.purge();
+    }
     public void setLose() {
         isLose = true;
     }
