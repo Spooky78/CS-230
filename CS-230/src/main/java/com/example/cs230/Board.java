@@ -206,6 +206,16 @@ public class Board {
         }
     }
 
+    private boolean isLockedTile(int[] newTile) {
+        for(int i=0; i<bombCoords.size(); i+=2) {
+            if (newTile[0]+1 == bombCoords.get(i) && newTile[1]+1 == bombCoords.get(i+1)){
+                System.out.println("ON BOMB");
+                return true;
+            }
+        }
+        return false;
+    }
+
     public boolean canMove(int[] currentTile, int[] newTile) {
         int currentX = currentTile[0];
         int currentY = currentTile[1];
@@ -220,7 +230,7 @@ public class Board {
             }
         }
         char[] newIds = board[newX][newY].getTileIds();
-        if (board[currentX][currentY].hasSubTile(newIds)) {
+        if (board[currentX][currentY].hasSubTile(newIds) && !isLockedTile(newTile)) {
             return true;
         } else {
             return false;

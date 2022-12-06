@@ -82,6 +82,10 @@ public class FlyingAssassin extends NPC {
         return coords;
     }
 
+    public void deleteAssassin() {
+        timer.cancel();
+        timer.purge();
+    }
     public boolean collidedPlayer(int[] killableCoords, StackPane killable, BorderPane pane, Stage gameStage){
         if (killableCoords[0] +1 == coords[0] && killableCoords[1] +1 == coords[1] & !isKilled) {
             pane.getChildren().remove(killable);

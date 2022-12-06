@@ -57,8 +57,8 @@ public class FloorFollowingThief extends NPC {
         System.out.println(direction);
         switch (direction) {
             case "RIGHT ANTICLOCKWISE":
-                startRightAnitclockwiseAnimation();
-                //startRightAnticlockwiseTransition();
+                //startRightAnitclockwiseAnimation();
+                startRightAnticlockwiseTransition();
                 break;
             case "RIGHT CLOCKWISE":
                 startRightClockwiseTransition();
@@ -91,11 +91,10 @@ public class FloorFollowingThief extends NPC {
         Timer timer = new Timer();
         int scheduleCount = 0;
         int coordsCounter = coords[0];
-//        while (scheduleCount < 100) {
-//
-//            scheduleCount = moveRightTile(timer, scheduleCount, coordsCounter, animation);
-//            setImage("DOWN");
-//        }
+        while (scheduleCount < 100) {
+            scheduleCount = moveRightTile(timer, scheduleCount, coordsCounter, animation);
+            setImage("DOWN");
+        }
     }
 
     private int moveRightTile(Timer timer, int scheduleCount, int coordsCounter, SequentialTransition animation) {
