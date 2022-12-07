@@ -43,6 +43,14 @@ public class Clock extends Item{
         return playerCoords[0] + 1 == clockPosition[0] && playerCoords[1] + 1 == clockPosition[1];
     }
 
+    public boolean isClockCollisionNPC(int[] npcCoords) {
+        if (npcCoords[0]  == clockPosition[0] && npcCoords[1] == clockPosition[1]) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public StackPane getClockPane() {
         return clockPane;
     }

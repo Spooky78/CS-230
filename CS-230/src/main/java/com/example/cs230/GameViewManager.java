@@ -147,8 +147,6 @@ public class GameViewManager {
                         if (allCoin.isCollisionNPC(allThieves.get(i).getCoords())) {
                             gamePlayPane.getChildren().remove(allCoin.getCoinStackPane());
                             coinsToRemove.add(allCoin);
-                            currentPlayer.setScore(
-                                    currentPlayer.getScore() + allCoin.getCoinScore());
                         }
                     }
                 }
@@ -158,10 +156,19 @@ public class GameViewManager {
                 coinsToRemove.clear();
 
                 for (Clock allClocks : allClock) {
+
                     if (allClocks.isCollectedByPlayer(currentPlayer.getPlayerCoords())) {
-                        time.currentTime += 5;
+
+                        time.currentTime += ADDED_TIME;
                         gamePlayPane.getChildren().remove(allClocks.getClockPane());
                         clockToRemove.add(allClocks);
+                    }
+                    for (int i = 0; i < allThieves.size(); i++) {
+                        if (allClocks.isClockCollisionNPC(allThieves.get(i).getCoords())) {
+                            time.currentTime -= ADDED_TIME;
+                            gamePlayPane.getChildren().remove(allClocks.getClockPane());
+                            clockToRemove.add(allClocks);
+                        }
                     }
                 }
                 for (Clock clock : clockToRemove) {
