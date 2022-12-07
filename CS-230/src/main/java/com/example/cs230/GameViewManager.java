@@ -57,7 +57,7 @@ public class GameViewManager {
     private GameOverViewManager gameOver;
     private Timer timer;
     private Ninja chosenNinja;
-
+    private int level;
     /**
      * Creates a GameViewManager.
      */
@@ -71,7 +71,8 @@ public class GameViewManager {
      * @param stage       The previous stage (usually menuStage).
      * @param chosenNinja The player character.
      */
-    public void createNewGame(Stage stage, Ninja chosenNinja) {
+    public void createNewGame(Stage stage, Ninja chosenNinja, int level) {
+        this.level = level;
         this.chosenNinja = chosenNinja;
         this.menuStage = stage;
         this.menuStage.hide();
@@ -165,7 +166,10 @@ public class GameViewManager {
                     gamePlayPane.getChildren().remove(door.getDoorPane());
                     currentLevel += 1;
                     System.out.println(currentLevel);
-                    nextLevel();
+//                    gamePlayPane.getChildren().clear();
+                    //nextLevel();
+                    WinScreenViewManager winScreen = new WinScreenViewManager();
+                    winScreen.createGameOver(gameStage, currentPlayer, chosenNinja, level);
                 }
 
                 for (Gate goldenGate : allGates) {
@@ -372,12 +376,18 @@ public class GameViewManager {
 
     private void createBoard() {
         currentLevel = 0;
-        currentBoard = new Board("Level00.txt", GAME_WIDTH);
+        currentBoard = new Board("Level0" +level+ ".txt", GAME_WIDTH);
         gamePlayPane.setLeft(currentBoard.getBoardPane());
     }
 
     private void nextLevel() {
         String inputLevel = "Level0" + currentLevel + ".txt";
+        for(int i=0; i<allAssassins.size(); i++){
+            allAssassins.get(i).deleteAssassin();
+        }
+//        for(int i=0; i<allCoins.size(); i++){
+//            allCoins.get(i) = null;
+//        }
         gamePlayPane.getChildren().clear();
         currentBoard = new Board(inputLevel, GAME_WIDTH);
         gamePlayPane.setLeft(currentBoard.getBoardPane());

@@ -248,7 +248,7 @@ public class ViewManager {
         startButton.setOnAction(actionEvent -> {
             //if (chosenNinja != null && currentPlayerProfile != null) {
             GameViewManager gameManager = new GameViewManager();
-            gameManager.createNewGame(mainStage, chosenNinja);
+            gameManager.createNewGame(mainStage, chosenNinja, 0);
             //}
         });
 
