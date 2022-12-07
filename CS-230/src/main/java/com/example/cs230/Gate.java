@@ -10,8 +10,7 @@ public class Gate {
     private static final String GOLDEN_GATE_PATH = "/Items/goldGate.png";
     private static final String SILVER_GATE_PATH = "/Items/silverGate.png";
     private static final int GATE_SIZE = 50;
-    private ImageView goldenGate = new ImageView();
-    private ImageView silverGate = new ImageView();
+    private ImageView gate = new ImageView();
     private StackPane gatePane = new StackPane();
     private int[] gatePosition;
     private int[] silverGatePosition;
@@ -23,7 +22,6 @@ public class Gate {
         this.currentBoard = board;
         colour = gateType;
         gatePosition = position;
-        silverGatePosition = position;
         createAGate(gateType, position);
         canPass = false;
     }
@@ -36,30 +34,23 @@ public class Gate {
             case "GOLD" -> {
                 gateImage = new Image(
                         Objects.requireNonNull(getClass().getResourceAsStream(GOLDEN_GATE_PATH)));
-                goldenGate = new ImageView(gateImage);
+                gate = new ImageView(gateImage);
             }
             case "SILVER" -> {
                 gateImage = new Image(
                         Objects.requireNonNull(getClass().getResourceAsStream(SILVER_GATE_PATH)));
-                silverGate = new ImageView(gateImage);
+                gate = new ImageView(gateImage);
             }
         }
-        goldenGate.setFitWidth(GATE_SIZE);
-        goldenGate.setFitHeight(GATE_SIZE);
-        silverGate.setFitWidth(GATE_SIZE);
-        silverGate.setFitHeight(GATE_SIZE);
-        gatePane.getChildren().add(goldenGate);
-        gatePane.getChildren().add(silverGate);
+        gate.setFitWidth(GATE_SIZE);
+        gate.setFitHeight(GATE_SIZE);
+        gatePane.getChildren().add(gate);
         gatePane.setLayoutX((position[0] * tileSize) - (tileSize / 2.0));
         gatePane.setLayoutY((position[1] * tileSize) - (tileSize / 2.0));
     }
 
-    public boolean isCollisionPlayer1(int[] playerCoords) {
+    public boolean isCollisionPlayer(int[] playerCoords) {
         return playerCoords[0] == gatePosition[0] + 1 && playerCoords[1] == gatePosition[1];
-    }
-
-    public boolean isCollisionPlayer2(int[] playerCoords) {
-        return playerCoords[0] == silverGatePosition[0] + 1 && playerCoords[1] == silverGatePosition[1];
     }
 
     public boolean getCanPass() {
