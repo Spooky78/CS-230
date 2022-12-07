@@ -38,7 +38,7 @@ public class GameViewManager {
     private final ArrayList<Gate> allGates = new ArrayList<>();
     private final ArrayList<Bomb> allBomb = new ArrayList<>();
     private final ArrayList<Item> allCollectableItems = new ArrayList<>();
-    private final boolean isLose = false;
+    private boolean isLose = false;
     private final boolean isTimerEnd = false;
     private VBox gamePane;
     private int currentLevel;
@@ -53,11 +53,10 @@ public class GameViewManager {
     private Door door;
     private Gate goldenGate;
     private Gate silverGate;
-    private int timeLeft;
     private GameOverViewManager gameOver;
-    private Timer timer;
     private Ninja chosenNinja;
     private int level;
+    private Time time;
     /**
      * Creates a GameViewManager.
      */
@@ -79,6 +78,7 @@ public class GameViewManager {
         gameOver = new GameOverViewManager();
         createBackground();
         createBoard();
+        time = new Time(currentBoard.getSeconds());
         createStuff();
         topRow.setAlignment(Pos.CENTER_RIGHT);
         gamePane.getChildren().add(topRow);
@@ -117,9 +117,16 @@ public class GameViewManager {
         gameTimer = new AnimationTimer() {
             @Override
             public void handle(long l) {
+                if (time.getI() == 0 && !isLose) {
+                    gameOver.createGameOver(gameStage, currentPlayer);
+                    time.isKilled();
+                    isLose = true;
+                }
                 for (FlyingAssassin allAssassin : allAssassins) {
                     if (allAssassin.collidedPlayer(currentPlayer.getPlayerCoords(),
                             currentPlayerStack, gamePlayPane, gameStage)) {
+                        gamePlayPane.getChildren().clear();
+                        time.isKilled();
                         gameOver.createGameOver(gameStage, currentPlayer);
                         allAssassin.setLose();
                     }
@@ -153,7 +160,6 @@ public class GameViewManager {
                     if (allClocks.isCollectedByPlayer(currentPlayer.getPlayerCoords())) {
                         gamePlayPane.getChildren().remove(allClocks.getClockPane());
                         clockToRemove.add(allClocks);
-                        timeLeft += 5;
                     }
                 }
                 for (Clock clock : clockToRemove) {
@@ -165,9 +171,11 @@ public class GameViewManager {
                 if (door.isCollectedByPlayer(currentPlayer.getPlayerCoords())) {
                     gamePlayPane.getChildren().remove(door.getDoorPane());
                     currentLevel += 1;
-                    System.out.println(currentLevel);
+                    //System.out.println(currentLevel);
 //                    gamePlayPane.getChildren().clear();
                     //nextLevel();
+                    gamePlayPane.getChildren().clear();
+                    time.isKilled();
                     WinScreenViewManager winScreen = new WinScreenViewManager();
                     winScreen.createGameOver(gameStage, currentPlayer, chosenNinja, level);
                 }
@@ -301,7 +309,6 @@ public class GameViewManager {
         ArrayList<String> coinColor = currentBoard.getCoinColor();
         ArrayList<Integer> coords = currentBoard.getCoinCoords();
         //Each iteration of loop creates new bronze coin.
-        System.out.println("SHIT");
         for (int i = 0; i < coinColor.size(); i += 1) {
             int[] currentCoinCoords = {coords.get(i * 2), coords.get((i * 2) + 1)};
             Coin currentCoin = new Coin(coinColor.get(i), currentBoard, currentCoinCoords);
@@ -380,21 +387,6 @@ public class GameViewManager {
         gamePlayPane.setLeft(currentBoard.getBoardPane());
     }
 
-    private void nextLevel() {
-        String inputLevel = "Level0" + currentLevel + ".txt";
-        for(int i=0; i<allAssassins.size(); i++){
-            allAssassins.get(i).deleteAssassin();
-        }
-//        for(int i=0; i<allCoins.size(); i++){
-//            allCoins.get(i) = null;
-//        }
-        gamePlayPane.getChildren().clear();
-        currentBoard = new Board(inputLevel, GAME_WIDTH);
-        gamePlayPane.setLeft(currentBoard.getBoardPane());
-        createStuff();
-
-    }
-
     /**
      * Creates top row of game window, which contains time left.
      */
@@ -402,7 +394,7 @@ public class GameViewManager {
         topRow.setPadding(new Insets(20));
         topRow.setSpacing(20);
         topRow.getChildren().clear();
-        Text timeCounter = new Text("Time Left: " + timeLeft);
+        Text timeCounter = new Text("Time Left: " + time.getI());
         timeCounter.setFont(Font.font("Arial", 20));
         topRow.getChildren().add(timeCounter);
 

@@ -43,7 +43,6 @@ public class FloorFollowingThief extends NPC {
     protected void createNPC() {
         Image ffThiefImage = new Image(
                 Objects.requireNonNull(getClass().getResourceAsStream(FFTHIEF_UP_PATH)));
-        System.out.println("FUCKKK");
         ffThief = new ImageView(ffThiefImage);
         ffThief.setFitWidth(50);
         ffThief.setFitHeight(50);
