@@ -27,6 +27,7 @@ public class GameViewManager {
     private static final int GAME_WIDTH = 600;
     private static final int GAME_HEIGHT = 600;
     private static final int SECOND = 1000;
+    private static final int ADDED_TIME = 5;
     private final HBox topRow = new HBox();
     private final BorderPane gamePlayPane = new BorderPane();
     private final ArrayList<StackPane> allAssassinStacks = new ArrayList<>();
@@ -158,7 +159,7 @@ public class GameViewManager {
 
                 for (Clock allClocks : allClock) {
                     if (allClocks.isCollectedByPlayer(currentPlayer.getPlayerCoords())) {
-                        time.currentTime += 10;
+                        time.currentTime += 5;
                         gamePlayPane.getChildren().remove(allClocks.getClockPane());
                         clockToRemove.add(allClocks);
                     }
