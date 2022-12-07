@@ -172,9 +172,6 @@ public class GameViewManager {
                 if (door.isCollectedByPlayer(currentPlayer.getPlayerCoords())) {
                     gamePlayPane.getChildren().remove(door.getDoorPane());
                     currentLevel += 1;
-                    //System.out.println(currentLevel);
-//                    gamePlayPane.getChildren().clear();
-                    //nextLevel();
                     gamePlayPane.getChildren().clear();
                     time.isKilled();
                     WinScreenViewManager winScreen = new WinScreenViewManager();
@@ -183,15 +180,7 @@ public class GameViewManager {
 
                 for (Gate goldenGate : allGates) {
                     if (goldenGate.getCanPass() &&
-                            goldenGate.isCollisionPlayer1(currentPlayer.getPlayerCoords())) {
-                        currentPlayer.canMove = false;
-                        System.out.println("Error");
-                    }
-                }
-
-                for (Gate silverGate : allGates) {
-                    if (silverGate.getCanPass() &&
-                            silverGate.isCollisionPlayer2(currentPlayer.getPlayerCoords())) {
+                            goldenGate.isCollisionPlayer(currentPlayer.getPlayerCoords())) {
                         currentPlayer.canMove = false;
                         System.out.println("Error");
                     }

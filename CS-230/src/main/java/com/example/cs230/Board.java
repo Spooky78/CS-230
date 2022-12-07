@@ -209,7 +209,7 @@ public class Board {
     private boolean isLockedTile(int[] newTile) {
         for(int i=0; i<bombCoords.size(); i+=2) {
             if (newTile[0]+1 == bombCoords.get(i) && newTile[1]+1 == bombCoords.get(i+1)){
-                System.out.println("ON BOMB");
+                //System.out.println("ON BOMB");
                 return true;
             }
         }
