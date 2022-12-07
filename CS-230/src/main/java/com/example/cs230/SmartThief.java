@@ -9,10 +9,10 @@ import java.util.Objects;
 public class SmartThief extends NPC {
     //no smart thief at the moment so just borrow one from flying assassin
     //can use reptile for smart thief now.
-    private static final String SMARTTHIEF_DOWN_PATH = "/Reptile/reptileDown.png";
-    private static final String SMARTTHIEF_UP_PATH = "/Reptile/reptileUp.png";
-    private static final String SMARTTHIEF_LEFT_PATH = "/Reptile/reptileLeft.png";
-    private static final String SMARTTHIEF_RIGHT_PATH = "/Reptile/reptileRight.png";
+    private static final String SMARTTHIEF_DOWN_PATH = "/Reptile/ReptileDown.png";
+    private static final String SMARTTHIEF_UP_PATH = "/Reptile/ReptileUp.png";
+    private static final String SMARTTHIEF_LEFT_PATH = "/Reptile/ReptileLeft.png";
+    private static final String SMARTTHIEF_RIGHT_PATH = "/Reptile/ReptileRight.png";
     private ImageView sThief;
     private int[] coords;
     private StackPane sThiefStackPane;

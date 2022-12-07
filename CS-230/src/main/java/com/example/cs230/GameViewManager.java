@@ -37,7 +37,7 @@ public class GameViewManager {
     private final ArrayList<Lever> allLever = new ArrayList<>();
     private final ArrayList<Gate> allGates = new ArrayList<>();
     private final ArrayList<Bomb> allBomb = new ArrayList<>();
-    private final ArrayList<Item> allItems = new ArrayList<>();
+    private final ArrayList<Item> allCollectableItems = new ArrayList<>();
     private final boolean isLose = false;
     private final boolean isTimerEnd = false;
     private VBox gamePane;
@@ -184,33 +184,23 @@ public class GameViewManager {
                     }
                 }
 
-                for (Lever goldLever : allLever) {
-                    if (Objects.equals(goldLever.getLeverColour(), "GOLD")
-                            && goldLever.isCollectedByPlayer1(currentPlayer.getPlayerCoords())) {
-                        gamePlayPane.getChildren().remove(goldLever.getLeverPane());
-                        gamePlayPane.getChildren().remove(goldenGate.getGatePane());
-                        leverToRemove.add(goldLever);
-                        gateToRemove.add(goldenGate);
-                    }
-                }
+                for (Lever currentLever : allLever) {
+                    for (int i=0; i<allGates.size(); i++) {
+                        if (Objects.equals(currentLever.getLeverColour(), "GOLD") && (Objects.equals(allGates.get(i).getColour(), "GOLD"))
+                                && currentLever.isCollectedByPlayer(currentPlayer.getPlayerCoords())) {
+                            gamePlayPane.getChildren().remove(currentLever.getStackPane());
+                            gamePlayPane.getChildren().remove(goldenGate.getGatePane());
+                            leverToRemove.add(currentLever);
+                            gateToRemove.add(goldenGate);
 
-                for (Gate goldenGate : gateToRemove) {
-                    allGates.remove(goldenGate);
-                }
-                gateToRemove.clear();
-
-                for (Lever goldLever : leverToRemove) {
-                    allLever.remove(goldLever);
-                }
-                leverToRemove.clear();
-
-                for (Lever silverLever : allLever) {
-                    if (Objects.equals(silverLever.getLeverColour(), "SILVER")
-                            && silverLever.isCollectedByPlayer2(currentPlayer.getPlayerCoords())) {
-                        gamePlayPane.getChildren().remove(silverLever.getLeverPane());
-                        gamePlayPane.getChildren().remove(silverGate.getGatePane());
-                        leverToRemove.add(silverLever);
-                        gateToRemove.add(silverGate);
+                        }
+                        if (Objects.equals(currentLever.getLeverColour(), "SILVER") && (Objects.equals(allGates.get(i).getColour(), "SILVER"))
+                                && currentLever.isCollectedByPlayer(currentPlayer.getPlayerCoords())) {
+                            gamePlayPane.getChildren().remove(currentLever.getStackPane());
+                            gamePlayPane.getChildren().remove(silverGate.getGatePane());
+                            leverToRemove.add(currentLever);
+                            gateToRemove.add(silverGate);
+                        }
                     }
                 }
 
@@ -227,7 +217,7 @@ public class GameViewManager {
                 for (Bomb allBombs : allBomb) {
                     if (allBombs.isCollisionPlayer(currentPlayer.getPlayerCoords())) {
                         int[] currentBomb = allBombs.getCoords();
-                        for (Item allitems : allItems) {
+                        for (Item allitems : allCollectableItems) {
                             int[] currentItem = allitems.getCoords();
                             if (currentItem[0] == currentBomb[0] ||
                                     currentItem[1] == currentBomb[1]) {
@@ -260,7 +250,6 @@ public class GameViewManager {
 
     private void createSmartThief() {
         ArrayList<Integer> coords = currentBoard.getSmartThiefStartCoords();
-
         for (int i = 0; i < coords.size(); i += 2) {
             int[] currentCoords = new int[2];
             currentCoords[0] = coords.get(i);
@@ -313,7 +302,7 @@ public class GameViewManager {
             int[] currentCoinCoords = {coords.get(i * 2), coords.get((i * 2) + 1)};
             Coin currentCoin = new Coin(coinColor.get(i), currentBoard, currentCoinCoords);
             allCoins.add(currentCoin);
-            allItems.add(currentCoin);
+            allCollectableItems.add(currentCoin);
             gamePlayPane.getChildren().add(currentCoin.getCoinStackPane());
         }
     }
@@ -323,12 +312,10 @@ public class GameViewManager {
         ArrayList<Integer> positionCoords = currentBoard.getLeverCoords();
         for (int i = 0; i < colours.size(); i += 1) {
             int[] currentLeverCoords = {positionCoords.get(i * 2), positionCoords.get(i * 2 + 1)};
-            Lever goldLever = new Lever(currentBoard, currentLeverCoords, colours.get(i));
-            allLever.add(goldLever);
-            gamePlayPane.getChildren().add(goldLever.getLeverPane());
-            Lever silverLever = new Lever(currentBoard, currentLeverCoords, colours.get(i));
-            allLever.add(silverLever);
-            gamePlayPane.getChildren().add(silverLever.getLeverPane());
+            Lever currentLever = new Lever(currentBoard, currentLeverCoords, colours.get(i));
+            allLever.add(currentLever);
+            allCollectableItems.add(currentLever);
+            gamePlayPane.getChildren().add(currentLever.getStackPane());
         }
     }
 
@@ -336,7 +323,7 @@ public class GameViewManager {
     private void createDoor() {
         int[] positionCoords = currentBoard.getDoorCoords();
         door = new Door(currentBoard, positionCoords);
-        allItems.add(door);
+        //allCollectableItems.add(door);
         gamePlayPane.getChildren().add(door.getDoorPane());
     }
 
@@ -346,7 +333,7 @@ public class GameViewManager {
             int[] positionCoords2 = {positionCoords.get(i), positionCoords.get(i + 1)};
             Clock clock = new Clock(currentBoard, positionCoords2);
             allClock.add(clock);
-            allItems.add(clock);
+            allCollectableItems.add(clock);
             gamePlayPane.getChildren().add(clock.getClockPane());
         }
     }

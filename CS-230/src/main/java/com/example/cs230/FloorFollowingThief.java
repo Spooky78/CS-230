@@ -181,7 +181,7 @@ public class FloorFollowingThief extends NPC {
                     animation.pause();
                     setImage("RIGHT");
                     coordsFinal[0] += 1;
-                    System.out.println(coordsFinal[0] + " "+coordsFinal[1]);
+                    //System.out.println(coordsFinal[0] + " "+coordsFinal[1]);
                     animation.playFrom(String.valueOf(MILLS_DELAY_TILE * (finalCount + previous)));
                 }
             };
@@ -202,7 +202,7 @@ public class FloorFollowingThief extends NPC {
                     animation.pause();
                     setImage("LEFT");
                     coordsFinal[0] -= 1;
-                    System.out.println(coordsFinal[0] + " "+coordsFinal[1]);
+                    //System.out.println(coordsFinal[0] + " "+coordsFinal[1]);
                     animation.playFrom(String.valueOf(MILLS_DELAY_TILE * (finalCount + previous)));
                 }
             };
@@ -223,7 +223,7 @@ public class FloorFollowingThief extends NPC {
                     animation.pause();
                     setImage("UP");
                     coordsFinal[1] -= 1;
-                    System.out.println(coordsFinal[0] + " "+coordsFinal[1]);
+                    //System.out.println(coordsFinal[0] + " "+coordsFinal[1]);
                     animation.playFrom(String.valueOf(MILLS_DELAY_TILE * (finalCount+previous)));
                 }
             };
@@ -244,7 +244,7 @@ public class FloorFollowingThief extends NPC {
                     animation.pause();
                     setImage("DOWN");
                     coordsFinal[1] += 1;
-                    System.out.println(coordsFinal[0] + " "+coordsFinal[1]);
+                    //System.out.println(coordsFinal[0] + " "+coordsFinal[1]);
                     animation.playFrom(String.valueOf(MILLS_DELAY_TILE * (finalCount+previous)));
                 }
             };

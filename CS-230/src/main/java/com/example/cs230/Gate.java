@@ -13,21 +13,23 @@ public class Gate {
     private ImageView goldenGate = new ImageView();
     private ImageView silverGate = new ImageView();
     private StackPane gatePane = new StackPane();
-    private int[] goldenGatePosition;
+    private int[] gatePosition;
     private int[] silverGatePosition;
     private boolean canPass;
     private final Board currentBoard;
+    private String colour;
 
     public Gate(String gateType, Board board, int[] position) {
         this.currentBoard = board;
-        goldenGatePosition = position;
+        colour = gateType;
+        gatePosition = position;
         silverGatePosition = position;
         createAGate(gateType, position);
         canPass = false;
     }
 
     protected void createAGate(String gateType, int[] position) {
-        System.out.println(currentBoard.getTileSize());
+        //System.out.println(currentBoard.getTileSize());
         int tileSize = currentBoard.getTileSize();
         Image gateImage;
         switch (gateType) {
@@ -53,7 +55,7 @@ public class Gate {
     }
 
     public boolean isCollisionPlayer1(int[] playerCoords) {
-        return playerCoords[0] == goldenGatePosition[0] + 1 && playerCoords[1] == goldenGatePosition[1];
+        return playerCoords[0] == gatePosition[0] + 1 && playerCoords[1] == gatePosition[1];
     }
 
     public boolean isCollisionPlayer2(int[] playerCoords) {
@@ -62,6 +64,9 @@ public class Gate {
 
     public boolean getCanPass() {
         return canPass;
+    }
+    public String getColour() {
+        return colour;
     }
 
     public StackPane getGatePane() {
