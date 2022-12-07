@@ -117,7 +117,7 @@ public class GameViewManager {
         gameTimer = new AnimationTimer() {
             @Override
             public void handle(long l) {
-                if (time.getI() == 0 && !isLose) {
+                if (time.getCurrentTime() == 0 && !isLose) {
                     gameOver.createGameOver(gameStage, currentPlayer);
                     time.isKilled();
                     isLose = true;
@@ -158,6 +158,7 @@ public class GameViewManager {
 
                 for (Clock allClocks : allClock) {
                     if (allClocks.isCollectedByPlayer(currentPlayer.getPlayerCoords())) {
+                        time.currentTime += 10;
                         gamePlayPane.getChildren().remove(allClocks.getClockPane());
                         clockToRemove.add(allClocks);
                     }
@@ -394,7 +395,7 @@ public class GameViewManager {
         topRow.setPadding(new Insets(20));
         topRow.setSpacing(20);
         topRow.getChildren().clear();
-        Text timeCounter = new Text("Time Left: " + time.getI());
+        Text timeCounter = new Text("Time Left: " + time.getCurrentTime());
         timeCounter.setFont(Font.font("Arial", 20));
         topRow.getChildren().add(timeCounter);
 
