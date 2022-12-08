@@ -1,1 +1,3 @@
+Enter a nameSpooky
+Spooky
 Enter a name

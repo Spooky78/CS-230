@@ -29,6 +29,7 @@ public class FloorFollowingThief extends NPC {
     private int indexID;
     int previous = 0;
     private ArrayList<Integer> timings = new ArrayList<>();
+    Timer timer;
 
     public FloorFollowingThief (Board board, int[] startCoords, StackPane stackPane, int indexID) {
         gameBoard = board;
@@ -38,6 +39,11 @@ public class FloorFollowingThief extends NPC {
         this.indexID = indexID;
         createNPC();
         move();
+    }
+
+    public void stopTimer(){
+        timer.cancel();
+        timer.purge();
     }
 
     protected void createNPC() {
@@ -92,7 +98,7 @@ public class FloorFollowingThief extends NPC {
                 gameBoard.getFloorFollowingThiefStartCoords().get((indexID*2)+1)};
         setImage("RIGHT");
         animation.play();
-        Timer timer = new Timer();
+        timer = new Timer();
         int scheduleCount = 0;
 
         while (scheduleCount < 100) {
@@ -113,7 +119,7 @@ public class FloorFollowingThief extends NPC {
                 gameBoard.getFloorFollowingThiefStartCoords().get((indexID*2)+1)};
         setImage("UP");
         animation.play();
-        Timer timer = new Timer();
+        timer = new Timer();
         int scheduleCount = 0;
 
         while (scheduleCount < 100) {
@@ -134,7 +140,7 @@ public class FloorFollowingThief extends NPC {
                 gameBoard.getFloorFollowingThiefStartCoords().get((indexID*2)+1)};
         setImage("LEFT");
         animation.play();
-        Timer timer = new Timer();
+        timer = new Timer();
         int scheduleCount = 0;
 
         while (scheduleCount < 100) {
@@ -155,7 +161,7 @@ public class FloorFollowingThief extends NPC {
                 gameBoard.getFloorFollowingThiefStartCoords().get((indexID*2)+1)};
         setImage("DOWN");
         animation.play();
-        Timer timer = new Timer();
+        timer = new Timer();
         int scheduleCount = 0;
 
         while (scheduleCount < 100) {

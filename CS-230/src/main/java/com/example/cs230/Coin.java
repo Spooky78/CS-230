@@ -76,7 +76,7 @@ public class Coin extends  Item{
     }
 
     public boolean isCollisionNPC(int[] npcCoords) {
-        if (npcCoords[0] +1 == coinPosition[0] && npcCoords[1] == coinPosition[1]) {
+        if (npcCoords[0] == coinPosition[0] && npcCoords[1] == coinPosition[1]) {
             return true;
         } else {
             return false;

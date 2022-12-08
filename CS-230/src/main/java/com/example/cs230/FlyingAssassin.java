@@ -82,7 +82,7 @@ public class FlyingAssassin extends NPC {
         return coords;
     }
 
-    public void deleteAssassin() {
+    public void stopTimer() {
         timer.cancel();
         timer.purge();
     }

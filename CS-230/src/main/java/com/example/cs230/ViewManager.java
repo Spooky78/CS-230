@@ -44,7 +44,7 @@ public class ViewManager {
     private MainMenuSubScene sceneToHide;
     private List<NinjaPicker> ninjaPickerList;
     private Ninja chosenNinja;
-    private PlayerProfile currentPlayerProfile;
+    private String currentPlayerProfile;
     private boolean isHidden = true;
 
     /**
@@ -132,8 +132,8 @@ public class ViewManager {
             playGame.setFont(Font.font("Verdana", 50));
         }
         ninjaChooserSubScene.getPane().getChildren().add(playGame);
-        //ninjaChooserSubScene.getPane().getChildren().add(createCurrentProfile());
-        //ninjaChooserSubScene.getPane().getChildren().add(createPlayerProfilePicker());
+        ninjaChooserSubScene.getPane().getChildren().add(createCurrentProfile());
+        ninjaChooserSubScene.getPane().getChildren().add(createPlayerProfilePicker());
         ninjaChooserSubScene.getPane().getChildren().add(createPlayerCharacterToChoose());
         ninjaChooserSubScene.getPane().getChildren().add(createButtonToStart());
     }
@@ -145,8 +145,8 @@ public class ViewManager {
      */
     private Text createCurrentProfile() {
         Text currentProfileText = new Text("Please Select Profile!");
-        if (currentPlayerProfile != null) {
-            currentProfileText = new Text("Profile: " + currentPlayerProfile.getName());
+       if (AllProfile.getNameList() != null) {
+            currentProfileText = new Text("Profile: " + currentPlayerProfile);
         }
         currentProfileText.setFont(Font.font("Arial", 25));
         return currentProfileText;
@@ -175,20 +175,18 @@ public class ViewManager {
      * @return The chose profile button.
      */
     private MainMenuButton chooseProfileButton() {
+        AllProfile.loadProfile();
+        //AllProfile.loadScore();
         MainMenuButton chooseProfileButton = new MainMenuButton("Choose\nProfile");
         chooseProfileButton.setOnAction(e -> {
-            if (allProfiles.size() == 0) {
+            if (AllProfile.getAllNamesInProfiles().size() == 0) {
                 Text error = new Text("Error no profiles have been made!");
                 error.setFont(Font.font("Arial", 25));
                 ninjaChooserSubScene.getPane().getChildren().set(1, error);
             } else {
-                String[] arrayData = new String[allProfiles.size()];
-                for (int i = 0; i < allProfiles.size(); i++) {
-                    arrayData[i] = (allProfiles.get(i).getName());
-                }
+                ArrayList<String> arrayData = AllProfile.getNameList();
 
-                List<String> dialogData;
-                dialogData = Arrays.asList(arrayData);
+                List<String> dialogData = arrayData;
 
                 ChoiceDialog<String> dialog = new ChoiceDialog<>(dialogData.get(0), dialogData);
                 dialog.setTitle("Select Profile");
@@ -197,15 +195,15 @@ public class ViewManager {
                 String selected;
                 if (result.isPresent()) {
                     selected = result.get();
-                    for (PlayerProfile allProfile : allProfiles) {
-                        if (selected.equals(allProfile.getName())) {
-                            currentPlayerProfile = allProfile;
+                    for (int i = 0; i < AllProfile.getNameList().size();i++) {
+                        if (selected.equals(AllProfile.getNameList().get(i))) {
+                            currentPlayerProfile = AllProfile.getNameList().get(i);
                             ninjaChooserSubScene.getPane().getChildren()
                                     .set(1, createCurrentProfile());
                         }
                     }
                 }
-                System.out.println("Selection: " + currentPlayerProfile.getName());
+                System.out.println("Selection: " + currentPlayerProfile);
             }
         });
         return chooseProfileButton;
@@ -228,10 +226,9 @@ public class ViewManager {
             String newProfileName = "none";
             if (result.isPresent()) {
                 newProfileName = result.get();
-                PlayerProfile newProfile = new PlayerProfile(newProfileName);
-                currentPlayerProfile = newProfile;
+                currentPlayerProfile = newProfileName;
                 ninjaChooserSubScene.getPane().getChildren().set(1, createCurrentProfile());
-                allProfiles.add(newProfile);
+                AllProfile.addName(newProfileName);
             }
         });
         return newProfileButton;

@@ -79,8 +79,21 @@ public class GameViewManager {
         gameOver = new GameOverViewManager();
         createBackground();
         createBoard();
+        createDoor();
+        createClock();
+        createGoldenGate();
+        createSilverGate();
+        createLever();
+        createCoins();
+        createBomb();
+        createAssassin();
+        createFloorFollowingThief();
+        createSmartThief();
+        createPlayer(chosenNinja);
+
         time = new Time(currentBoard.getSeconds());
-        createStuff();
+        updateTopRow();
+        createGameLoop();
         topRow.setAlignment(Pos.CENTER_RIGHT);
         gamePane.getChildren().add(topRow);
         gamePane.getChildren().add(gamePlayPane);
@@ -97,28 +110,14 @@ public class GameViewManager {
         gameStage.setScene(gameScene);
     }
 
-    private void createStuff() {
-        createDoor();
-        createClock();
-        createGoldenGate();
-        createSilverGate();
-        createLever();
-        createCoins();
-        createBomb();
-        createAssassin();
-        createFloorFollowingThief();
-        createPlayer(chosenNinja);
-        createSmartThief();
-
-        updateTopRow();
-        createGameLoop();
-    }
-
     private void createGameLoop() {
         gameTimer = new AnimationTimer() {
             @Override
             public void handle(long l) {
                 if (time.getCurrentTime() == 0 && !isLose) {
+                    for (NPC allThieve : allThieves) {
+                        allThieve.stopTimer();
+                    }
                     gameOver.createGameOver(gameStage, currentPlayer);
                     time.isKilled();
                     isLose = true;
@@ -128,6 +127,9 @@ public class GameViewManager {
                             currentPlayerStack, gamePlayPane, gameStage)) {
                         gamePlayPane.getChildren().clear();
                         time.isKilled();
+                        for (NPC allThieve : allThieves) {
+                            allThieve.stopTimer();
+                        }
                         gameOver.createGameOver(gameStage, currentPlayer);
                         allAssassin.setLose();
                     }
@@ -143,8 +145,8 @@ public class GameViewManager {
                         coinsToRemove.add(allCoin);
                         currentPlayer.setScore(currentPlayer.getScore() + allCoin.getCoinScore());
                     }
-                    for (int i = 0; i < allThieves.size(); i++) {
-                        if (allCoin.isCollisionNPC(allThieves.get(i).getCoords())) {
+                    for (NPC allThieve : allThieves) {
+                        if (allCoin.isCollisionNPC(allThieve.getCoords())) {
                             gamePlayPane.getChildren().remove(allCoin.getCoinStackPane());
                             coinsToRemove.add(allCoin);
                         }
@@ -163,8 +165,8 @@ public class GameViewManager {
                         gamePlayPane.getChildren().remove(allClocks.getClockPane());
                         clockToRemove.add(allClocks);
                     }
-                    for (int i = 0; i < allThieves.size(); i++) {
-                        if (allClocks.isClockCollisionNPC(allThieves.get(i).getCoords())) {
+                    for (NPC allThieve : allThieves) {
+                        if (allClocks.isClockCollisionNPC(allThieve.getCoords())) {
                             time.currentTime -= ADDED_TIME;
                             gamePlayPane.getChildren().remove(allClocks.getClockPane());
                             clockToRemove.add(allClocks);
@@ -182,6 +184,9 @@ public class GameViewManager {
                     currentLevel += 1;
                     gamePlayPane.getChildren().clear();
                     time.isKilled();
+                    for (NPC allThieve : allThieves) {
+                        allThieve.stopTimer();
+                    }
                     WinScreenViewManager winScreen = new WinScreenViewManager();
                     winScreen.createGameOver(gameStage, currentPlayer, chosenNinja, level);
                 }
@@ -266,7 +271,7 @@ public class GameViewManager {
             currentCoords[1] = coords.get(i + 1);
             StackPane currentStackPane = new StackPane();
             SmartThief currentSmartThief =
-                    new SmartThief(currentBoard, currentCoords, currentStackPane);
+                    new SmartThief(currentBoard, currentCoords, currentStackPane, this);
             currentStackPane.getChildren().add(currentSmartThief.getSmartThief());
             allThieves.add(currentSmartThief);
             gamePlayPane.getChildren().add(currentStackPane);
@@ -414,6 +419,9 @@ public class GameViewManager {
 
     public boolean isLose() {
         return isLose;
+    }
+    public ArrayList<Item> getAllCollectableItems() {
+        return allCollectableItems;
     }
 
 }
