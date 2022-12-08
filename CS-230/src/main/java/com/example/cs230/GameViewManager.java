@@ -213,7 +213,7 @@ public class GameViewManager {
                 }
 
                 for (Lever currentLever : allLever) {
-                    for (int i=0; i<allGates.size(); i++) {
+                    for (int i = 0; i < allGates.size(); i++) {
                         if (Objects.equals(currentLever.getLeverColour(), "GOLD") && (Objects.equals(allGates.get(i).getColour(), "GOLD"))
                                 && currentLever.isCollectedByPlayer(currentPlayer.getPlayerCoords())) {
                             gamePlayPane.getChildren().remove(currentLever.getStackPane());
@@ -229,7 +229,25 @@ public class GameViewManager {
                             leverToRemove.add(currentLever);
                             gateToRemove.add(silverGate);
                         }
+                        for (int j = 0;j < allThieves.size(); j++) {
+                            if (Objects.equals(currentLever.getLeverColour(), "GOLD") && (Objects.equals(allGates.get(i).getColour(), "GOLD"))
+                                    && currentLever.isLeverCollisionNPC(allThieves.get(j).getCoords())) {
+                                gamePlayPane.getChildren().remove(currentLever.getStackPane());
+                                gamePlayPane.getChildren().remove(goldenGate.getStackPane());
+                                leverToRemove.add(currentLever);
+                                gateToRemove.add(goldenGate);
+                            }
+
+                            if (Objects.equals(currentLever.getLeverColour(), "SILVER") && (Objects.equals(allGates.get(i).getColour(), "SILVER"))
+                                    && currentLever.isLeverCollisionNPC(allThieves.get(j).getCoords())) {
+                                gamePlayPane.getChildren().remove(currentLever.getStackPane());
+                                gamePlayPane.getChildren().remove(silverGate.getStackPane());
+                                leverToRemove.add(currentLever);
+                                gateToRemove.add(silverGate);
+                            }
+                        }
                     }
+
                 }
 
                 for (Gate silverGate : gateToRemove) {
