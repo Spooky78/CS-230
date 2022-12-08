@@ -22,8 +22,10 @@ public class Player {
     private int score = 0;
     private int time = 0;
     boolean canMove;
+    GameViewManager manager;
 
-    public Player(Scene gameScene, Ninja ninja, Board currentBoard) {
+    public Player(Scene gameScene, Ninja ninja, Board currentBoard, GameViewManager manager) {
+        this.manager = manager;
         this.movementOffset = 10;
         board = currentBoard;
         this.chosenNinja = ninja;
@@ -76,11 +78,12 @@ public class Player {
                 setImage("LEFT");
                 canMove = board.canMove(playerCoords, new int[]{playerCoords[0] - 1, playerCoords[1]});
                 int currentOffset = 1;
-                while (!canMove) {
+                while (!canMove || manager.checkNonSteppableTile(new int[]{playerCoords[0], playerCoords[1]+1})) {
                     currentOffset++;
                     canMove = board.canMove(playerCoords, new int[]{playerCoords[0] - currentOffset, playerCoords[1]});
                 }
-                if (canMove) {
+                manager.checkNonSteppableTile(playerCoords);
+                if (canMove && !manager.checkNonSteppableTile(new int[]{playerCoords[0] - currentOffset+1, playerCoords[1]+1})) {
                     playerStackPane.setLayoutX(playerStackPane.getLayoutX() - (movementOffset * currentOffset));
                     playerCoords[0] = playerCoords[0] - currentOffset;
                 }
@@ -94,13 +97,13 @@ public class Player {
                 setImage("RIGHT");
                 boolean canMove = board.canMove(playerCoords, new int[]{playerCoords[0] + 1, playerCoords[1]});
                 int currentOffset = 1;
-                while (!canMove) {
+                while (!canMove || manager.checkNonSteppableTile(new int[]{playerCoords[0] + 2, playerCoords[1]+1})) {
                     currentOffset++;
                     canMove = board.canMove(playerCoords,
                             new int[]{playerCoords[0] + currentOffset, playerCoords[1]});
 
                 }
-                if (canMove) {
+                if (canMove && !manager.checkNonSteppableTile(new int[]{playerCoords[0] + 2, playerCoords[1]+1})) {
                     playerStackPane.setLayoutX(playerStackPane.getLayoutX() + (movementOffset * currentOffset));
                     playerCoords[0] = playerCoords[0] + currentOffset;
                 }
@@ -114,11 +117,11 @@ public class Player {
                 setImage("UP");
                 boolean canMove = board.canMove(playerCoords, new int[]{playerCoords[0], playerCoords[1] - 1});
                 int currentOffset = 1;
-                while (!canMove) {
+                while (!canMove || manager.checkNonSteppableTile(new int[]{playerCoords[0] + 1, playerCoords[1]})) {
                     currentOffset++;
                     canMove = board.canMove(playerCoords, new int[]{playerCoords[0], playerCoords[1] - currentOffset});
                 }
-                if (canMove) {
+                if (canMove && !manager.checkNonSteppableTile(new int[]{playerCoords[0] + 1, playerCoords[1]})) {
                     playerStackPane.setLayoutY(playerStackPane.getLayoutY() - (movementOffset * currentOffset));
                     playerCoords[1] = playerCoords[1] - currentOffset;
                 }
@@ -132,11 +135,11 @@ public class Player {
                 setImage("DOWN");
                 boolean canMove = board.canMove(playerCoords, new int[]{playerCoords[0], playerCoords[1] + 1});
                 int currentOffset = 1;
-                while (!canMove) {
+                while (!canMove || manager.checkNonSteppableTile(new int[]{playerCoords[0] + 1, playerCoords[1] + 2})) {
                     currentOffset++;
                     canMove = board.canMove(playerCoords, new int[]{playerCoords[0], playerCoords[1] + currentOffset});
                 }
-                if (canMove) {
+                if (canMove && !manager.checkNonSteppableTile(new int[]{playerCoords[0] + 1, playerCoords[1] + 2})) {
                     playerStackPane.setLayoutY(playerStackPane.getLayoutY() + (movementOffset * currentOffset));
                     playerCoords[1] = playerCoords[1] + currentOffset;
                 }

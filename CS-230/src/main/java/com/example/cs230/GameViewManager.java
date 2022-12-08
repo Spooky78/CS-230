@@ -58,6 +58,7 @@ public class GameViewManager {
     private Ninja chosenNinja;
     private int level;
     private Time time;
+
     /**
      * Creates a GameViewManager.
      */
@@ -98,6 +99,18 @@ public class GameViewManager {
         gamePane.getChildren().add(topRow);
         gamePane.getChildren().add(gamePlayPane);
         gameStage.show();
+    }
+
+    public boolean checkNonSteppableTile(int[] coords) {
+        for(int i=0; i<allGates.size(); i++) {
+            //System.out.println("TestCAN PASS");
+            if (allGates.get(i).getCoords()[0] == coords[0]  && allGates.get(i).getCoords()[1] == coords[1]) {
+                System.out.println("ON NON TILE");
+                return true;
+            }
+        }
+        //System.out.println("CAN PASS");
+        return false;
     }
 
     /**
@@ -204,7 +217,7 @@ public class GameViewManager {
                         if (Objects.equals(currentLever.getLeverColour(), "GOLD") && (Objects.equals(allGates.get(i).getColour(), "GOLD"))
                                 && currentLever.isCollectedByPlayer(currentPlayer.getPlayerCoords())) {
                             gamePlayPane.getChildren().remove(currentLever.getStackPane());
-                            gamePlayPane.getChildren().remove(goldenGate.getGatePane());
+                            gamePlayPane.getChildren().remove(goldenGate.getStackPane());
                             leverToRemove.add(currentLever);
                             gateToRemove.add(goldenGate);
 
@@ -212,7 +225,7 @@ public class GameViewManager {
                         if (Objects.equals(currentLever.getLeverColour(), "SILVER") && (Objects.equals(allGates.get(i).getColour(), "SILVER"))
                                 && currentLever.isCollectedByPlayer(currentPlayer.getPlayerCoords())) {
                             gamePlayPane.getChildren().remove(currentLever.getStackPane());
-                            gamePlayPane.getChildren().remove(silverGate.getGatePane());
+                            gamePlayPane.getChildren().remove(silverGate.getStackPane());
                             leverToRemove.add(currentLever);
                             gateToRemove.add(silverGate);
                         }
@@ -220,6 +233,7 @@ public class GameViewManager {
                 }
 
                 for (Gate silverGate : gateToRemove) {
+                    System.out.println("DELETED GATE!");
                     allGates.remove(silverGate);
                 }
                 gateToRemove.clear();
@@ -268,7 +282,7 @@ public class GameViewManager {
     }
 
     private void createPlayer(Ninja chosenNinja) {
-        currentPlayer = new Player(gameScene, chosenNinja, currentBoard);
+        currentPlayer = new Player(gameScene, chosenNinja, currentBoard, this);
         currentPlayerStack = currentPlayer.getPlayerStack();
 
         int tileSize = currentBoard.getTileSize();
@@ -377,7 +391,7 @@ public class GameViewManager {
             int[] positionCoords2 = {positionCoords.get(i), positionCoords.get(i + 1)};
             goldenGate = new Gate("GOLD", currentBoard, positionCoords2);
             allGates.add(goldenGate);
-            gamePlayPane.getChildren().add(goldenGate.getGatePane());
+            gamePlayPane.getChildren().add(goldenGate.getStackPane());
         }
     }
 
@@ -388,7 +402,7 @@ public class GameViewManager {
             silverGate = new Gate("SILVER", currentBoard, positionCoords2);
             allGates.add(silverGate);
 
-            gamePlayPane.getChildren().add(silverGate.getGatePane());
+            gamePlayPane.getChildren().add(silverGate.getStackPane());
         }
     }
 

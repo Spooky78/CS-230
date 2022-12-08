@@ -6,7 +6,7 @@ import javafx.scene.layout.StackPane;
 
 import java.util.Objects;
 
-public class Gate {
+public class Gate extends Item{
     private static final String GOLDEN_GATE_PATH = "/Items/goldGate.png";
     private static final String SILVER_GATE_PATH = "/Items/silverGate.png";
     private static final int GATE_SIZE = 50;
@@ -60,7 +60,13 @@ public class Gate {
         return colour;
     }
 
-    public StackPane getGatePane() {
+    @Override
+    protected StackPane getStackPane() {
         return gatePane;
+    }
+
+    @Override
+    protected int[] getCoords() {
+        return gatePosition;
     }
 }

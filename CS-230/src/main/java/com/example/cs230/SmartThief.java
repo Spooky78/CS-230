@@ -70,7 +70,7 @@ public class SmartThief extends NPC {
             System.out.println("FOUND ITEM");
             ArrayList<String> directions = findDirections();
             for (int i=0; i<coordPath.size(); i++) {
-                System.out.println(coordPath.get(i)[0]+" "+coordPath.get(i)[1]);
+                //System.out.println(coordPath.get(i)[0]+" "+coordPath.get(i)[1]);
                 //System.out.println(directions.get(i));
             }
             transitions(reverseArrayList(directions));
@@ -209,7 +209,7 @@ public class SmartThief extends NPC {
         }
     }
     private void print(Node<int[]> node, String appender) {
-        System.out.println(appender + node.getData()[0] + " " + node.getData()[1]);
+        //System.out.println(appender + node.getData()[0] + " " + node.getData()[1]);
         node.getChildren().forEach(each -> print(each, appender+appender));
     }
     private void findPathCoords(Node<int[]> foundNode) {
@@ -245,9 +245,9 @@ public class SmartThief extends NPC {
 
     private void transitions(ArrayList<String> directions) {
         SequentialTransition transition = new SequentialTransition();
-        System.out.println(directions.size());
+        //System.out.println(directions.size());
         for(int i=0; i<directions.size(); i++) {
-            System.out.println(directions.get(i));
+            //System.out.println(directions.get(i));
             //transition.getChildren().add(moveDownTile());
             if (directions.get(i).equals("RIGHT")) {
                 transition.getChildren().add(moveRightTile());

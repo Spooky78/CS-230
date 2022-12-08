@@ -23,6 +23,7 @@ public class AllProfile {
     private static ArrayList<String> nameList = new ArrayList<>();
     private static ArrayList<Integer> scoreList = new ArrayList<>();
     private ArrayList<Integer> sortedScoreList = new ArrayList<>();
+    private ArrayList<Integer> allProfileIndex = new ArrayList<>();
     private int[] tenHighScore = new int[10];
     private String[] tenHighScoreName = new String[10];
     private final int MAX_HIGHSCORE_SIZE = 10;
@@ -142,14 +143,21 @@ public class AllProfile {
     }
 
     public int[] getTenHighScore() {
-        for (int i = 0; i < sortedScoreList.size() || i < MAX_HIGHSCORE_SIZE; i++) {
+        for (int i = 0; i < sortedScoreList.size() && i < MAX_HIGHSCORE_SIZE; i++) {
             tenHighScore[i] = sortedScoreList.get(i);
         }
         return tenHighScore;
     }
 
     public String[] getTenHighScoreName() {
-        // the get score name has the same method as
+        for (int i = 0; i < sortedScoreList.size() && i < MAX_HIGHSCORE_SIZE; i++) {
+            for(int j = 0; j < allScores.size(); j++) {
+                if (sortedScoreList.get(i) == allScores.get(j).getPlayerScore() && allProfileIndex.contains(j)) {
+                    tenHighScoreName[i] = allScores.get(j).getPlayerName();
+                    allProfileIndex.add(j);
+                }
+            }
+        }
         return tenHighScoreName;
     }
 
