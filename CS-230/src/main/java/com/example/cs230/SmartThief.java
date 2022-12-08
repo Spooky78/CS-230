@@ -1,5 +1,6 @@
 package com.example.cs230;
 
+import javafx.animation.SequentialTransition;
 import javafx.animation.TranslateTransition;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -67,13 +68,26 @@ public class SmartThief extends NPC {
             System.out.println("COUNLD NOT FIND ITEM");
         } else {
             System.out.println("FOUND ITEM");
-            findDirections();
+            ArrayList<String> directions = findDirections();
             for (int i=0; i<coordPath.size(); i++) {
-                //System.out.println(coordPath.get(i)[0]+" "+coordPath.get(i)[1]);
+                System.out.println(coordPath.get(i)[0]+" "+coordPath.get(i)[1]);
                 //System.out.println(directions.get(i));
             }
+            transitions(reverseArrayList(directions));
         }
+        //transitions(directions);
         //print(root, " ");
+    }
+
+    public ArrayList<String> reverseArrayList(ArrayList<String> alist) {
+        // Arraylist for storing reversed elements
+        ArrayList<String> revArrayList = new ArrayList<String>();
+        for (int i = alist.size() - 1; i >= 0; i--) {
+            // Append the elements in reverse order
+            revArrayList.add(alist.get(i));
+        }
+        // Return the reversed arraylist
+        return revArrayList;
     }
 
     private int findShortestDistance(ArrayList<Item> items) {
@@ -204,27 +218,51 @@ public class SmartThief extends NPC {
             coordPath.add(currentNode.getData());
             currentNode = currentNode.getParent();
         }
+        coordPath.add(new int[] {5, 5});
     }
 
-    private void findDirections() {
-        directions = new ArrayList<>();
+    private ArrayList<String> findDirections() {
+        ArrayList<String> directions = new ArrayList<>();
         for(int i=0; i<coordPath.size()-1; i++) {
             if (coordPath.get(i)[0] != coordPath.get(i+1)[0]) {
                 int sub = coordPath.get(i)[0] - coordPath.get(i+1)[0];
                 if (sub < 0) {
-                    directions.add("RIGHT");
-                } else if (sub > 0) {
                     directions.add("LEFT");
+                } else if (sub > 0) {
+                    directions.add("RIGHT");
                 }
             } else if (coordPath.get(i)[1] != coordPath.get(i+1)[1]) {
                 int sub = coordPath.get(i)[1] - coordPath.get(i+1)[1];
                 if (sub < 0) {
-                    directions.add("DOWN");
-                } else if (sub > 0) {
                     directions.add("UP");
+                } else if (sub > 0) {
+                    directions.add("DOWN");
                 }
             }
         }
+        return directions;
+    }
+
+    private void transitions(ArrayList<String> directions) {
+        SequentialTransition transition = new SequentialTransition();
+        System.out.println(directions.size());
+        for(int i=0; i<directions.size(); i++) {
+            System.out.println(directions.get(i));
+            //transition.getChildren().add(moveDownTile());
+            if (directions.get(i).equals("RIGHT")) {
+                transition.getChildren().add(moveRightTile());
+            }
+            if (directions.get(i).equals("LEFT")) {
+                transition.getChildren().add(moveLeftTile());
+            }
+            if (directions.get(i).equals("UP")) {
+                transition.getChildren().add(moveUpTile());
+            }
+            if (directions.get(i).equals("DOWN")) {
+                transition.getChildren().add(moveDownTile());
+            }
+        }
+        transition.play();
     }
 
     private TranslateTransition moveRightTile() {
