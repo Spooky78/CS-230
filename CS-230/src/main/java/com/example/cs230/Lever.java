@@ -43,6 +43,10 @@ public class Lever extends Item{
         return playerCoords[0] + 1 == goldenLeverPosition[0] && playerCoords[1] + 1 == goldenLeverPosition[1];
     }
 
+    public boolean isLeverCollisionNPC(int[] npcCoords) {
+        return npcCoords[0] == goldenLeverPosition[0] && npcCoords[1] == goldenLeverPosition[1];
+    }
+
     public String getLeverColour() {
         return leverColour;
     }
