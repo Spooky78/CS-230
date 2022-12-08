@@ -6,6 +6,8 @@ import javafx.scene.layout.StackPane;
 
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Bomb extends Item {
     private static final String BOMB_PATH = "/Items/bomb.png";
@@ -13,6 +15,9 @@ public class Bomb extends Item {
     private final Board currentBoard;
     private final int[] coords;
     private ImageView bomb = new ImageView();
+    private boolean timerStarted = false;
+    private boolean isExploded = false;
+    private Timer t;
 
     public Bomb(Board currentBoard, int[] position) {
         this.currentBoard = currentBoard;
@@ -57,6 +62,22 @@ public class Bomb extends Item {
         return playerCoords[0] == coords[0] && playerCoords[1] + 2 == coords[1];
     }
 
+    public void countdown() {
+        if (!timerStarted) {
+            t = new Timer();
+            t.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    isExploded = true;
+                }
+            }, 2500);
+        }
+        timerStarted = true;
+    }
+
+    public Boolean isExploded() {
+        return isExploded;
+    }
 
     public StackPane getBombPane() {
         return bombPane;

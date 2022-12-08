@@ -92,12 +92,14 @@ public class AllProfile {
         return nameList;
     }
 
+    //TODO: create a deleting profile button and push.
     public void deleteProfile(String name) {
         for (int i = 0; i < allProfile.size(); i++) {
             if (name.equals(allProfile.get(i).getName())) {
                 allProfile.remove(i);
                 nameList.remove(name);
             }
+            writeProfileInTxt();
         }
         for (int i = 0; i < allScores.size(); i++) {
             if (name.equals(allScores.get(i).getPlayerName())) {

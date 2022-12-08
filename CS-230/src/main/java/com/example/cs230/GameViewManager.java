@@ -228,15 +228,34 @@ public class GameViewManager {
                     allLever.remove(silverLever);
                 }
                 leverToRemove.clear();
-
+//
+//                for (Bomb allBombs : allBomb) {
+//                    if (allBombs.isCollisionPlayer(currentPlayer.getPlayerCoords())) {
+//                        int[] currentBomb = allBombs.getCoords();
+//                        for (Item allitems : allCollectableItems) {
+//                            int[] currentItem = allitems.getCoords();
+//                            if (currentItem[0] == currentBomb[0] ||
+//                                    currentItem[1] == currentBomb[1]) {
+//                                System.out.println("test");
+//                            }
+//                        }
+//
+//                    }
+//
+//                }
                 for (Bomb allBombs : allBomb) {
                     if (allBombs.isCollisionPlayer(currentPlayer.getPlayerCoords())) {
+                        allBombs.countdown();
                         int[] currentBomb = allBombs.getCoords();
                         for (Item allitems : allCollectableItems) {
                             int[] currentItem = allitems.getCoords();
-                            if (currentItem[0] == currentBomb[0] ||
-                                    currentItem[1] == currentBomb[1]) {
-                                System.out.println("test");
+                            if (allBombs.isExploded() && (currentItem[0] == currentBomb[0] ||
+                                    currentItem[1] == currentBomb[1])) {
+                                gamePlayPane.getChildren().remove(allitems.getStackPane());
+                                gamePlayPane.getChildren().remove(allBombs.getStackPane());
+
+
+
                             }
                         }
 
