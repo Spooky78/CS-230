@@ -78,7 +78,7 @@ public class WinScreenViewManager {
     }
 
     private void createText(Player player) {
-        Text gameOverText = new Text("GAME OVER!");
+        Text gameOverText = new Text("COMPLETED!");
         try {
             gameOverText.setFont(Font.loadFont(new FileInputStream(FONT_PATH), FONT_SIZE));
         } catch (FileNotFoundException e) {

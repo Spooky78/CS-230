@@ -7,15 +7,7 @@ import java.util.Scanner;
 
 
 public class AllProfile {
-    //all profile contains 4 array lists, array lists of string and int which are names and scores lists
-    //and 2 array lists of player name and player score.
-    // this class would load all the profiles which saved inside the txt file into an array list of player profile
-    // and an array list of names.
-    // could add/delete the array list of player profiles and names
-    //Update: it has a file writer method. The writer method found the file path, empty the file, and then write down
-    //what are existing from array list into the txt file. Since at the start of the game, it loads all the profile into
-    //the array list. so cleaning the file should work.
-    //TODO: Has to link it up with other classes. NOT-DONE YET
+    //score in list of levels
     private static final String PROFILE_FILE_PATH = "CS-230/src/main/resources/Levels/Profile.txt";
     private static final String SCORE_FILE_PATH = "CS-230/src/main/resources/Levels/Score.txt";
     private static ArrayList<PlayerProfile> allProfile = new ArrayList<>();

@@ -285,9 +285,6 @@ public class GameViewManager {
                                     currentItem[1] == currentBomb[1])) {
                                 gamePlayPane.getChildren().remove(allitems.getStackPane());
                                 gamePlayPane.getChildren().remove(allBombs.getStackPane());
-
-
-
                             }
                         }
 
