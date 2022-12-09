@@ -5,7 +5,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -233,15 +232,54 @@ public class ViewManager {
         });
         return newProfileButton;
     }
+    List<String> dialogData =  new ArrayList<>();
+
+    private MainMenuButton levelSelectionButton() {
+        dialogData.add("TEST");
+        dialogData.add("TEST2");
+        MainMenuButton chooseLevelButton = new MainMenuButton("Choose\nLevel");
+        chooseLevelButton.setOnAction(e -> {
+            if (dialogData.size() == 0) {
+                Text error = new Text("Error no level found!");
+                error.setFont(Font.font("Arial", 25));
+                ninjaChooserSubScene.getPane().getChildren().set(1, error);
+            } else {
+//                ArrayList<String> arrayData = AllProfile.getNameList();
+//
+//                List<String> dialogData =  new ArrayList<>();
+
+                ChoiceDialog<String> dialog = new ChoiceDialog<>(dialogData.get(0), dialogData);
+                dialog.setTitle("Select Level");
+                dialog.setHeaderText("Select your choice");
+                Optional<String> result = dialog.showAndWait();
+                String selected;
+//                if (result.isPresent()) {
+//                    selected = result.get();
+//                    for (int i = 0; i < AllProfile.getNameList().size();i++) {
+//                        if (selected.equals(AllProfile.getNameList().get(i))) {
+//                            currentPlayerProfile = AllProfile.getNameList().get(i);
+//                            ninjaChooserSubScene.getPane().getChildren()
+//                                    .set(1, createCurrentProfile());
+//                        }
+//                    }
+//                }
+//                System.out.println("Selection: " + currentPlayerProfile);
+            }
+        });
+        return chooseLevelButton;
+    }
 
     /**
      * Creates the start button.
      *
      * @return The start button.
      */
-    private MainMenuButton createButtonToStart() {
+    private HBox createButtonToStart() {
+        HBox startButtons = new HBox(levelSelectionButton());
+        startButtons.setSpacing(20);
+        startButtons.setAlignment(Pos.CENTER);
         MainMenuButton startButton = new MainMenuButton("START");
-
+        startButtons.getChildren().add(startButton);
         startButton.setOnAction(actionEvent -> {
             //if (chosenNinja != null && currentPlayerProfile != null) {
             GameViewManager gameManager = new GameViewManager();
@@ -249,7 +287,7 @@ public class ViewManager {
             //}
         });
 
-        return startButton;
+        return startButtons;
     }
 
     /**
@@ -292,6 +330,42 @@ public class ViewManager {
         }
     }
 
+    private MainMenuButton choseScoreLevel() {
+        List<String> dialogData =  new ArrayList<>();
+            dialogData.add("TEST");
+            dialogData.add("TEST2");
+            MainMenuButton chooseScoreLevelButton = new MainMenuButton("Choose\nLevel");
+            chooseScoreLevelButton.setOnAction(e -> {
+                if (dialogData.size() == 0) {
+                    Text error = new Text("Error no level found!");
+                    error.setFont(Font.font("Arial", 25));
+                    ninjaChooserSubScene.getPane().getChildren().set(1, error);
+                } else {
+//                ArrayList<String> arrayData = AllProfile.getNameList();
+//
+//                List<String> dialogData =  new ArrayList<>();
+
+                    ChoiceDialog<String> dialog = new ChoiceDialog<>(dialogData.get(0), dialogData);
+                    dialog.setTitle("Select Level");
+                    dialog.setHeaderText("Select your choice");
+                    Optional<String> result = dialog.showAndWait();
+                    String selected;
+//                    if (result.isPresent()) {
+//                        selected = result.get();
+//                        for (int i = 0; i < AllProfile.getNameList().size();i++) {
+//                            if (selected.equals(AllProfile.getNameList().get(i))) {
+//                                currentPlayerProfile = AllProfile.getNameList().get(i);
+//                                ninjaChooserSubScene.getPane().getChildren()
+//                                        .set(1, createCurrentProfile());
+//                            }
+//                        }
+//                    }
+//                    System.out.println("Selection: " + currentPlayerProfile);
+                }
+            });
+            return chooseScoreLevelButton;
+    }
+
     /**
      * Titles of score and only return when there is no score.
      */
@@ -302,12 +376,14 @@ public class ViewManager {
         } catch (FileNotFoundException e) {
             scoreTitle.setFont(Font.font("Arial", 60));
         }
-        Text fuck = new Text("Fuck, no score!");
+
+
+
         VBox scoreTit = new VBox();
         scoreTit.setAlignment(Pos.CENTER);
         scoreTit.getChildren().add(scoreTitle);
+        scoreTit.getChildren().add(choseScoreLevel());
         VBox score = new VBox();
-        score.getChildren().add(fuck);
         scoreSubScene.getPane().getChildren().add(scoreTit);
         scoreSubScene.getPane().getChildren().add(score);
     }
