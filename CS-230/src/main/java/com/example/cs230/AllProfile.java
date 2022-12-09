@@ -86,7 +86,7 @@ public class AllProfile {
     }
 
     //TODO: create a deleting profile button and push.
-    public void deleteProfile(String name) {
+    public static void deleteProfile(String name) {
         for (int i = 0; i < allProfile.size(); i++) {
             if (name.equals(allProfile.get(i).getName())) {
                 allProfile.remove(i);

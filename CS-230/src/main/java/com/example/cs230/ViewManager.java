@@ -32,7 +32,6 @@ public class ViewManager {
     private final BorderPane mainPane;
     private final Scene mainScene;
     private Stage mainStage;
-    private static ArrayList<PlayerProfile> allProfiles = new ArrayList<>();
     private static VBox buttonPane;
     private static VBox logoPane;
     private static StackPane subscenePane;
@@ -308,13 +307,13 @@ public class ViewManager {
         HBox startButtons = new HBox(levelSelectionButton());
         startButtons.setSpacing(20);
         startButtons.setAlignment(Pos.CENTER);
-        MainMenuButton startButton = new MainMenuButton("START");
+        MainMenuButton startButton = new MainMenuButton("START\nGAME");
         startButtons.getChildren().add(startButton);
         startButton.setOnAction(actionEvent -> {
-            //if (chosenNinja != null && currentPlayerProfile != null) {
-            GameViewManager gameManager = new GameViewManager();
-            gameManager.createNewGame(mainStage, chosenNinja, 0);
-            //}
+            if (chosenNinja != null && currentPlayerProfile != null) {
+                GameViewManager gameManager = new GameViewManager();
+                gameManager.createNewGame(mainStage, chosenNinja, 0);
+            }
         });
 
         return startButtons;

@@ -293,12 +293,25 @@ public class GameViewManager {
                     }
                 }
 
-//                for (int i=0; i<allSmartThieves.size(); i++) {
-//                    if (allSmartThieves.get(i).isCollected()) {
-//                        allSmartThieves.get(i).setAllCollectableItems(allCollectableItems);
-//                        allSmartThieves.get(i).move();
-//                    }
-//                }
+                for (int i=0; i<allSmartThieves.size(); i++) {
+                    if (allSmartThieves.get(i).isReachedDoor()) {
+                        for (NPC allThieve : allThieves) {
+                            allThieve.stopTimer();
+                        }
+                        allThieves.clear();
+                        allSmartThieves.clear();
+                        System.gc();
+                        gameOver.createGameOver(gameStage, currentPlayer);
+                        time.isKilled();
+                        isLose = true;
+                    }
+                    if (allSmartThieves.size() != 0 ) {
+                        if (allSmartThieves.get(i).isCollected()) {
+                            allSmartThieves.get(i).setAllCollectableItems(allCollectableItems);
+                            allSmartThieves.get(i).move();
+                        }
+                    }
+                }
             }
         };
         gameTimer.start();
@@ -394,7 +407,7 @@ public class GameViewManager {
     private void createDoor() {
         int[] positionCoords = currentBoard.getDoorCoords();
         door = new Door(currentBoard, positionCoords);
-        //allCollectableItems.add(door);
+        allCollectableItems.add(door);
         gamePlayPane.getChildren().add(door.getDoorPane());
     }
 
