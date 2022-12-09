@@ -59,6 +59,9 @@ public class Bomb extends Item {
         if (playerCoords[0] == coords[0] && playerCoords[1] == coords[1]) {
             return true;
         }
+        if (playerCoords[0]  == coords[0] && playerCoords[1] + 2== coords[1]) {
+            return true;
+        }
         return false;
     }
 
