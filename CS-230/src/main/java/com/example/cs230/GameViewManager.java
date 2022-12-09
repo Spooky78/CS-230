@@ -32,7 +32,8 @@ public class GameViewManager {
     private final BorderPane gamePlayPane = new BorderPane();
     private final ArrayList<StackPane> allAssassinStacks = new ArrayList<>();
     private final ArrayList<FlyingAssassin> allAssassins = new ArrayList<>();
-    private final ArrayList<NPC> allThieves = new ArrayList<>();
+    private ArrayList<NPC> allThieves = new ArrayList<>();
+    private ArrayList<SmartThief> allSmartThieves = new ArrayList<>();
     private final ArrayList<Coin> allCoins = new ArrayList<>();
     private final ArrayList<Clock> allClock = new ArrayList<>();
     private final ArrayList<Lever> allLever = new ArrayList<>();
@@ -137,6 +138,9 @@ public class GameViewManager {
                     for (NPC allThieve : allThieves) {
                         allThieve.stopTimer();
                     }
+                    allThieves.clear();
+                    allSmartThieves.clear();
+                    System.gc();
                     gameOver.createGameOver(gameStage, currentPlayer);
                     time.isKilled();
                     isLose = true;
@@ -149,6 +153,9 @@ public class GameViewManager {
                         for (NPC allThieve : allThieves) {
                             allThieve.stopTimer();
                         }
+                        allThieves.clear();
+                        allSmartThieves.clear();
+                        System.gc();
                         gameOver.createGameOver(gameStage, currentPlayer);
                         allAssassin.setLose();
                     }
@@ -173,6 +180,7 @@ public class GameViewManager {
                 }
                 for (Coin coin : coinsToRemove) {
                     allCoins.remove(coin);
+                    allCollectableItems.remove(coin);
                 }
                 coinsToRemove.clear();
 
@@ -194,6 +202,7 @@ public class GameViewManager {
                 }
                 for (Clock clock : clockToRemove) {
                     allClock.remove(clock);
+                    allCollectableItems.remove(clock);
                 }
                 clockToRemove.clear();
 
@@ -262,25 +271,13 @@ public class GameViewManager {
                 }
                 gateToRemove.clear();
 
-                for (Lever silverLever : leverToRemove) {
-                    allLever.remove(silverLever);
+                for (Lever lever : leverToRemove) {
+                    allLever.remove(lever);
+                    allCollectableItems.remove(lever);
                 }
                 leverToRemove.clear();
-//
-//                for (Bomb allBombs : allBomb) {
-//                    if (allBombs.isCollisionPlayer(currentPlayer.getPlayerCoords())) {
-//                        int[] currentBomb = allBombs.getCoords();
-//                        for (Item allitems : allCollectableItems) {
-//                            int[] currentItem = allitems.getCoords();
-//                            if (currentItem[0] == currentBomb[0] ||
-//                                    currentItem[1] == currentBomb[1]) {
-//                                System.out.println("test");
-//                            }
-//                        }
-//
-//                    }
-//
-//                }
+
+                ArrayList<Bomb> bombsToRemove = new ArrayList<>();
                 for (Bomb allBombs : allBomb) {
                     if (allBombs.isCollisionPlayer(currentPlayer.getPlayerCoords())) {
                         allBombs.countdown();
@@ -293,9 +290,14 @@ public class GameViewManager {
                                 gamePlayPane.getChildren().remove(allBombs.getStackPane());
                             }
                         }
-
                     }
+                }
 
+                for (int i=0; i<allSmartThieves.size(); i++) {
+                    if (allSmartThieves.get(i).isCollected()) {
+                        allSmartThieves.get(i).setAllCollectableItems(allCollectableItems);
+                        allSmartThieves.get(i).move();
+                    }
                 }
             }
         };
@@ -328,6 +330,7 @@ public class GameViewManager {
                     new SmartThief(currentBoard, currentCoords, currentStackPane, this);
             currentStackPane.getChildren().add(currentSmartThief.getSmartThief());
             allThieves.add(currentSmartThief);
+            allSmartThieves.add(currentSmartThief);
             gamePlayPane.getChildren().add(currentStackPane);
         }
     }
@@ -476,6 +479,9 @@ public class GameViewManager {
     }
     public ArrayList<Item> getAllCollectableItems() {
         return allCollectableItems;
+    }
+    public Door getDoor() {
+        return door;
     }
 
 }
