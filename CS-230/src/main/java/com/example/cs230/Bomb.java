@@ -59,7 +59,7 @@ public class Bomb extends Item {
         if (playerCoords[0] == coords[0] && playerCoords[1] == coords[1]) {
             return true;
         }
-        return playerCoords[0] == coords[0] && playerCoords[1] + 2 == coords[1];
+        return false;
     }
 
     public void countdown() {
