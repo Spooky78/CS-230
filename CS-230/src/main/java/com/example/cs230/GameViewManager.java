@@ -90,7 +90,7 @@ public class GameViewManager {
         createBomb();
         createAssassin();
         createFloorFollowingThief();
-        createSmartThief();
+        //createSmartThief();
         createPlayer(chosenNinja);
 
         time = new Time(currentBoard.getSeconds());
@@ -110,12 +110,12 @@ public class GameViewManager {
                 return true;
             }
         }
-//        for (int i=0; i<allBomb.size();i++) {
-//            if (allBomb.get(i).getCoords()[0] == coords[0]  && allBomb.get(i).getCoords()[1] == coords[1]) {
-//                System.out.println("ON NON TILE");
-//                return true;
-//            }
-//        }
+        for (int i=0; i<allBomb.size();i++) {
+            if (allBomb.get(i).getCoords()[0] == coords[0]  && allBomb.get(i).getCoords()[1] == coords[1]) {
+                System.out.println("ON NON TILE");
+                return true;
+            }
+        }
         //System.out.println("CAN PASS");
         return false;
     }
@@ -288,10 +288,15 @@ public class GameViewManager {
                                     currentItem[1] == currentBomb[1])) {
                                 gamePlayPane.getChildren().remove(allitems.getStackPane());
                                 gamePlayPane.getChildren().remove(allBombs.getStackPane());
+                                bombsToRemove.add(allBombs);
                             }
                         }
                     }
                 }
+                for (int i=0; i<bombsToRemove.size(); i++) {
+                    allBomb.remove(bombsToRemove.get(i));
+                }
+
 
                 for (int i=0; i<allSmartThieves.size(); i++) {
                     if (allSmartThieves.get(i).isReachedDoor()) {
