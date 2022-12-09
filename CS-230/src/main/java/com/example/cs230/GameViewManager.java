@@ -109,6 +109,12 @@ public class GameViewManager {
                 return true;
             }
         }
+//        for (int i=0; i<allBomb.size();i++) {
+//            if (allBomb.get(i).getCoords()[0] == coords[0]  && allBomb.get(i).getCoords()[1] == coords[1]) {
+//                System.out.println("ON NON TILE");
+//                return true;
+//            }
+//        }
         //System.out.println("CAN PASS");
         return false;
     }

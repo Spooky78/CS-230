@@ -10,6 +10,7 @@ import javafx.util.Duration;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Timer;
+import java.util.TimerTask;
 
 public class SmartThief extends NPC {
     //no smart thief at the moment so just borrow one from flying assassin
@@ -73,7 +74,8 @@ public class SmartThief extends NPC {
                 //System.out.println(coordPath.get(i)[0]+" "+coordPath.get(i)[1]);
                 //System.out.println(directions.get(i));
             }
-            transitions(reverseArrayList(directions));
+            //transitions(reverseArrayList(directions));
+            animation(reverseArrayList(directions));
         }
         //transitions(directions);
         //print(root, " ");
@@ -243,7 +245,7 @@ public class SmartThief extends NPC {
         return directions;
     }
 
-    private void transitions(ArrayList<String> directions) {
+    private SequentialTransition transitions(ArrayList<String> directions) {
         SequentialTransition transition = new SequentialTransition();
         //System.out.println(directions.size());
         for(int i=0; i<directions.size(); i++) {
@@ -262,7 +264,8 @@ public class SmartThief extends NPC {
                 transition.getChildren().add(moveDownTile());
             }
         }
-        transition.play();
+        //transition.play();
+        return transition;
     }
 
     private TranslateTransition moveRightTile() {
@@ -295,6 +298,127 @@ public class SmartThief extends NPC {
         moveUp.setByY(-gameBoard.getTileSize());
         //animationCoords[1] -= 1;
         return moveUp;
+    }
+
+    private void animation(ArrayList<String> directions) {
+        SequentialTransition animation = transitions(directions);
+        timer = new Timer();
+        int schedualCount = 0;
+
+        for (int i = 0; i < directions.size(); i++) {
+            if (directions.get(i).equals("RIGHT")) {
+                moveRightTileAnimation(timer, schedualCount, animation);
+            }
+            if (directions.get(i).equals("LEFT")) {
+                moveLeftTileAnimation(timer, schedualCount, animation);
+            }
+            if (directions.get(i).equals("UP")) {
+                moveUpTileAnimation(timer, schedualCount, animation);
+            }
+            if (directions.get(i).equals("DOWN")) {
+                moveDownTileAimation(timer, schedualCount, animation);
+            }
+            schedualCount++;
+        }
+        //animation.pause();
+//        timer.cancel();
+//        timer.purge();
+
+//        TimerTask nextPath = new TimerTask() {
+//            @Override
+//            public void run() {
+//                move();
+//            }
+//        };
+//            timer.schedule(nextPath, (long) MILLS_DELAY_TILE *schedualCount);
+////            if (!moveCounter){
+//                //System.out.println("MOVE");
+//                move();
+//                moveCounter = true;
+//            }
+        animation.play();
+    }
+
+    private void moveRightTileAnimation(Timer timer, int scheduleCount, SequentialTransition animation) {
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                animation.pause();
+                setImage("RIGHT");
+                coords[0] += 1;
+                //System.out.println(coordsFinal[0] + " "+coordsFinal[1]);
+                animation.playFrom(String.valueOf(MILLS_DELAY_TILE * scheduleCount));
+            }
+        };
+        timer.schedule(task, (long)MILLS_DELAY_TILE * scheduleCount);
+
+    }
+
+    private void moveLeftTileAnimation(Timer timer, int scheduleCount, SequentialTransition animation) {
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                animation.pause();
+                setImage("LEFT");
+                coords[0] -= 1;
+                animation.playFrom(String.valueOf(MILLS_DELAY_TILE * scheduleCount));
+            }
+        };
+        timer.schedule(task, (long)MILLS_DELAY_TILE * scheduleCount);
+    }
+
+    private void moveUpTileAnimation(Timer timer, int scheduleCount, SequentialTransition animation){
+
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                animation.pause();
+                setImage("UP");
+                coords[1] -= 1;
+                //System.out.println(coordsFinal[0] + " "+coordsFinal[1]);
+                animation.playFrom(String.valueOf(MILLS_DELAY_TILE * scheduleCount));
+            }
+        };
+        timer.schedule(task, (long)MILLS_DELAY_TILE * scheduleCount);
+    }
+
+    private void moveDownTileAimation(Timer timer, int scheduleCount, SequentialTransition animation){
+
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                animation.pause();
+                setImage("DOWN");
+                coords[1] += 1;
+                //System.out.println(coordsFinal[0] + " "+coordsFinal[1]);
+                animation.playFrom(String.valueOf(MILLS_DELAY_TILE * scheduleCount));
+            }
+        };
+        timer.schedule(task, (long)MILLS_DELAY_TILE * scheduleCount);
+    }
+
+    private void setImage(String direction) {
+        Image ffThiefImage = null;
+        switch (direction) {
+            case "LEFT":
+                ffThiefImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream(SMARTTHIEF_LEFT_PATH)));
+                break;
+            case "RIGHT":
+                ffThiefImage = new Image(
+                        Objects.requireNonNull(getClass().getResourceAsStream(SMARTTHIEF_RIGHT_PATH)));
+                break;
+            case "UP":
+                ffThiefImage = new Image(
+                        Objects.requireNonNull(getClass().getResourceAsStream(SMARTTHIEF_UP_PATH)));
+                break;
+            default:
+                ffThiefImage = new Image(
+                        Objects.requireNonNull(getClass().getResourceAsStream(SMARTTHIEF_DOWN_PATH)));
+                break;
+        };
+        sThief.setImage(ffThiefImage);
+        sThief.setFitWidth(50);
+        sThief.setFitHeight(50);
     }
 
     @Override
