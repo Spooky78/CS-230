@@ -3,72 +3,28 @@ package com.example.cs230;
 public class PlayerProfile {
     private int profileIndex;
     private String name;
-    public PlayerProfile(int profileIndex, String name) {
+    private boolean[]isLevelUnlocked;
+    public PlayerProfile(String name, boolean[]isLevelUnlocked) {
         //saveName();
-        this.profileIndex = profileIndex;
         this.name = name;
+        this.isLevelUnlocked = isLevelUnlocked;
 
     }
+    // the player profile now store the boolean list of levels.
+    // when reading the file it reads the level as well as the player name
+    // when adding the name it has default level which is first level unlocked and the others not unlocked.
+    //TODO: high score tables take the level.
+
 
     public String getName() {
         return name;
     }
 
-    public int getProfileIndex() {
-        return profileIndex;
-    }
-/*
-    public void saveName() {
-        if (!nameExisted()) {
-            BufferedWriter bw = null;
-            try {
-                bw = new BufferedWriter(new FileWriter(FILE_PATH, true));
-                bw.write(name);
-                bw.newLine();
-                bw.flush();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            } finally {
-                if (bw != null) {
-                    try {
-                        bw.close();
-                    } catch (IOException ioe2) {
-                    }
-                }
-            }
-        }
-    }
-    public boolean nameExisted() {
-        String existingName;
-        try {
-            File playerProfile = new File(FILE_PATH);
-            Scanner playerProfileFileReader = new Scanner(playerProfile);
-            while (playerProfileFileReader.hasNextLine()) {
-                existingName = playerProfileFileReader.nextLine();
-                if (name.equals(existingName)) {
-                    return true;
-                }
-            }
-            return false;
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        }
+    public boolean[] getIsLevelUnlocked() {
+        return isLevelUnlocked;
     }
 
-
-    public ArrayList<String> getArrayOfProfiles() {
-        ArrayList<String> nameList = new ArrayList<>();
-        try {
-            File playerProfile = new File(FILE_PATH);
-            Scanner playerProfileFileReader = new Scanner(playerProfile);
-            while (playerProfileFileReader.hasNextLine()) {
-                String names = playerProfileFileReader.nextLine();
-                nameList.add(names);
-                }
-            } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-        return nameList;
+    public void changeLevelIndex(int levelIndex) {
+        isLevelUnlocked[levelIndex] = true;
     }
-    */
 }
