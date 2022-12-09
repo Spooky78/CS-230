@@ -26,7 +26,7 @@ import javafx.stage.Stage;
  * @author Everybody
  */
 public class ViewManager {
-    private static final int WIDTH = 800;
+    private static final int WIDTH = 900;
     private static final int HEIGHT = 780;
     private static final String BACKGROUND_PATH = "treesBackground.png";
     private final BorderPane mainPane;
@@ -159,9 +159,11 @@ public class ViewManager {
     private HBox createPlayerProfilePicker() {
         MainMenuButton newProfileButton = createNewProfileButton();
         MainMenuButton chooseProfileButton = chooseProfileButton();
+        MainMenuButton deleteProfileButton = deleteProfileButton();
 
         HBox profilePrickerPane = new HBox(newProfileButton);
         profilePrickerPane.getChildren().add(chooseProfileButton);
+        profilePrickerPane.getChildren().add(deleteProfileButton);
 
         profilePrickerPane.setSpacing(20);
         profilePrickerPane.setAlignment(Pos.CENTER);
@@ -208,6 +210,34 @@ public class ViewManager {
         return chooseProfileButton;
     }
 
+    private MainMenuButton deleteProfileButton() {
+        AllProfile.loadProfile();
+        MainMenuButton chooseProfileButton = new MainMenuButton("Delete\nProfile");
+        chooseProfileButton.setOnAction(e -> {
+            if (AllProfile.getAllNamesInProfiles().size() == 0) {
+                Text error = new Text("Error no profiles have been made!");
+                error.setFont(Font.font("Arial", 25));
+                ninjaChooserSubScene.getPane().getChildren().set(1, error);
+            } else {
+                ArrayList<String> arrayData = AllProfile.getNameList();
+
+                List<String> dialogData = arrayData;
+
+                ChoiceDialog<String> dialog = new ChoiceDialog<>(dialogData.get(0), dialogData);
+                dialog.setTitle("Select Profile");
+                dialog.setHeaderText("Select your choice");
+                Optional<String> result = dialog.showAndWait();
+                String selected;
+                if (result.isPresent()) {
+                    selected = result.get();
+                    AllProfile.deleteProfile(selected);
+                }
+                System.out.println("Deleted: " + currentPlayerProfile);
+            }
+        });
+        return chooseProfileButton;
+    }
+
     /**
      * Creates new profile button algong with it action of naking new profile.
      *
@@ -232,9 +262,9 @@ public class ViewManager {
         });
         return newProfileButton;
     }
-    List<String> dialogData =  new ArrayList<>();
 
     private MainMenuButton levelSelectionButton() {
+        List<String> dialogData =  new ArrayList<>();
         dialogData.add("TEST");
         dialogData.add("TEST2");
         MainMenuButton chooseLevelButton = new MainMenuButton("Choose\nLevel");
