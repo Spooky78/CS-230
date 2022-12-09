@@ -28,6 +28,11 @@ public class SmartThief extends NPC {
     private Timer timer = new Timer();
     ArrayList<int[]> coordPath = new ArrayList<>();
     ArrayList<String> directions = new ArrayList<>();
+    ArrayList<String> searchedTile = new ArrayList<>();
+    ArrayList<Item> allCollectableItems = new ArrayList<>();
+    int[] targetCoords = null;
+    boolean isFound = false;
+    private boolean isCollected = false;
 
     public SmartThief(Board board, int[] startCoords, StackPane stackPane, GameViewManager manager) {
         this.manager = manager;
@@ -35,6 +40,7 @@ public class SmartThief extends NPC {
         coords = startCoords;
         sThiefStackPane = stackPane;
         createNPC();
+        setAllCollectableItems(manager.getAllCollectableItems());
         move();
     }
     @Override
@@ -55,13 +61,18 @@ public class SmartThief extends NPC {
         sThiefStackPane.setLayoutY((coords[1] * tileSize) - (tileSize / 2));
     }
 
-    ArrayList<String> searchedTile = new ArrayList<>();
-    int[] targetCoords = null;
-    boolean isFound = false;
-    protected void move() {
-        int shortestIndex = findShortestDistance(manager.getAllCollectableItems());
-        targetCoords = manager.getAllCollectableItems().get(shortestIndex).getCoords();
+    public void setAllCollectableItems(ArrayList<Item> items){
+        allCollectableItems = items;
+    }
+    public void move() {
+        isCollected = false;
+        isFound = false;
+        directions.clear();
+        System.out.println(allCollectableItems.size());
+        int shortestIndex = findShortestDistance(allCollectableItems);
+        targetCoords = allCollectableItems.get(shortestIndex).getCoords();
         Node<int[]> root = new Node<>(coords);
+        searchedTile.clear();
         searchedTile.add(root.getData()[0]+""+root.getData()[1]);
         //System.out.println(root.getData()[0] + " "+root.getData()[1]);
         makeTree(root, root.getData());
@@ -104,8 +115,8 @@ public class SmartThief extends NPC {
                 shortestIndex = i;
             }
         }
-        //System.out.println(items.get(shortestIndex).getCoords()[0]+" "+ items.get(shortestIndex).getCoords()[1]);
-        //System.out.println(shortestDistance);
+        System.out.println(items.get(shortestIndex).getCoords()[0]+" "+ items.get(shortestIndex).getCoords()[1]);
+        System.out.println(shortestDistance);
         return shortestIndex;
     }
 
@@ -182,7 +193,7 @@ public class SmartThief extends NPC {
             outsideLeft = true;
             //System.out.println("OUTSIDE GRID LEFT");
         }
-        if (parentCoords[0] >=9) {
+        if (parentCoords[0] > 8) {
             outsideRight = true;
             //System.out.println("OUTSIDE GRID RIGHT");
         }
@@ -217,14 +228,16 @@ public class SmartThief extends NPC {
     private void findPathCoords(Node<int[]> foundNode) {
         Node<int[]> currentNode = foundNode;
         while (!(currentNode.getData()[0] == coords[0]) || !(currentNode.getData()[1] == coords[1])) {
+            System.out.println(currentNode.getData()[0]+" "+currentNode.getData()[1]);
             coordPath.add(currentNode.getData());
             currentNode = currentNode.getParent();
         }
-        coordPath.add(new int[] {5, 5});
+        coordPath.add(new int[] {coords[0], coords[1]});
     }
 
     private ArrayList<String> findDirections() {
-        ArrayList<String> directions = new ArrayList<>();
+        //directions.clear();
+        directions = new ArrayList<>();
         for(int i=0; i<coordPath.size()-1; i++) {
             if (coordPath.get(i)[0] != coordPath.get(i+1)[0]) {
                 int sub = coordPath.get(i)[0] - coordPath.get(i+1)[0];
@@ -248,8 +261,9 @@ public class SmartThief extends NPC {
     private SequentialTransition transitions(ArrayList<String> directions) {
         SequentialTransition transition = new SequentialTransition();
         //System.out.println(directions.size());
+        //System.out.println(directions.size());
         for(int i=0; i<directions.size(); i++) {
-            //System.out.println(directions.get(i));
+            System.out.println(directions.get(i));
             //transition.getChildren().add(moveDownTile());
             if (directions.get(i).equals("RIGHT")) {
                 transition.getChildren().add(moveRightTile());
@@ -303,95 +317,95 @@ public class SmartThief extends NPC {
     private void animation(ArrayList<String> directions) {
         SequentialTransition animation = transitions(directions);
         timer = new Timer();
-        int schedualCount = 0;
+        int schedualCount = 1;
 
         for (int i = 0; i < directions.size(); i++) {
             if (directions.get(i).equals("RIGHT")) {
-                moveRightTileAnimation(timer, schedualCount, animation);
+                moveRightTileAnimation(timer, schedualCount, animation, i);
             }
             if (directions.get(i).equals("LEFT")) {
-                moveLeftTileAnimation(timer, schedualCount, animation);
+                moveLeftTileAnimation(timer, schedualCount, animation, i);
             }
             if (directions.get(i).equals("UP")) {
-                moveUpTileAnimation(timer, schedualCount, animation);
+                moveUpTileAnimation(timer, schedualCount, animation, i);
             }
             if (directions.get(i).equals("DOWN")) {
-                moveDownTileAimation(timer, schedualCount, animation);
+                moveDownTileAimation(timer, schedualCount, animation, i);
             }
             schedualCount++;
         }
-        //animation.pause();
-//        timer.cancel();
-//        timer.purge();
-
-//        TimerTask nextPath = new TimerTask() {
-//            @Override
-//            public void run() {
-//                move();
-//            }
-//        };
-//            timer.schedule(nextPath, (long) MILLS_DELAY_TILE *schedualCount);
-////            if (!moveCounter){
-//                //System.out.println("MOVE");
-//                move();
-//                moveCounter = true;
-//            }
         animation.play();
     }
 
-    private void moveRightTileAnimation(Timer timer, int scheduleCount, SequentialTransition animation) {
+    private void moveRightTileAnimation(Timer timer, int scheduleCount, SequentialTransition animation, int cycle) {
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
                 animation.pause();
-                setImage("RIGHT");
+                //setImage("RIGHT");
                 coords[0] += 1;
                 //System.out.println(coordsFinal[0] + " "+coordsFinal[1]);
                 animation.playFrom(String.valueOf(MILLS_DELAY_TILE * scheduleCount));
+                if (cycle == directions.size()-1){
+                    isCollected = true;
+                    stopTimer();
+                }
             }
         };
         timer.schedule(task, (long)MILLS_DELAY_TILE * scheduleCount);
 
     }
 
-    private void moveLeftTileAnimation(Timer timer, int scheduleCount, SequentialTransition animation) {
+    private void moveLeftTileAnimation(Timer timer, int scheduleCount, SequentialTransition animation, int cycle) {
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
                 animation.pause();
-                setImage("LEFT");
+                //setImage("LEFT");
                 coords[0] -= 1;
                 animation.playFrom(String.valueOf(MILLS_DELAY_TILE * scheduleCount));
+                if (cycle == directions.size()-1){
+                    isCollected = true;
+                    stopTimer();
+                }
             }
         };
         timer.schedule(task, (long)MILLS_DELAY_TILE * scheduleCount);
     }
 
-    private void moveUpTileAnimation(Timer timer, int scheduleCount, SequentialTransition animation){
+    private void moveUpTileAnimation(Timer timer, int scheduleCount, SequentialTransition animation, int cycle){
 
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
                 animation.pause();
-                setImage("UP");
+                //setImage("UP");
                 coords[1] -= 1;
                 //System.out.println(coordsFinal[0] + " "+coordsFinal[1]);
                 animation.playFrom(String.valueOf(MILLS_DELAY_TILE * scheduleCount));
+                if (cycle == directions.size()-1){
+                    isCollected = true;
+                    stopTimer();
+                }
             }
         };
         timer.schedule(task, (long)MILLS_DELAY_TILE * scheduleCount);
     }
 
-    private void moveDownTileAimation(Timer timer, int scheduleCount, SequentialTransition animation){
+    private void moveDownTileAimation(Timer timer, int scheduleCount, SequentialTransition animation, int cycle){
 
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
                 animation.pause();
-                setImage("DOWN");
+                //setImage("DOWN");
                 coords[1] += 1;
                 //System.out.println(coordsFinal[0] + " "+coordsFinal[1]);
                 animation.playFrom(String.valueOf(MILLS_DELAY_TILE * scheduleCount));
+                if (cycle == directions.size()-1){
+                    isCollected = true;
+                    stopTimer();
+                }
             }
         };
         timer.schedule(task, (long)MILLS_DELAY_TILE * scheduleCount);
@@ -419,6 +433,9 @@ public class SmartThief extends NPC {
         sThief.setImage(ffThiefImage);
         sThief.setFitWidth(50);
         sThief.setFitHeight(50);
+    }
+    public boolean isCollected() {
+        return isCollected;
     }
 
     @Override

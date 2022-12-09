@@ -293,12 +293,12 @@ public class GameViewManager {
                     }
                 }
 
-                for (int i=0; i<allSmartThieves.size(); i++) {
-                    if (allSmartThieves.get(i).isCollected()) {
-                        allSmartThieves.get(i).setAllCollectableItems(allCollectableItems);
-                        allSmartThieves.get(i).move();
-                    }
-                }
+//                for (int i=0; i<allSmartThieves.size(); i++) {
+//                    if (allSmartThieves.get(i).isCollected()) {
+//                        allSmartThieves.get(i).setAllCollectableItems(allCollectableItems);
+//                        allSmartThieves.get(i).move();
+//                    }
+//                }
             }
         };
         gameTimer.start();
