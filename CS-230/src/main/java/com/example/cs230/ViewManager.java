@@ -45,6 +45,7 @@ public class ViewManager {
     private String currentPlayerProfile;
     private boolean isHidden = true;
     private HBox startButtons = new HBox();
+    private boolean chooseButtonVisable = false;
 
     /**
      * Creates a main menu window.
@@ -52,13 +53,6 @@ public class ViewManager {
     public ViewManager() throws FileNotFoundException {
         mainPane = new BorderPane();
         mainScene = new Scene(mainPane, WIDTH, HEIGHT);
-        //mainStage = new Stage();
-        //mainStage.setScene(mainScene);
-//        createSubScenes();
-//        createBackground();
-//        createLogo();
-//        createMsgOfTheDay();
-//        createButtons();
     }
 
     public void createNewMenu(Stage stage) throws FileNotFoundException {
@@ -202,7 +196,10 @@ public class ViewManager {
                                     .set(1, createCurrentProfile());
                         }
                     }
-                    startButtons.getChildren().add(levelSelectionButton());
+                    if (!chooseButtonVisable) {
+                        chooseButtonVisable = true;
+                        startButtons.getChildren().add(levelSelectionButton());
+                    }
                 }
                 System.out.println("Selection: " + currentPlayerProfile);
             }
@@ -258,7 +255,6 @@ public class ViewManager {
                 currentPlayerProfile = newProfileName;
                 ninjaChooserSubScene.getPane().getChildren().set(1, createCurrentProfile());
                 AllProfile.addName(newProfileName);
-                startButtons.getChildren().add(levelSelectionButton());
             }
         });
         return newProfileButton;
@@ -279,18 +275,24 @@ public class ViewManager {
                     dialog.setHeaderText("Select your choice");
                     Optional<String> result = dialog.showAndWait();
                     String selected;
-                if (result.isPresent()) {
+                if (result.isPresent() && chosenNinja != null) {
                     selected = result.get();
-                    System.out.println(selected);
+                    //System.out.println(selected);
                     char levelChar = selected.charAt(6);
-                    System.out.println(levelChar);
+                    //System.out.println(levelChar);
                     int level = Integer.parseInt(String.valueOf(levelChar));
+                    String levelString = "/Levels/Level0"+level+".txt";
                     GameViewManager newGame = new GameViewManager();
-                    newGame.createNewGame(mainStage, chosenNinja, level, currentPlayerProfile);
+                    newGame.createNewGame(mainStage, chosenNinja, levelString, currentPlayerProfile);
+                } else if (result.isPresent() && chosenNinja == null){
+                    Text error = new Text("YOU NEED TO SELECT CHARACTER");
+                    error.setFont(Font.font("Arial", 25));
+                    ninjaChooserSubScene.getPane().getChildren().set(1, error);
                 }
                 System.out.println("Level selection: " + currentPlayerProfile);
                 }
             });
+
 
             return chooseLevelButton;
         }
@@ -313,7 +315,15 @@ public class ViewManager {
         startButton.setOnAction(actionEvent -> {
             if (chosenNinja != null && currentPlayerProfile != null) {
                 GameViewManager gameManager = new GameViewManager();
-                gameManager.createNewGame(mainStage, chosenNinja, 0, currentPlayerProfile);
+                gameManager.createNewGame(mainStage, chosenNinja, "/Levels/Level00.txt", currentPlayerProfile);
+            } else if (chosenNinja == null && currentPlayerProfile != null) {
+                Text error = new Text("YOU NEED TO SELECT CHARACTER");
+                error.setFont(Font.font("Arial", 25));
+                ninjaChooserSubScene.getPane().getChildren().set(1, error);
+            } else if (chosenNinja != null && currentPlayerProfile == null) {
+                Text error = new Text("YOU NEED TO SELECT A PROFILE");
+                error.setFont(Font.font("Arial", 25));
+                ninjaChooserSubScene.getPane().getChildren().set(1, error);
             }
         });
 

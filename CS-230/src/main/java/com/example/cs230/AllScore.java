@@ -50,7 +50,7 @@ public class AllScore {
         }
     }
 
-    public static void updateScore(String name, int score, int levelIndex) {
+    public static void updateScore(String name, int score, int levelIndex, int timeLeft) {
         for (int i = 0; i < allScores.size(); i++) {
             if (name.equals(allScores.get(i).getPlayerName())) {
                 for (int j = 0; j < allScores.get(i).getPlayerScoreSize(); j++) {

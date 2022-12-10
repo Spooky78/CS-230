@@ -58,7 +58,7 @@ public class GameViewManager {
     private Gate silverGate;
     private GameOverViewManager gameOver;
     private Ninja chosenNinja;
-    private int level;
+    private String level;
     private Time time;
     private boolean bombTImerStart = false;
     private boolean bombTImerStart2 = false;
@@ -79,8 +79,8 @@ public class GameViewManager {
      * @param stage       The previous stage (usually menuStage).
      * @param chosenNinja The player character.
      */
-    public void createNewGame(Stage stage, Ninja chosenNinja, int level, String name) {
-        this.level = level;
+    public void createNewGame(Stage stage, Ninja chosenNinja, String levelPath, String name) {
+        this.level = levelPath;
         this.chosenNinja = chosenNinja;
         this.menuStage = stage;
         this.name = name;
@@ -511,7 +511,7 @@ public class GameViewManager {
 
     private void createBoard() {
         currentLevel = 0;
-        currentBoard = new Board("Level0" + level + ".txt", GAME_WIDTH);
+        currentBoard = new Board(level, GAME_WIDTH);
         gamePlayPane.setLeft(currentBoard.getBoardPane());
     }
 

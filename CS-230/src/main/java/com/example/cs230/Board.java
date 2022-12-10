@@ -17,7 +17,7 @@ public class Board {
     private int screenWidth;
     private int boardSizeX;
     private int boardSizeY;
-    private ArrayList<Tile> boardTile = new ArrayList<>();
+    private final ArrayList<Tile> boardTile = new ArrayList<>();
     private int[] playerStartCoords = new int[2];
     private ArrayList<String> assassinStartDirection = new ArrayList<>();
     private ArrayList<Integer> assassinStartCoords = new ArrayList<>();
@@ -42,7 +42,7 @@ public class Board {
 
     public Board(String currentLevel, int screenWidth) {
         this.screenWidth = screenWidth;
-        String filename = "CS-230/src/main/resources/Levels/" + currentLevel;
+        String filename = "CS-230/src/main/resources" + currentLevel;
         try {
             File circles = new File(filename);
             Scanner in = new Scanner(circles);
@@ -100,6 +100,8 @@ public class Board {
                 case "SIZE":
                     sizeReader(params);
                     break;
+                case "SCORE":
+                     scoreReader(params);
                 case "BOARD":
                     while (in.hasNextLine()) {
                         String scannerVariableBoard = in.nextLine();
@@ -110,6 +112,10 @@ public class Board {
             }
         }
         in.close();
+    }
+
+    private void scoreReader(String[] params) {
+        //TODO: READ IN SCORE
     }
 
     private void playerCoordsReader(String[] params) {

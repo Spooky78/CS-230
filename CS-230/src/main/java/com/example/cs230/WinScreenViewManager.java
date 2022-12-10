@@ -33,7 +33,7 @@ public class WinScreenViewManager {
     private Stage gameOverStage;
     private Stage menuOverStage;
     private Ninja ninja;
-    private int oldLevel;
+    private String newLevel;
     private String profileName;
     private int score;
     private int timeLeft;
@@ -60,14 +60,22 @@ public class WinScreenViewManager {
      *
      * @param stage       The previous stage (usually menuStage).
      */
-    public void createGameOver(Stage stage, Player player, Ninja chosenNinja, int currentLevel,
+    public void createGameOver(Stage stage, Player player, Ninja chosenNinja, String currentLevel,
                                String name, int score, int timeLeft) {
-        oldLevel = currentLevel;
         ninja = chosenNinja;
         profileName = name;
         this.score = score;
         this.timeLeft = timeLeft;
-        AllScore.updateScore(name, score,currentLevel, timeLeft);
+        //   /Levels/Level00.txt
+        //   /Saves/Level000.txt
+        char levelChar = currentLevel.charAt(14);
+        System.out.println(levelChar);
+        int level = Integer.parseInt(String.valueOf(levelChar));
+        System.out.println(level);
+        int nextLevel = level +1;
+        newLevel = "/Levels/Level0" + nextLevel + ".txt";
+
+        AllScore.updateScore(name, score,level, timeLeft);
 
         this.menuOverStage = stage;
         this.menuOverStage.hide();
@@ -120,7 +128,7 @@ public class WinScreenViewManager {
         MainMenuButton mainMenuButton = new MainMenuButton("Next");
         mainMenuButton.setOnAction(actionEvent -> {
             GameViewManager nextLevel = new GameViewManager();
-            nextLevel.createNewGame(gameOverStage, ninja, oldLevel+1, profileName);
+            nextLevel.createNewGame(gameOverStage, ninja, newLevel, profileName);
         });
         buttonsPane.getChildren().add(mainMenuButton);
     }
