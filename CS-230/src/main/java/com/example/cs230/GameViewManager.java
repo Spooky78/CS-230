@@ -40,7 +40,7 @@ public class GameViewManager {
     private final ArrayList<Gate> allGates = new ArrayList<>();
     private final ArrayList<Bomb> allBomb = new ArrayList<>();
     private final ArrayList<Item> allCollectableItems = new ArrayList<>();
-    private final ArrayList<Item> bombDestroy = new ArrayList<>();
+    private final ArrayList<Item> bombDestroyCanDestroy = new ArrayList<>();
     private boolean isLose = false;
     private final boolean isTimerEnd = false;
     private VBox gamePane;
@@ -140,7 +140,6 @@ public class GameViewManager {
             @Override
             public void handle(long l) {
                 if (time.getCurrentTime() == 0 && !isLose) {
-                    updateTopRow();
                     for (NPC allThieve : allThieves) {
                         allThieve.stopTimer();
                     }
@@ -226,7 +225,7 @@ public class GameViewManager {
                 clockToRemove.clear();
 
 
-                if (door.isCollectedByPlayer(currentPlayer.getPlayerCoords())) {
+                if (door.isCollectedByPlayer(currentPlayer.getPlayerCoords()) && allCoins.size() == 0) {
                     gamePlayPane.getChildren().remove(door.getDoorPane());
                     currentLevel += 1;
                     gamePlayPane.getChildren().clear();
@@ -305,28 +304,6 @@ public class GameViewManager {
                         }
                 }
 
-
-//                        for (Bomb test2 : bombsOnBombs) {
-//                            if (allBombs.isCollisionPlayer(currentPlayer.getPlayerCoords()) && (test2.getCoords()[0] == currentBomb[0] || test2.getCoords()[1] == currentBomb[1])) {
-//                                test2.countdown();
-//                                System.out.println("test1");
-//                                bombTImerStart2 = true;
-//                            }
-//                                if (bombTImerStart2 && (test2.isExploded() && ((test2.getCoords()[0] == currentBomb[0] ||
-//                                        test2.getCoords()[1] == currentBomb[1])))) {
-//                                    System.out.println("test1");
-//                                    gamePlayPane.getChildren().remove(test2.getStackPane());
-//                                    bombsToRemove.add(test2);
-//                                    gamePlayPane.getChildren().remove(allitems.getStackPane());
-//                                }
-//                                if (test2.isExploded() && bombTImerStart2) {
-//                                    gamePlayPane.getChildren().remove(test2.getStackPane());
-//                                    System.out.println("test2");
-//                                    bombsToRemove.add(test2);
-//                                }
-//                            }
-
-
                 for (int i = 0; i < bombsToRemove.size(); i++) {
                     allBomb.remove(bombsToRemove.get(i));
                 }
@@ -352,15 +329,16 @@ public class GameViewManager {
                         }
                     }
                 }
+                updateTopRow();
             }
         };
         gameTimer.start();
     }
 
     private void bombExplode(Bomb allBombs) {
-        bombDestroy.remove(allBombs);
+        bombDestroyCanDestroy.remove(allBombs);
         int[] currentBomb = allBombs.getCoords();
-        for (Item allitems : bombDestroy) {
+        for (Item allitems : bombDestroyCanDestroy) {
             int[] currentItem = allitems.getCoords();
             if (allitems.getClass() == Bomb.class && (allitems.getCoords()[0] == currentBomb[0] ||
                     allitems.getCoords()[1] == currentBomb[1] )){
@@ -372,6 +350,10 @@ public class GameViewManager {
                 gamePlayPane.getChildren().remove(allBombs.getStackPane());
                 bombsToRemove.add(allBombs);
                 gamePlayPane.getChildren().remove(allitems.getStackPane());
+                allCollectableItems.remove(allitems);
+                if(allitems.getClass() == Coin.class) {
+                    allCoins.remove(allitems);
+                }
             }
             if (allBombs.isExploded() && bombTImerStart) {
                 gamePlayPane.getChildren().remove(allBombs.getStackPane());
@@ -452,7 +434,7 @@ public class GameViewManager {
             Coin currentCoin = new Coin(coinColor.get(i), currentBoard, currentCoinCoords);
             allCoins.add(currentCoin);
             allCollectableItems.add(currentCoin);
-            bombDestroy.add(currentCoin);
+            bombDestroyCanDestroy.add(currentCoin);
             gamePlayPane.getChildren().add(currentCoin.getCoinStackPane());
         }
     }
@@ -465,7 +447,7 @@ public class GameViewManager {
             Lever currentLever = new Lever(currentBoard, currentLeverCoords, colours.get(i));
             allLever.add(currentLever);
             allCollectableItems.add(currentLever);
-            bombDestroy.add(currentLever);
+            bombDestroyCanDestroy.add(currentLever);
             gamePlayPane.getChildren().add(currentLever.getStackPane());
         }
     }
@@ -484,7 +466,7 @@ public class GameViewManager {
             int[] positionCoords2 = {positionCoords.get(i), positionCoords.get(i + 1)};
             Clock clock = new Clock(currentBoard, positionCoords2);
             allClock.add(clock);
-            bombDestroy.add(clock);
+            bombDestroyCanDestroy.add(clock);
             allCollectableItems.add(clock);
             gamePlayPane.getChildren().add(clock.getClockPane());
         }
@@ -517,7 +499,7 @@ public class GameViewManager {
             int[] positionCoords2 = {positionCoords.get(i), positionCoords.get(i + 1)};
             Bomb bomb = new Bomb(currentBoard, positionCoords2);
             allBomb.add(bomb);
-            bombDestroy.add(bomb);
+            bombDestroyCanDestroy.add(bomb);
             gamePlayPane.getChildren().add(bomb.getBombPane());
         }
     }
