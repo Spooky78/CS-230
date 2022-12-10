@@ -3,11 +3,11 @@ package com.example.cs230;
 public class PlayerProfile {
     private int profileIndex;
     private String name;
-    private boolean[]isLevelUnlocked;
-    public PlayerProfile(String name, boolean[]isLevelUnlocked) {
+    private int unlockedLevel;
+    public PlayerProfile(String name, int unlockedLevel) {
         //saveName();
         this.name = name;
-        this.isLevelUnlocked = isLevelUnlocked;
+        this.unlockedLevel = unlockedLevel;
 
     }
     // the player profile now store the boolean list of levels.
@@ -20,11 +20,11 @@ public class PlayerProfile {
         return name;
     }
 
-    public boolean[] getIsLevelUnlocked() {
-        return isLevelUnlocked;
+    public int getIsLevelUnlocked() {
+        return unlockedLevel;
     }
 
-    public void changeLevelIndex(int levelIndex) {
-        isLevelUnlocked[levelIndex] = true;
+    public void setLevelUnlocked(int levelIndex) {
+        unlockedLevel = levelIndex;
     }
 }

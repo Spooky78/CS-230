@@ -63,6 +63,7 @@ public class GameViewManager {
     private boolean bombTImerStart = false;
     private boolean bombTImerStart2 = false;
     private ArrayList<Bomb> bombsToRemove = new ArrayList<>();
+    private String name;
 
 
     /**
@@ -78,10 +79,11 @@ public class GameViewManager {
      * @param stage       The previous stage (usually menuStage).
      * @param chosenNinja The player character.
      */
-    public void createNewGame(Stage stage, Ninja chosenNinja, int level) {
+    public void createNewGame(Stage stage, Ninja chosenNinja, int level, String name) {
         this.level = level;
         this.chosenNinja = chosenNinja;
         this.menuStage = stage;
+        this.name = name;
         this.menuStage.hide();
         gameOver = new GameOverViewManager();
         createBackground();
@@ -94,8 +96,8 @@ public class GameViewManager {
         createCoins();
         createBomb();
         createAssassin();
-        createFloorFollowingThief();
-        createSmartThief();
+        //createFloorFollowingThief();
+        //createSmartThief();
         createPlayer(chosenNinja);
 
         time = new Time(currentBoard.getSeconds());
@@ -225,7 +227,7 @@ public class GameViewManager {
                 clockToRemove.clear();
 
 
-                if (door.isCollectedByPlayer(currentPlayer.getPlayerCoords()) && allCoins.size() == 0) {
+                if (door.isCollectedByPlayer(currentPlayer.getPlayerCoords()) && allCoins.size() == 0 && allLever.size() == 0 ) {
                     gamePlayPane.getChildren().remove(door.getDoorPane());
                     currentLevel += 1;
                     gamePlayPane.getChildren().clear();
@@ -234,7 +236,7 @@ public class GameViewManager {
                         allThieve.stopTimer();
                     }
                     WinScreenViewManager winScreen = new WinScreenViewManager();
-                    winScreen.createGameOver(gameStage, currentPlayer, chosenNinja, level);
+                    winScreen.createGameOver(gameStage, currentPlayer, chosenNinja, level, name, currentPlayer.getScore(), time.getCurrentTime());
                 }
 
                 for (Gate goldenGate : allGates) {
@@ -353,6 +355,9 @@ public class GameViewManager {
                 allCollectableItems.remove(allitems);
                 if(allitems.getClass() == Coin.class) {
                     allCoins.remove(allitems);
+                }
+                if(allitems.getClass() == Lever.class) {
+                    allLever.remove(allitems);
                 }
             }
             if (allBombs.isExploded() && bombTImerStart) {
