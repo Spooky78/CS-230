@@ -292,8 +292,6 @@ public class ViewManager {
                 System.out.println("Level selection: " + currentPlayerProfile);
                 }
             });
-
-
             return chooseLevelButton;
         }
         return null;
@@ -465,24 +463,24 @@ public class ViewManager {
             howToPlayTitle.setFont(Font.font("Arial", 40));
         }
         VBox instructions = new VBox();
-        Text objective = new Text("\nObjective: \n");
+        Text objective = new Text("Objective: \n");
         Text objInstruction = new Text(
                 "Use the arrow keys to move around the room and collect all the variables, " +
                         "then escape  through the red door to the next level. \n\n"
         );
-        Text how2Play = new Text("\nHow to play: \n");
+        Text how2Play = new Text("How to play: \n");
         Text playInstruction = new Text(
                 "You can only move to tiles that are the same color as the tile you are on." +
                         "If you are blocked by a different color. You automatically jump" +
                         "to the next same-color tile. To move to a new color, go to a multicolored tile. \n"
         );
-        Text items = new Text("\nItems: \n");
+        Text items = new Text("Items: \n");
         Text itemsInstruction = new Text(
                 "Keys, bombs and levers open locked doors. \n" +
                         "Coins get more score dependent on remaining time \n" +
                         "Clocks add time to the countdown timer. \n"
         );
-        Text thieves = new Text("\nThieves: \n");
+        Text thieves = new Text("Thieves: \n");
         Text thievesInstruction = new Text(
                 "Floor following thieves follows the colored edge of the floor. \n" +
                         "Smart Thieves collects the loot and reach the exit of the level before the player. " +
@@ -490,18 +488,22 @@ public class ViewManager {
         );
         helpTitle.getChildren().add(howToPlayTitle);
         helpTitle.setAlignment(Pos.CENTER);
-        objective.setFont(Font.font("Arial", FontWeight.BOLD, FontPosture.ITALIC, 15));
+        objective.setFont(Font.font("Arial", FontWeight.BOLD, FontPosture.ITALIC, 20));
         objective.setUnderline(true);
-        how2Play.setFont(Font.font("Arial", FontWeight.BOLD, FontPosture.ITALIC, 15));
+        objInstruction.setFont(Font.font("Arial", 15));
+        how2Play.setFont(Font.font("Arial", FontWeight.BOLD, FontPosture.ITALIC, 20));
         how2Play.setUnderline(true);
-        items.setFont(Font.font("Arial", FontWeight.BOLD, FontPosture.ITALIC, 15));
+        playInstruction.setFont(Font.font("Arial", 15));
+        items.setFont(Font.font("Arial", FontWeight.BOLD, FontPosture.ITALIC, 20));
         items.setUnderline(true);
-        thieves.setFont(Font.font("Arial", FontWeight.BOLD, FontPosture.ITALIC, 15));
+        itemsInstruction.setFont(Font.font("Arial", 15));
+        thieves.setFont(Font.font("Arial", FontWeight.BOLD, FontPosture.ITALIC, 20));
         thieves.setUnderline(true);
-        objInstruction.setWrappingWidth(450);
-        playInstruction.setWrappingWidth(450);
-        itemsInstruction.setWrappingWidth(450);
-        thievesInstruction.setWrappingWidth(450);
+        thievesInstruction.setFont(Font.font("Arial", 15));
+        objInstruction.setWrappingWidth(550);
+        playInstruction.setWrappingWidth(550);
+        itemsInstruction.setWrappingWidth(550);
+        thievesInstruction.setWrappingWidth(550);
         instructions.getChildren().add(objective);
         instructions.getChildren().add(objInstruction);
         instructions.getChildren().add(how2Play);
@@ -534,6 +536,7 @@ public class ViewManager {
         buttonPane.setPadding(new Insets(0, 20, 20, 20));
         mainPane.setLeft(buttonPane);
         createStartButton();
+        createSavesButton();
         createScoreButton();
         createHelpButton();
         createCreditsButton();
@@ -547,6 +550,36 @@ public class ViewManager {
         MainMenuButton startButton = new MainMenuButton("PLAY");
         buttonPane.getChildren().add(startButton);
         startButton.setOnAction(actionEvent -> showSubScene(ninjaChooserSubScene));
+    }
+
+    /**
+     * Creates the saves button.
+     */
+    private void createSavesButton() {
+        List<String> dialogData = new ArrayList<>();
+        dialogData.add("SAVE1");
+        dialogData.add("SAVE2");
+        MainMenuButton chooseLevelButton = new MainMenuButton("Saves");
+        chooseLevelButton.setOnAction(e -> {
+            if (dialogData.size() == 0) {
+                Text error = new Text("Error no saves found!");
+                error.setFont(Font.font("Arial", 25));
+                ninjaChooserSubScene.getPane().getChildren().set(1, error);
+            } else {
+                ChoiceDialog<String> dialog = new ChoiceDialog<>(dialogData.get(0), dialogData);
+                dialog.setTitle("Select save");
+                dialog.setHeaderText("Select your choice");
+                Optional<String> result = dialog.showAndWait();
+                String selected;
+                if (result.isPresent() && chosenNinja != null) {
+                    selected = result.get();
+
+                }
+                System.out.println("Save selection: " + currentPlayerProfile);
+            }
+        });
+
+        buttonPane.getChildren().add(chooseLevelButton);
     }
 
     /**
