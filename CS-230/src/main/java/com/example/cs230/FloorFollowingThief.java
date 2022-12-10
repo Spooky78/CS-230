@@ -30,13 +30,15 @@ public class FloorFollowingThief extends NPC {
     int previous = 0;
     private ArrayList<Integer> timings = new ArrayList<>();
     Timer timer;
+    GameViewManager manager;
 
-    public FloorFollowingThief (Board board, int[] startCoords, StackPane stackPane, int indexID) {
+    public FloorFollowingThief (Board board, int[] startCoords, StackPane stackPane, int indexID, GameViewManager manager) {
         gameBoard = board;
         coords = startCoords;
         animationCoords = startCoords;
         ffThiefStackPane = stackPane;
         this.indexID = indexID;
+        this.manager = manager;
         createNPC();
         move();
     }
@@ -65,29 +67,17 @@ public class FloorFollowingThief extends NPC {
             case "RIGHT ANTICLOCKWISE":
                 startRightAnitclockwiseAnimation();
                 break;
-            case "RIGHT CLOCKWISE":
-                startRightClockwiseTransition();
-                break;
             case "LEFT ANTICLOCKWISE":
                 //startLeftAntiClockwiseTransition();
                 startLeftAnticlockwiseAnimation();
-                break;
-            case "LEFT CLOCKWISE":
-                startLeftClockwiseTransition();
                 break;
             case "DOWN ANTICLOCKWISE":
                 //startDownAntiClockwiseTransition();
                 startDownAntiClockwiseAnimation();
                 break;
-            case "DOWN CLOCKWISE":
-                startDownClockwiseTransition();
-                break;
             case "UP ANTICLOCKWISE":
                 //startUpAntiClockwiseTransition();
                 startUpAnticloackwiseAnimation();
-                break;
-            case "UP CLOCKWISE":
-                startUpClockwiseTransition();
                 break;
         }
 
@@ -156,7 +146,7 @@ public class FloorFollowingThief extends NPC {
     }
 
     private void startDownAntiClockwiseAnimation() {
-        SequentialTransition animation = startLeftAntiClockwiseTransition();
+        SequentialTransition animation = startDownAntiClockwiseTransition();
         coordsFinal = new int[]{gameBoard.getFloorFollowingThiefStartCoords().get(indexID*2),
                 gameBoard.getFloorFollowingThiefStartCoords().get((indexID*2)+1)};
         setImage("DOWN");
@@ -281,28 +271,6 @@ public class FloorFollowingThief extends NPC {
         return startRightTransition;
     }
 
-    private SequentialTransition startRightClockwiseTransition(){
-        SequentialTransition startRightTransition = new SequentialTransition();
-        int count = 0;
-        while (count < 100) {
-            //right movement
-            int currentTiming = rightTransitionLoop(startRightTransition);
-            timings.add(currentTiming);
-            //Down movement
-            currentTiming = downTransitionLoop(startRightTransition);
-            timings.add(currentTiming);
-            //Left movement
-            currentTiming = leftTransitionLoop(startRightTransition);
-            timings.add(currentTiming);
-            //Up movement
-            currentTiming = upTransitionLoop(startRightTransition);
-            timings.add(currentTiming);
-            count +=1;
-        }
-        startRightTransition.play();
-        return startRightTransition;
-    }
-
     private SequentialTransition startLeftAntiClockwiseTransition() {
         SequentialTransition startLeftAntiClockwiseTransition = new SequentialTransition();
         int count = 0;
@@ -325,32 +293,11 @@ public class FloorFollowingThief extends NPC {
         return startLeftAntiClockwiseTransition;
     }
 
-    private SequentialTransition startLeftClockwiseTransition() {
-        SequentialTransition startLeftClockwiseTransition = new SequentialTransition();
-        int count = 0;
-        while (count < 100) {
-            //Left movement
-            int currentTiming = leftTransitionLoop(startLeftClockwiseTransition);
-            timings.add(currentTiming);
-            //Up movement
-            currentTiming = upTransitionLoop(startLeftClockwiseTransition);
-            timings.add(currentTiming);
-            //Right movement
-            currentTiming = rightTransitionLoop(startLeftClockwiseTransition);
-            timings.add(currentTiming);
-            //Down movement
-            currentTiming = downTransitionLoop(startLeftClockwiseTransition);
-            timings.add(currentTiming);
-            count += 1;
-        }
-        startLeftClockwiseTransition.play();
-        return startLeftClockwiseTransition;
-    }
 
     private SequentialTransition startUpAntiClockwiseTransition() {
         SequentialTransition startUpAntiClockwiseTransition = new SequentialTransition();
         int count = 0;
-        while (count < 100) {
+        //while (count < 100) {
             //Up movement
             int currentTiming = upTransitionLoop(startUpAntiClockwiseTransition);
             timings.add(currentTiming);
@@ -364,32 +311,9 @@ public class FloorFollowingThief extends NPC {
             currentTiming = rightTransitionLoop(startUpAntiClockwiseTransition);
             timings.add(currentTiming);
             count += 1;
-        }
+        //}
         //startUpAntiClockwiseTransition.play();
         return startUpAntiClockwiseTransition;
-    }
-
-    private SequentialTransition startUpClockwiseTransition() {
-        SequentialTransition startUpClockwiseTransition = new SequentialTransition();
-        int count = 0;
-        while (count < 100) {
-            //Up movement
-            int currentTiming = upTransitionLoop(startUpClockwiseTransition);
-            timings.add(currentTiming);
-            //Right movement
-            currentTiming = rightTransitionLoop(startUpClockwiseTransition);
-            timings.add(currentTiming);
-            count += 1;
-            //Down movement
-            currentTiming = downTransitionLoop(startUpClockwiseTransition);
-            timings.add(currentTiming);
-            //Left movement
-            currentTiming = leftTransitionLoop(startUpClockwiseTransition);
-            timings.add(currentTiming);
-            count += 1;
-        }
-        startUpClockwiseTransition.play();
-        return startUpClockwiseTransition;
     }
 
     private SequentialTransition startDownAntiClockwiseTransition() {
@@ -414,35 +338,17 @@ public class FloorFollowingThief extends NPC {
         return startDownAntiClockwiseTransition;
     }
 
-    private SequentialTransition startDownClockwiseTransition() {
-        SequentialTransition startDownClockwiseTransition = new SequentialTransition();
-        int count = 0;
-        while (count < 100) {
-            //Down movement
-            int currentTiming = downTransitionLoop(startDownClockwiseTransition);
-            timings.add(currentTiming);
-            //Left movement
-            currentTiming = leftTransitionLoop(startDownClockwiseTransition);
-            timings.add(currentTiming);
-            //Up movement
-            currentTiming = upTransitionLoop(startDownClockwiseTransition);
-            timings.add(currentTiming);
-            //Right movement
-            currentTiming = rightTransitionLoop(startDownClockwiseTransition);
-            timings.add(currentTiming);
-            count += 1;
-        }
-        startDownClockwiseTransition.play();
-        return startDownClockwiseTransition;
-    }
-
     private int rightTransitionLoop(SequentialTransition transition) {
         int currentTiming = 0;
         int[] currentCoords = new int[]{animationCoords[0] - 1, animationCoords[1] - 1};
         int[] rightTile = new int[]{animationCoords[0], animationCoords[1] - 1};
-        while (animationCoords[0] < gameBoard.getBoardSizeX() && gameBoard.canMove(currentCoords, rightTile)) {
+        int[] offsetRight = new int[]{rightTile[0]+1, rightTile[1]+1};
+        //System.out.println(offsetRight[0]+" "+offsetRight[1]);
+        while (animationCoords[0] < gameBoard.getBoardSizeX() && gameBoard.canMove(currentCoords, rightTile) && !manager.checkNonSteppableTile(offsetRight)) {
+            System.out.println(rightTile[0]+" "+offsetRight[1]);
             transition.getChildren().add(moveRightTile());
             rightTile[0] += 1;
+            offsetRight[0] +=1;
             currentTiming +=1;
         }
         return currentTiming;
@@ -452,9 +358,11 @@ public class FloorFollowingThief extends NPC {
         int currentTiming = 0;
         int[] currentCoords = new int[]{animationCoords[0] - 1, animationCoords[1] - 1};
         int[] leftTile = new int[]{animationCoords[0] - 2, animationCoords[1] - 1};
-        while (animationCoords[0] - 1 > 0 && gameBoard.canMove(currentCoords, leftTile)) {
+        int[] offsetLeft = new int[]{leftTile[0] +1, leftTile[1]+1};
+        while (animationCoords[0] - 1 > 0 && gameBoard.canMove(currentCoords, leftTile) && !manager.checkNonSteppableTile(offsetLeft)) {
             transition.getChildren().add(moveLeftTile());
             leftTile[0] -= 1;
+            offsetLeft[0] -= 1;
             currentTiming += 1;
         }
         return currentTiming;
@@ -464,9 +372,11 @@ public class FloorFollowingThief extends NPC {
         int currentTiming = 0;
         int[] currentCoords = new int[]{animationCoords[0] - 1, animationCoords[1] - 1};
         int[] upTile = new int[]{animationCoords[0] - 1, animationCoords[1] - 2};
-        while (animationCoords[1] - 1 > 0 && gameBoard.canMove(currentCoords, upTile)) {
+        int[] offsetUp = new int[]{upTile[0]+1, upTile[1]+1};
+        while (animationCoords[1] - 1 > 0 && gameBoard.canMove(currentCoords, upTile) && !manager.checkNonSteppableTile(offsetUp)) {
             transition.getChildren().add(moveUpTile());
             upTile[1] -= 1;
+            offsetUp[1] -= 1;
             currentTiming += 1;
         }
         return currentTiming;
@@ -476,9 +386,11 @@ public class FloorFollowingThief extends NPC {
         int currentTiming = 0;
         int[] currentCoords = new int[]{animationCoords[0] - 1, animationCoords[1] - 1};
         int[] downTile = new int[]{animationCoords[0] - 1, animationCoords[1]};
-        while (animationCoords[1] < gameBoard.getBoardSizeY() && gameBoard.canMove(currentCoords, downTile)) {
+        int[] offsetDown = new int[]{downTile[0]+1, downTile[1]+1};
+        while (animationCoords[1] < gameBoard.getBoardSizeY() && gameBoard.canMove(currentCoords, downTile) && !manager.checkNonSteppableTile(offsetDown)) {
             transition.getChildren().add(moveDownTile());
             downTile[1] += 1;
+            offsetDown[1] += 1;
             currentTiming += 1;
         }
         return currentTiming;

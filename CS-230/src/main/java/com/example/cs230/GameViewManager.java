@@ -95,7 +95,7 @@ public class GameViewManager {
         createBomb();
         createAssassin();
         createFloorFollowingThief();
-        //createSmartThief();
+        createSmartThief();
         createPlayer(chosenNinja);
 
         time = new Time(currentBoard.getSeconds());
@@ -111,7 +111,7 @@ public class GameViewManager {
         for (int i = 0; i < allGates.size(); i++) {
             //System.out.println("TestCAN PASS");
             if (allGates.get(i).getCoords()[0] == coords[0] && allGates.get(i).getCoords()[1] == coords[1]) {
-                System.out.println("ON NON TILE");
+                System.out.println("ON NON TILE GATE");
                 return true;
             }
         }
@@ -140,6 +140,7 @@ public class GameViewManager {
             @Override
             public void handle(long l) {
                 if (time.getCurrentTime() == 0 && !isLose) {
+                    updateTopRow();
                     for (NPC allThieve : allThieves) {
                         allThieve.stopTimer();
                     }
@@ -150,9 +151,10 @@ public class GameViewManager {
                     time.isKilled();
                     isLose = true;
                 }
+                ArrayList<NPC> removeNPC = new ArrayList<>();
                 for (FlyingAssassin allAssassin : allAssassins) {
                     if (allAssassin.collidedPlayer(currentPlayer.getPlayerCoords(),
-                            currentPlayerStack, gamePlayPane, gameStage)) {
+                            currentPlayerStack, gamePlayPane)) {
                         gamePlayPane.getChildren().clear();
                         time.isKilled();
                         for (NPC allThieve : allThieves) {
@@ -164,8 +166,20 @@ public class GameViewManager {
                         gameOver.createGameOver(gameStage, currentPlayer);
                         allAssassin.setLose();
                     }
+                    for (NPC allThieve : allThieves) {
+                        if (allAssassin.collidedThief(allThieve.getCoords(), allThieve.getStackPane(), gamePlayPane)) {
+                            removeNPC.add(allThieve);
+                        }
+                    }
                 }
-                updateTopRow();
+
+                for (NPC npc : removeNPC) {
+                    allThieves.remove(npc);
+                    if (npc.getClass() == SmartThief.class) {
+                        allSmartThieves.remove((SmartThief) npc);
+                    }
+                }
+
                 ArrayList<Coin> coinsToRemove = new ArrayList<>();
                 ArrayList<Clock> clockToRemove = new ArrayList<>();
                 ArrayList<Lever> leverToRemove = new ArrayList<>();
@@ -406,7 +420,7 @@ public class GameViewManager {
             int[] currentCoords = {coords.get(i * 2), coords.get(i * 2 + 1)};
             StackPane ffThiefStack = new StackPane();
             FloorFollowingThief currentThief =
-                    new FloorFollowingThief(currentBoard, currentCoords, ffThiefStack, i);
+                    new FloorFollowingThief(currentBoard, currentCoords, ffThiefStack, i, this);
             ffThiefStack.getChildren().add(currentThief.getffThief());
             allThieves.add(currentThief);
             gamePlayPane.getChildren().add(ffThiefStack);

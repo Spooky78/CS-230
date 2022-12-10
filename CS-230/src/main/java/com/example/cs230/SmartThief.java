@@ -88,8 +88,8 @@ public class SmartThief extends NPC {
             //directions.clear();
             ArrayList<String> directions = findDirections();
             for (int i=0; i<directions.size(); i++) {
-                System.out.println(coordPath.get(i)[0]+" "+coordPath.get(i)[1]);
-                System.out.println(directions.get(i));
+                //System.out.println(coordPath.get(i)[0]+" "+coordPath.get(i)[1]);
+                //System.out.println(directions.get(i));
             }
             //transitions(reverseArrayList(directions));
             animation(reverseArrayList(directions));
@@ -121,8 +121,8 @@ public class SmartThief extends NPC {
                 }
             }
         }
-        System.out.println(items.get(shortestIndex).getCoords()[0]+" "+ items.get(shortestIndex).getCoords()[1]);
-        System.out.println(shortestDistance);
+        //System.out.println(items.get(shortestIndex).getCoords()[0]+" "+ items.get(shortestIndex).getCoords()[1]);
+        //System.out.println(shortestDistance);
         return shortestIndex;
     }
 
@@ -134,7 +134,7 @@ public class SmartThief extends NPC {
         int newXRight = parentCoords[0] + 1;
         String searchRight = newXRight+""+parentCoords[1];
         int[] offsetrightCoords = new int[]{parentCoords[0], parentCoords[1] - 1};
-        if (!searchedTile.contains(searchRight) && gameBoard.canMove(offsetParents, offsetrightCoords)) {
+        if (!searchedTile.contains(searchRight) && gameBoard.canMove(offsetParents, offsetrightCoords)  && !manager.checkNonSteppableTile(rightChildCoords)) {
             //System.out.println(parentCoords[0] + " " + parentCoords[1] + "   " + rightChildCoords[0] + " " + rightChildCoords[1]);
             rightChild = parent.addChild(new Node<>(rightChildCoords));
             searchedTile.add(searchRight);
@@ -150,7 +150,7 @@ public class SmartThief extends NPC {
         int newYDown = parentCoords[1] + 1;
         String searchDown = parentCoords[0]+""+newYDown;
         int[] offsetDownCoods = new int[]{parentCoords[0] - 1, parentCoords[1]};
-        if (!searchedTile.contains(searchDown) && gameBoard.canMove(offsetParents, offsetDownCoods)) {
+        if (!searchedTile.contains(searchDown) && gameBoard.canMove(offsetParents, offsetDownCoods)  && !manager.checkNonSteppableTile(downChildCoords)) {
             //System.out.println(parentCoords[0] + " " + parentCoords[1] + "   " + downChildCoords[0] + " " + downChildCoords[1]);
             downChild = parent.addChild(new Node<>(downChildCoords));
             searchedTile.add(searchDown);
@@ -166,7 +166,7 @@ public class SmartThief extends NPC {
             int newXLeft = parentCoords[0] - 1;
             String searchLeft = newXLeft+""+parentCoords[1];
             int[] offsetLeftCoords = new int[]{parentCoords[0] - 2, parentCoords[1] - 1};
-            if (!searchedTile.contains(searchLeft) && gameBoard.canMove(offsetParents, offsetLeftCoords)) {
+            if (!searchedTile.contains(searchLeft) && gameBoard.canMove(offsetParents, offsetLeftCoords)  && !manager.checkNonSteppableTile(leftChildCoords)) {
                 //System.out.println(parentCoords[0] + " " + parentCoords[1] + "   " + leftChildCoords[0] + " " + leftChildCoords[1]);
                 leftChild = parent.addChild(new Node<>(leftChildCoords));
                 searchedTile.add(searchLeft);
@@ -182,7 +182,7 @@ public class SmartThief extends NPC {
             int newYUp = parentCoords[1] - 1;
             String searchUp = parentCoords[0]+""+newYUp;
             int[] offsetUpCoords = new int[]{parentCoords[0] - 1, parentCoords[1] - 2};
-            if (!searchedTile.contains(searchUp) && gameBoard.canMove(offsetParents, offsetUpCoords)) {
+            if (!searchedTile.contains(searchUp) && gameBoard.canMove(offsetParents, offsetUpCoords)  && !manager.checkNonSteppableTile(upChildCoords)) {
                 //System.out.println(parentCoords[0] + " " + parentCoords[1] + "   " + upChildCoords[0] + " " + upChildCoords[1]);
                 upChild = parent.addChild(new Node<>(upChildCoords));
                 searchedTile.add(searchUp);
