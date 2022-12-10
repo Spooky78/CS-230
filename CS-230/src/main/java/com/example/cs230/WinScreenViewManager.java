@@ -67,6 +67,8 @@ public class WinScreenViewManager {
         profileName = name;
         this.score = score;
         this.timeLeft = timeLeft;
+        AllScore.updateScore(name, score,currentLevel, timeLeft);
+
         this.menuOverStage = stage;
         this.menuOverStage.hide();
         createBackground();

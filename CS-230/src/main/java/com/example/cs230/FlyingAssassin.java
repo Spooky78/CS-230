@@ -103,9 +103,6 @@ public class FlyingAssassin extends NPC {
         if (killableCoords[0] == coords[0] && killableCoords[1] == coords[1] & !isKilled) {
             pane.getChildren().remove(killable);
             System.out.println("DIE");
-            isKilled = true;
-            timer.cancel();
-            timer.purge();
             return true;
         } else {
             return false;
