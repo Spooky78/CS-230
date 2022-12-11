@@ -4,10 +4,6 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-//TODO: Change score into score[] HAVE FINISHED by adding 4 score txt file.
-//TODO: Change high score table so it needs an input of level index
-//TODO: Link with the game.
-
 public class AllProfile {
     private static final String PROFILE_FILE_PATH = "CS-230/src/main/resources/Levels/Profile.txt";
     private static final int DEFAULT_LEVEL_UNLOCKED = 1;
@@ -44,6 +40,7 @@ public class AllProfile {
         if (!nameList.contains(name)) {
             allProfile.add(new PlayerProfile(name, DEFAULT_LEVEL_UNLOCKED));
             nameList.add(name);
+            AllScore.addScore(name);
             writeProfileInTxt();
         } else if (nameList.contains(name)) {
             System.out.println("Sorry, the name has been created by someone else.");
@@ -94,12 +91,16 @@ public class AllProfile {
 
 
     //the level is updated once the level is completed.
-    public static void updateLevel(String profileName, int levelIndex) {
+    public static void updateLevel(String profileName, int currentLevelIndex) {
+        int nextLevel = currentLevelIndex + 2;
+        System.out.println(nextLevel + " ch " + currentLevelIndex);
         String playerName = profileName;
         for (int i = 0; i < allProfile.size(); i++) {
             if (playerName.equals(allProfile.get(i).getName())) {
-                if (levelIndex > allProfile.get(i).getIsLevelUnlocked()) {
-                    allProfile.get(i).setLevelUnlocked(levelIndex);
+                if (nextLevel > allProfile.get(i).getIsLevelUnlocked()) {
+                    allProfile.get(i).setLevelUnlocked(nextLevel);
+                    AllScore.addDefaultScoreNextLevel(profileName);
+                    writeProfileInTxt();
                 }
             }
         }

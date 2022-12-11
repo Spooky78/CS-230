@@ -97,8 +97,9 @@ public class GameViewManager {
         createBomb();
         createAssassin();
         //createFloorFollowingThief();
-        //createSmartThief();
+        createSmartThief();
         createPlayer(chosenNinja);
+        //saves004.txt
 
         time = new Time(currentBoard.getSeconds());
         updateTopRow();
@@ -122,6 +123,9 @@ public class GameViewManager {
                 System.out.println("ON NON TILE");
                 return true;
             }
+        }
+        if (door.getCoords()[0] == coords[0] && door.getCoords()[1] == coords[1] && (allCoins.size()>0 || allLever.size()>0)) {
+            return true;
         }
         //System.out.println("CAN PASS");
         return false;

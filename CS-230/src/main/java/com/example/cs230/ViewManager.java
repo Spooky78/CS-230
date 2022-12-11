@@ -46,6 +46,7 @@ public class ViewManager {
     private boolean isHidden = true;
     private HBox startButtons = new HBox();
     private boolean chooseButtonVisable = false;
+    private boolean shownScore = false;
 
     /**
      * Creates a main menu window.
@@ -369,41 +370,51 @@ public class ViewManager {
     }
 
     private MainMenuButton choseScoreLevel() {
-        AllScore.loadScore();
         //Score list is an array list
         List<String> dialogData =  new ArrayList<>();
 
         //List<String> dialogData =  string array list
+        dialogData.add("Level00");
+        dialogData.add("Level01");
+        dialogData.add("Level02");
+        dialogData.add("Level03");
 
-        dialogData.add("TEST2");
-            MainMenuButton chooseScoreLevelButton = new MainMenuButton("Choose\nLevel");
-            chooseScoreLevelButton.setOnAction(e -> {
-                if (dialogData.size() == 0) {
-                    Text error = new Text("Error no level found!");
-                    error.setFont(Font.font("Arial", 25));
-                    ninjaChooserSubScene.getPane().getChildren().set(1, error);
-                } else {
+        MainMenuButton chooseScoreLevelButton = new MainMenuButton("Choose\nLevel");
+        chooseScoreLevelButton.setOnAction(e -> {
+            if (dialogData.size() == 0) {
+                Text error = new Text("Error no level found!");
+                error.setFont(Font.font("Arial", 25));
+                ninjaChooserSubScene.getPane().getChildren().set(1, error);
+            } else {
 
-                    ChoiceDialog<String> dialog = new ChoiceDialog<>(dialogData.get(0), dialogData);
-                    dialog.setTitle("Select Level");
-                    dialog.setHeaderText("Select your choice");
-                    Optional<String> result = dialog.showAndWait();
-                    String selected;
-
-//                    if (result.isPresent()) {
-//                        selected = result.get();
-//                        for (int i = 0; i < AllProfile.getNameList().size();i++) {
-//                            if (selected.equals(AllProfile.getNameList().get(i))) {
-//                                currentPlayerProfile = AllProfile.getNameList().get(i);
-//                                ninjaChooserSubScene.getPane().getChildren()
-//                                        .set(1, createCurrentProfile());
-//                            }
-//                        }
-//                    }
-//                    System.out.println("Selection: " + currentPlayerProfile);
+                ChoiceDialog<String> dialog = new ChoiceDialog<>(dialogData.get(0), dialogData);
+                dialog.setTitle("Select Level");
+                dialog.setHeaderText("Select your choice");
+                Optional<String> result = dialog.showAndWait();
+                String selected;
+                if (result.isPresent()) {
+                    selected = result.get();
+                    switch(selected) {
+                        case "Level00":
+                            loadScores(0);
+                            break;
+                        case "Level01":
+                            loadScores(1);
+                            break;
+                        case "Level02":
+                            loadScores(2);
+                            break;
+                        case "Level03":
+                            loadScores(3);
+                            break;
+                        default:
+                            System.out.println("fuck");
+                            break;
+                    }
                 }
-            });
-            return chooseScoreLevelButton;
+            }
+        });
+        return chooseScoreLevelButton;
     }
 
     /**
@@ -426,6 +437,21 @@ public class ViewManager {
         VBox score = new VBox();
         scoreSubScene.getPane().getChildren().add(scoreTit);
         scoreSubScene.getPane().getChildren().add(score);
+    }
+
+    private void loadScores(int levelIndex) {
+        VBox score = new VBox();
+        AllScore.loadScore();
+        AllScore.createAndSortScoreList(levelIndex);
+        if (!shownScore) {
+            for (int i = 0; i < AllScore.getTenHighScore().length; i++) {
+                Text testText = new Text(AllScore.getTenHighScoreName(levelIndex)[i] + "   " + AllScore.getTenHighScore()[i]);
+                score.getChildren().add(testText);
+            }
+            scoreSubScene.getPane().getChildren().add(score);
+            shownScore = true;
+        }
+
     }
 
     /**

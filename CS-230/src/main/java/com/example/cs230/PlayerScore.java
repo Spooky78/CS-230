@@ -17,6 +17,9 @@ public class PlayerScore {
         return playerName;
     }
 
+    public ArrayList<Integer> getPlayerScore() {
+        return playerScore;
+    }
     public int getPlayerScoreSize() {
         return playerScore.size();
     }
@@ -24,7 +27,11 @@ public class PlayerScore {
         return playerScore.get(levelIndex);
     }
 
-    public void setPlayerScore(int score, int levelIndex) {
+    public void addALevelScore() {
+        playerScore.add(DEFAULT_SCORE);
+    }
+
+    public void setPlayerScore(int levelIndex, int score) {
         playerScore.set(levelIndex,score);
     }
 }

@@ -15,8 +15,9 @@ import java.io.FileNotFoundException;
 import java.net.URISyntaxException;
 
 public class WinScreenViewManager {
-    private static final int GAME_WIDTH = 450;
-    private static final int GAME_HEIGHT = 300;
+    private static final int TIME_FACTOR = 3;
+    private static final int GAME_WIDTH = 600;
+    private static final int GAME_HEIGHT = 350;
     private static final int FONT_SIZE = 50;
     private final String FONT_PATH;
 
@@ -75,7 +76,10 @@ public class WinScreenViewManager {
         int nextLevel = level +1;
         newLevel = "/Levels/Level0" + nextLevel + ".txt";
 
-        AllScore.updateScore(name, score,level, timeLeft);
+        AllProfile.loadProfile();
+        AllProfile.updateLevel(name,level);
+        AllScore.loadScore();
+        AllScore.updateScore(name, score*timeLeft*TIME_FACTOR,level);
 
         this.menuOverStage = stage;
         this.menuOverStage.hide();
@@ -102,13 +106,26 @@ public class WinScreenViewManager {
             gameOverText.setFont(Font.font("Verdana", FONT_SIZE));
         }
         gameOverPane.getChildren().add(gameOverText);
-        Text  scoreText = new Text("Your Score:" + player.getScore());
+        Text  profilePlayerName = new Text("Your Name:" + profileName);
+        Text  scoreText = new Text("Your Score:" + score);
+        Text  timeRemaining = new Text("Remaining time:" + timeLeft);
+        Text  totalScore = new Text("Your Score:" + score * timeLeft * TIME_FACTOR);
+
         try {
-            scoreText.setFont(Font.loadFont(new FileInputStream(FONT_PATH), 30));
+            profilePlayerName.setFont(Font.loadFont(new FileInputStream(FONT_PATH), 20));
+            scoreText.setFont(Font.loadFont(new FileInputStream(FONT_PATH), 20));
+            timeRemaining.setFont(Font.loadFont(new FileInputStream(FONT_PATH), 20));
+            totalScore.setFont(Font.loadFont(new FileInputStream(FONT_PATH), 20));
         } catch (FileNotFoundException e) {
-            scoreText.setFont(Font.font("Verdana", 30));
+            profilePlayerName.setFont(Font.font("Verdana", 20));
+            scoreText.setFont(Font.font("Verdana", 20));
+            timeRemaining.setFont(Font.font("Verdana", 20));
+            totalScore.setFont(Font.font("Verdana", 20));
         }
+        gameOverPane.getChildren().add(profilePlayerName);
         gameOverPane.getChildren().add(scoreText);
+        gameOverPane.getChildren().add(timeRemaining);
+        gameOverPane.getChildren().add(totalScore);
     }
 
     private void createMainMenuButton(HBox buttonsPane) {

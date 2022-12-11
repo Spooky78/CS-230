@@ -24,7 +24,6 @@ public class Board {
     private ArrayList<Integer> smartThiefStartCoords = new ArrayList<>();
     private ArrayList<String> floorFollowingThiefColours = new ArrayList<>();
     private ArrayList<String> floorFollowingThiefDirectionStart = new ArrayList<>();
-    private ArrayList<String> floorFollowingThiefDirectionTurn = new ArrayList<>();
     private ArrayList<Integer> floorFollowingThiefStartCoords = new ArrayList<>();
     private ArrayList<String> coinColor = new ArrayList<>();
 
@@ -139,9 +138,8 @@ public class Board {
     private void ffThiefCoordsReader(String[] params) {
         floorFollowingThiefColours.add(params[1]);
         floorFollowingThiefDirectionStart.add(params[2]);
-        floorFollowingThiefDirectionTurn.add(params[3]);
+        floorFollowingThiefStartCoords.add(Integer.parseInt(params[3]));
         floorFollowingThiefStartCoords.add(Integer.parseInt(params[4]));
-        floorFollowingThiefStartCoords.add(Integer.parseInt(params[5]));
     }
 
     private void coinCoordsReader(String[] params) {
@@ -233,6 +231,27 @@ public class Board {
         }
     }
 
+    public boolean canMoveNPC(int[] currentTile, int[] newTile) {
+        int currentX = currentTile[0] - 1;
+        int currentY = currentTile[1] - 1;
+        int newX = newTile[0] - 1;
+        int newY = newTile[1] - 1;
+        board = new Tile[boardSizeX][boardSizeY];
+        int index = 0;
+        for (int i = 0; i < boardSizeY; i++) {
+            for (int j = 0; j < boardSizeX; j++) {
+                board[j][i] = boardTile.get(index);
+                index++;
+            }
+        }
+        char[] newIds = board[newX][newY].getTileIds();
+        if (board[currentX][currentY].hasSubTile(newIds)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public int[] getPlayerStartCoords() {
         return playerStartCoords;
     }
@@ -250,8 +269,6 @@ public class Board {
     }
     public ArrayList<String> getFloorFollowingThiefColours() {return floorFollowingThiefColours;}
     public ArrayList<String> getFloorFollowingThiefDirectionStart() {return floorFollowingThiefDirectionStart;}
-    public ArrayList<String> getFloorFollowingThiefDirectionTurn() {return floorFollowingThiefDirectionTurn;}
-
     public ArrayList<Integer> getFloorFollowingThiefStartCoords() {
         return floorFollowingThiefStartCoords;
     }

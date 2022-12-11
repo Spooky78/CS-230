@@ -1,7 +1,2 @@
-Enter a name, 1
-Re, 2
-q1, 3
-qwrqwr, 4
-Enter a name12, 1
-Enter a name123, 1
-Enter a name134, 1
+Enter a name, 2
+Enter a name12, 3
