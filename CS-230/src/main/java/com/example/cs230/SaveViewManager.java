@@ -15,16 +15,14 @@ import java.io.FileNotFoundException;
 import java.net.URISyntaxException;
 
 /**
- * menu shows game over screen
+ * create a save view manager.
  *
  * @author Vic
  */
-public class GameOverViewManager {
+public class SaveViewManager {
     private static final int GAME_WIDTH = 450;
     private static final int GAME_HEIGHT = 300;
     private static final int FONT_SIZE = 50;
-    private static final int SPACE = 20;
-    private static final int SCORE_FONT_SIZE = 30;
     private final String FONT_PATH;
 
     {
@@ -44,7 +42,7 @@ public class GameOverViewManager {
     /**
      * Creates a GameOverViewManager.
      */
-    public GameOverViewManager() {
+    public SaveViewManager() {
         initializeStage();
     }
 
@@ -63,30 +61,30 @@ public class GameOverViewManager {
      *
      * @param stage The previous stage (usually menuStage).
      */
-    public void createGameOver(Stage stage, Player player) {
+    public void createSave(Stage stage, Player player) {
         this.menuOverStage = stage;
         this.menuOverStage.hide();
         createBackground();
         createText(player);
         HBox buttonsPane = new HBox();
-        buttonsPane.setSpacing(SPACE);
+        buttonsPane.setSpacing(20);
         buttonsPane.setAlignment(Pos.CENTER);
         createMainMenuButton(buttonsPane);
         createExitButton(buttonsPane);
 
         gameOverPane.getChildren().add(buttonsPane);
         gameOverPane.setAlignment(Pos.CENTER);
-        gameOverPane.setSpacing(SPACE);
+        gameOverPane.setSpacing(20);
         gameOverStage.show();
     }
 
     /**
-     * creates display for game over screen.
+     * create text.
      *
      * @param player current player
      */
     private void createText(Player player) {
-        Text gameOverText = new Text("GAME OVER!");
+        Text gameOverText = new Text("YOU HAVE SAVED GAME!");
         try {
             gameOverText.setFont(Font.loadFont(new FileInputStream(FONT_PATH), FONT_SIZE));
         } catch (FileNotFoundException e) {
@@ -95,15 +93,15 @@ public class GameOverViewManager {
         gameOverPane.getChildren().add(gameOverText);
         Text scoreText = new Text("Your Score:" + player.getScore());
         try {
-            scoreText.setFont(Font.loadFont(new FileInputStream(FONT_PATH), SCORE_FONT_SIZE));
+            scoreText.setFont(Font.loadFont(new FileInputStream(FONT_PATH), 30));
         } catch (FileNotFoundException e) {
-            scoreText.setFont(Font.font("Verdana", SCORE_FONT_SIZE));
+            scoreText.setFont(Font.font("Verdana", 30));
         }
         gameOverPane.getChildren().add(scoreText);
     }
 
     /**
-     * create main menu button and display.
+     * create main menu button.
      *
      * @param buttonsPane button pane
      */

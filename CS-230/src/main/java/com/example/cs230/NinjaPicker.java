@@ -9,6 +9,8 @@ import java.util.Objects;
 
 /**
  * Responsible for the picking player character.
+ *
+ * @author Vic
  */
 public class NinjaPicker extends VBox {
     private final ImageView boxImage;
@@ -18,10 +20,16 @@ public class NinjaPicker extends VBox {
     private final Ninja ninja;
     private boolean isBoxChosen;
 
+    /**
+     * Choose the ninja that the player clicks on his picture in the character select to become
+     * the player character.
+     *
+     * @param ninjaCharacter the chosen ninja
+     */
     public NinjaPicker(Ninja ninjaCharacter) {
         boxImage = new ImageView(BOX_NOT_CHOSEN);
-        Image image = new Image(
-                Objects.requireNonNull(getClass().getResourceAsStream(ninjaCharacter.getNinjaFaceset())));
+        Image image = new Image(Objects.requireNonNull(
+                getClass().getResourceAsStream(ninjaCharacter.getNinjaFaceset())));
         ImageView shipImage = new ImageView(image);
         this.ninja = ninjaCharacter;
         isBoxChosen = false;
@@ -31,10 +39,20 @@ public class NinjaPicker extends VBox {
         this.getChildren().add(shipImage);
     }
 
+    /**
+     * get ninja.
+     *
+     * @return ninja
+     */
     public Ninja getNinja() {
         return ninja;
     }
 
+    /**
+     * check which box is clicked/whether clicked.
+     *
+     * @param isBoxChosenParam which checkbox was chosen
+     */
     public void setIsBoxChosen(boolean isBoxChosenParam) {
         this.isBoxChosen = isBoxChosenParam;
         String imageToSet = this.isBoxChosen ? BOX_CHOSEN : BOX_NOT_CHOSEN;

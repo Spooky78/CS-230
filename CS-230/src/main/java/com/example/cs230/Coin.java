@@ -7,7 +7,13 @@ import javafx.scene.layout.StackPane;
 
 import java.util.Objects;
 
-public class Coin extends  Item{
+/**
+ * Creates coins of different values on the board that can be collected by player and thieves,
+ * and can be destroyed by bomb.
+ *
+ * @author Omar
+ */
+public class Coin extends Item {
     private static final String BRONZE_COIN_PATH = "/Items/CoinBronze.png";
     private static final String SILVER_COIN_PATH = "/Items/CoinSilver.png";
     private static final String GOLD_COIN_PATH = "/Items/CoinGold.png";
@@ -23,78 +29,138 @@ public class Coin extends  Item{
     private ImageView coin = new ImageView();
     private int[] coinPosition;
     private int coinScore;
+    public String coinType;
 
-    public Coin(String cointype, Board board, int[] position) {
+    /**
+     * game loading and add coin on the game screen.
+     *
+     * @param coinType value of the coin
+     * @param board    game screen
+     * @param position coin position
+     */
+    public Coin(String coinType, Board board, int[] position) {
         gameBoard = board;
         coinPosition = position;
-        createItem(cointype, position);
+        this.coinType = coinType;
+        createItem(this.coinType, position);
     }
 
-    protected void createItem(String cointype, int[] position) {
+    /**
+     * create coins images and put these on the board,when collision by player,
+     * adding scores depends on value of coins.
+     *
+     * @param coinType value of the coin
+     * @param position coin position
+     */
+    protected void createItem(String coinType, int[] position) {
 
-        switch (cointype) {
-            case "BRONZE":
+        switch (coinType) {
+            case "BRONZE" -> {
                 Image bronzeImage = new Image(
                         Objects.requireNonNull(getClass().getResourceAsStream(BRONZE_COIN_PATH)));
                 coin = new ImageView(bronzeImage);
                 coinScore = BRONZE_COIN_SCORE;
-                break;
-            case "SILVER":
+            }
+            case "SILVER" -> {
                 Image silverImage = new Image(
                         Objects.requireNonNull(getClass().getResourceAsStream(SILVER_COIN_PATH)));
                 coin = new ImageView(silverImage);
                 coinScore = SILVER_COIN_SCORE;
-                break;
-            case "GOLD":
+            }
+            case "GOLD" -> {
                 Image goldImage = new Image(
                         Objects.requireNonNull(getClass().getResourceAsStream(GOLD_COIN_PATH)));
                 coin = new ImageView(goldImage);
                 coinScore = GOLD_COIN_SCORE;
-                break;
-            case "PLAT":
+            }
+            case "PLAT" -> {
                 Image platImage = new Image(
                         Objects.requireNonNull(getClass().getResourceAsStream(PLAT_COIN_PATH)));
                 coin = new ImageView(platImage);
                 coinScore = PLAT_COIN_SCORE;
-                break;
+            }
         }
-        coin.setFitWidth(COIN_SIZE);
-        coin.setFitHeight(COIN_SIZE);
-        coinStackPane.getChildren().add(coin);
-        int tileSize = gameBoard.getTileSize();
-        coinStackPane.setLayoutX((position[0] * tileSize) - (tileSize / 2));
-        coinStackPane.setLayoutY((position[1] * tileSize) - (tileSize / 2));
+            coin.setFitWidth(COIN_SIZE);
+            coin.setFitHeight(COIN_SIZE);
+            coinStackPane.getChildren().add(coin);
+            int tileSize = gameBoard.getTileSize();
+            coinStackPane.setLayoutX((position[0] * tileSize) - (tileSize / 2));
+            coinStackPane.setLayoutY((position[1] * tileSize) - (tileSize / 2));
+        }
 
-    }
+        /**
+         * judgement player collided coin or not.
+         *
+         * @param playerCoords player position
+         * @return true when player collision with coin
+         */
+        public boolean isCollisionPlayer(int[] playerCoords) {
+            return playerCoords[0] + 1 == coinPosition[0] && playerCoords[1] + 1 == coinPosition[1];
+        }
 
-    public boolean isCollisionPlayer(int[] playerCoords) {
-        if (playerCoords[0] +1 == coinPosition[0] && playerCoords[1] +1 == coinPosition[1]) {
-            return true;
-        } else {
-            return false;
+        /**
+         * judgement npc collided coin or not.
+         *
+         * @param npcCoords npc position
+         * @return true when npc collision with coin
+         */
+        public boolean isCollisionNPC(int[] npcCoords) {
+            return npcCoords[0] == coinPosition[0] && npcCoords[1] == coinPosition[1];
+        }
+
+        /**
+         * get coin pane.
+         *
+         * @return coin pane
+         */
+        public StackPane getCoinStackPane() {
+            return coinStackPane;
+        }
+
+        /**
+         * get coin image.
+         *
+         * @return coin image
+         */
+        public ImageView getCoin() {
+            return coin;
+        }
+
+        /**
+         * get coin score for different value.
+         *
+         * @return coin score for different value
+         */
+        public int getCoinScore() {
+            return coinScore;
+        }
+
+        /**
+         * get stack pane.
+         *
+         * @return stack pane
+         */
+        @Override
+        protected StackPane getStackPane() {
+            return coinStackPane;
+        }
+
+        /**
+         * get coin position.
+         *
+         * @return coin position
+         */
+        @Override
+        protected int[] getCoords() {
+            return coinPosition;
+        }
+
+        /**
+         * get coin type.
+         *
+         * @return coin type
+         */
+        public String getCoinType() {
+            return coinType;
         }
     }
-
-    public boolean isCollisionNPC(int[] npcCoords) {
-        if (npcCoords[0] == coinPosition[0] && npcCoords[1] == coinPosition[1]) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public StackPane getCoinStackPane() {return coinStackPane;}
-
-    public ImageView getCoin() {return coin;}
-    public int getCoinScore() {return coinScore;}
-
-    @Override
-    protected StackPane getStackPane() {
-        return coinStackPane;
-    }
-
-    @Override
-    protected int[] getCoords() {
-        return coinPosition;
-    }
-}

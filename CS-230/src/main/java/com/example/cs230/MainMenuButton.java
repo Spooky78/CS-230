@@ -18,6 +18,8 @@ import java.net.URISyntaxException;
 
 /**
  * Responsible for the button used on main menu.
+ *
+ * @author Vic
  */
 public class MainMenuButton extends Button {
     private final String FONT_PATH;
@@ -51,7 +53,7 @@ public class MainMenuButton extends Button {
     }
 
     /**
-     * Sets the button text font & size.
+     * Sets the button text font and size.
      */
     private void setButtonFont() {
         try {
@@ -65,7 +67,6 @@ public class MainMenuButton extends Button {
      * Sets button pressed style.
      */
     private void setButtonPressedStyle() {
-
         Image backgroundImage = new Image(BUTTON_PRESSED_PATH, PREF_WIDTH, PREF_HEIGHT, false, false);
         BackgroundImage background = new BackgroundImage(backgroundImage, BackgroundRepeat.NO_REPEAT,
                 BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, new BackgroundSize(100, 100,
@@ -89,7 +90,6 @@ public class MainMenuButton extends Button {
      * pressed and released.
      */
     private void initializeButtonListener() {
-
         setOnMousePressed(mouseEvent -> {
             if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
                 setButtonPressedStyle();
@@ -101,9 +101,7 @@ public class MainMenuButton extends Button {
                 setButtonReleasedStyle();
             }
         });
-
         setOnMouseEntered(mouseEvent -> setEffect(new DropShadow()));
-
         setOnMouseExited(mouseEvent -> setEffect(null));
     }
 }

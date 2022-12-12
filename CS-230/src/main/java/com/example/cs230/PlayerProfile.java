@@ -1,29 +1,50 @@
 package com.example.cs230;
 
+/**
+ * Player profile.
+ *
+ * @author Rex
+ */
 public class PlayerProfile {
-    private int profileIndex;
     private String name;
     private int unlockedLevel;
-    public PlayerProfile(String name, int unlockedLevel) {
+
+    /**
+     * player profile with name and level unlocked.
+     *
+     * @param profileName profile name
+     * @param unlockedLevelProfile unlocked level
+     */
+    public PlayerProfile(String profileName, int unlockedLevelProfile) {
         //saveName();
-        this.name = name;
-        this.unlockedLevel = unlockedLevel;
+        this.name = profileName;
+        this.unlockedLevel = unlockedLevelProfile;
 
     }
-    // the player profile now store the boolean list of levels.
-    // when reading the file it reads the level as well as the player name
-    // when adding the name it has default level which is first level unlocked and the others not unlocked.
-    //TODO: high score tables take the level.
 
-
+    /**
+     * get player name.
+     *
+     * @return player name
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * get recent level unlocked.
+     *
+     * @return level unlocked
+     */
     public int getIsLevelUnlocked() {
         return unlockedLevel;
     }
 
+    /**
+     * set level unlocked.
+     *
+     * @param levelIndex index of level
+     */
     public void setLevelUnlocked(int levelIndex) {
         unlockedLevel = levelIndex;
     }

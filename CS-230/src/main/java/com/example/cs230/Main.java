@@ -10,67 +10,6 @@ import java.io.FileNotFoundException;
  *
  * @author Vic
  */
-
-//TODO: Player:                                     DONE
-    //TODO: Movement                                DONE
-
-//TODO: Assassin:
-    //TODO: Movement                    Vic         DONE
-    //TODO: Collision player            Vic         DONE
-    //TODO: Collision NPCs              Vic
-
-//TODO: Smart Thief:
-    //TODO: Draw                        Rex         DONE
-    //TODO: Movement Transitions
-    //TODO: Movement Animation
-
-//TODO: Floor Following Thief:
-    //TODO: Draw                        Dimitrios   DONE
-    //TODO: Movement Transitions        Vic         DONE
-    //TODO: Movement Animation          Vic         DONE
-
-//TODO: Coins:
-    //TODO: Draw                        Omar        DONE
-    //TODO: Collision Player            Meeting     DONE
-    //TODO: Collision NPC
-
-//TODO: Lever:
-    //TODO: Draw                        Chrysis     DONE
-    //TODO: Collision player/NPC        Lewis
-
-//TODO: Gate:
-    //TODO: Draw                        Lewis       DONE
-
-//TODO: Door:
-    //TODO: Draw                        Vic         DONE
-    //TODO: Collision/next level        Omar
-
-//TODO: Clock:
-    //TODO: Draw                        Lewis       DONE
-    //TODO: Collision/Add Time          
-
-//TODO: Bomb:
-    //TODO: Draw                        Arran
-    //TODO: Collision
-
-//TODO: Time
-    //TODO: Draw time to screen         Vic         DONE
-
-//TODO: Player Profiles:
-    //TODO: Write names to txt file
-    //TODO: Reading names from txt file
-    //TODO: Delete names from txt file
-
-//TODO: Scoreboard:
-    //TODO: compare and edit scoreboard
-
-//TODO: End Screen                      Vic         DONE
-
-//TODO: Save File (maybe do together near end of week):
-    //TODO: write save txt file
-    //TODO: read save txt file
-
-
 public class Main extends Application {
     //private Stage mainStage;
     @Override

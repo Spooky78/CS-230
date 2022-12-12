@@ -15,9 +15,9 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="lib" level="project" />
     <orderEntry type="library" name="Maven: org.openjfx:javafx-controls:19-ea+7" level="project" />
-    <orderEntry type="library" name="Maven: org.openjfx:javafx-controls:win:19-ea+7" level="project" />
+    <orderEntry type="library" name="Maven: org.openjfx:javafx-controls:linux:19-ea+7" level="project" />
     <orderEntry type="library" name="Maven: org.openjfx:javafx-fxml:19-ea+7" level="project" />
-    <orderEntry type="library" name="Maven: org.openjfx:javafx-fxml:win:19-ea+7" level="project" />
+    <orderEntry type="library" name="Maven: org.openjfx:javafx-fxml:linux:19-ea+7" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.junit.jupiter:junit-jupiter-api:5.8.2" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.opentest4j:opentest4j:1.2.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.junit.platform:junit-platform-commons:1.8.2" level="project" />
@@ -25,8 +25,8 @@
     <orderEntry type="library" scope="TEST" name="Maven: org.junit.jupiter:junit-jupiter-engine:5.8.2" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.junit.platform:junit-platform-engine:1.8.2" level="project" />
     <orderEntry type="library" name="Maven: org.openjfx:javafx-graphics:19-ea+7" level="project" />
-    <orderEntry type="library" name="Maven: org.openjfx:javafx-graphics:win:19-ea+7" level="project" />
+    <orderEntry type="library" name="Maven: org.openjfx:javafx-graphics:linux:19-ea+7" level="project" />
     <orderEntry type="library" name="Maven: org.openjfx:javafx-base:19-ea+7" level="project" />
-    <orderEntry type="library" name="Maven: org.openjfx:javafx-base:win:19-ea+7" level="project" />
+    <orderEntry type="library" name="Maven: org.openjfx:javafx-base:linux:19-ea+7" level="project" />
   </component>
 </module>

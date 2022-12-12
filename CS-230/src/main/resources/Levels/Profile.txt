@@ -1,2 +1,1 @@
-Enter a name, 2
-Enter a name12, 3
+Spooky, 4

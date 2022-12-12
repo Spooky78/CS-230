@@ -56,6 +56,12 @@ public class ViewManager {
         mainScene = new Scene(mainPane, WIDTH, HEIGHT);
     }
 
+    /**
+     * creates a new menu display.
+     *
+     * @param stage the current stage
+     * @throws FileNotFoundException
+     */
     public void createNewMenu(Stage stage) throws FileNotFoundException {
         this.mainStage = stage;
         this.mainStage.hide();
@@ -139,7 +145,7 @@ public class ViewManager {
      */
     private Text createCurrentProfile() {
         Text currentProfileText = new Text("Please Select Profile!");
-       if (AllProfile.getNameList() != null) {
+        if (AllProfile.getNameList() != null) {
             currentProfileText = new Text("Profile: " + currentPlayerProfile);
         }
         currentProfileText.setFont(Font.font("Arial", 25));
@@ -190,7 +196,7 @@ public class ViewManager {
                 String selected;
                 if (result.isPresent()) {
                     selected = result.get();
-                    for (int i = 0; i < AllProfile.getNameList().size();i++) {
+                    for (int i = 0; i < AllProfile.getNameList().size(); i++) {
                         if (selected.equals(AllProfile.getNameList().get(i))) {
                             currentPlayerProfile = AllProfile.getNameList().get(i);
                             ninjaChooserSubScene.getPane().getChildren()
@@ -208,6 +214,11 @@ public class ViewManager {
         return chooseProfileButton;
     }
 
+    /**
+     * creates a delete profile button.
+     *
+     * @return a button to choose profile to delete
+     */
     private MainMenuButton deleteProfileButton() {
         AllProfile.loadProfile();
         MainMenuButton chooseProfileButton = new MainMenuButton("Delete\nProfile");
@@ -261,6 +272,11 @@ public class ViewManager {
         return newProfileButton;
     }
 
+    /**
+     * creates a button for level selection.
+     *
+     * @return a choose level button
+     */
     private MainMenuButton levelSelectionButton() {
         if (currentPlayerProfile != null) {
             List<String> dialogData = AllProfile.getLevelSelection(currentPlayerProfile);
@@ -276,21 +292,21 @@ public class ViewManager {
                     dialog.setHeaderText("Select your choice");
                     Optional<String> result = dialog.showAndWait();
                     String selected;
-                if (result.isPresent() && chosenNinja != null) {
-                    selected = result.get();
-                    //System.out.println(selected);
-                    char levelChar = selected.charAt(6);
-                    //System.out.println(levelChar);
-                    int level = Integer.parseInt(String.valueOf(levelChar));
-                    String levelString = "/Levels/Level0"+level+".txt";
-                    GameViewManager newGame = new GameViewManager();
-                    newGame.createNewGame(mainStage, chosenNinja, levelString, currentPlayerProfile);
-                } else if (result.isPresent() && chosenNinja == null){
-                    Text error = new Text("YOU NEED TO SELECT CHARACTER");
-                    error.setFont(Font.font("Arial", 25));
-                    ninjaChooserSubScene.getPane().getChildren().set(1, error);
-                }
-                System.out.println("Level selection: " + currentPlayerProfile);
+                    if (result.isPresent() && chosenNinja != null) {
+                        selected = result.get();
+                        //System.out.println(selected);
+                        char levelChar = selected.charAt(6);
+                        //System.out.println(levelChar);
+                        int level = Integer.parseInt(String.valueOf(levelChar));
+                        String levelString = "/Levels/Level0" + level + ".txt";
+                        GameViewManager newGame = new GameViewManager();
+                        newGame.createNewGame(mainStage, chosenNinja, levelString, currentPlayerProfile);
+                    } else if (result.isPresent() && chosenNinja == null) {
+                        Text error = new Text("YOU NEED TO SELECT CHARACTER");
+                        error.setFont(Font.font("Arial", 25));
+                        ninjaChooserSubScene.getPane().getChildren().set(1, error);
+                    }
+                    System.out.println("Level selection: " + currentPlayerProfile);
                 }
             });
             return chooseLevelButton;
@@ -339,15 +355,15 @@ public class ViewManager {
         ninjaPickerBox.setSpacing(20);
         ninjaPickerList = new ArrayList<>();
         for (Ninja ninja : Ninja.values()) {
-            NinjaPicker shipToPick = new NinjaPicker(ninja);
-            ninjaPickerList.add(shipToPick);
-            ninjaPickerBox.getChildren().add(shipToPick);
-            shipToPick.setOnMouseClicked(mouseEvent -> {
+            NinjaPicker ninjaToPick = new NinjaPicker(ninja);
+            ninjaPickerList.add(ninjaToPick);
+            ninjaPickerBox.getChildren().add(ninjaToPick);
+            ninjaToPick.setOnMouseClicked(mouseEvent -> {
                 for (NinjaPicker ship1 : ninjaPickerList) {
                     ship1.setIsBoxChosen(false);
                 }
-                shipToPick.setIsBoxChosen(true);
-                chosenNinja = shipToPick.getNinja();
+                ninjaToPick.setIsBoxChosen(true);
+                chosenNinja = ninjaToPick.getNinja();
             });
         }
         ninjaPickerBox.setPadding(new Insets(20));
@@ -369,9 +385,14 @@ public class ViewManager {
         }
     }
 
+    /**
+     * creates a level selection.
+     *
+     * @return which level you can choose
+     */
     private MainMenuButton choseScoreLevel() {
         //Score list is an array list
-        List<String> dialogData =  new ArrayList<>();
+        List<String> dialogData = new ArrayList<>();
 
         //List<String> dialogData =  string array list
         dialogData.add("Level00");
@@ -394,7 +415,7 @@ public class ViewManager {
                 String selected;
                 if (result.isPresent()) {
                     selected = result.get();
-                    switch(selected) {
+                    switch (selected) {
                         case "Level00":
                             loadScores(0);
                             break;
@@ -428,8 +449,6 @@ public class ViewManager {
             scoreTitle.setFont(Font.font("Arial", 60));
         }
 
-
-
         VBox scoreTit = new VBox();
         scoreTit.setAlignment(Pos.CENTER);
         scoreTit.getChildren().add(scoreTitle);
@@ -439,6 +458,11 @@ public class ViewManager {
         scoreSubScene.getPane().getChildren().add(score);
     }
 
+    /**
+     * loads the scores.
+     *
+     * @param levelIndex the index of the level
+     */
     private void loadScores(int levelIndex) {
         VBox score = new VBox();
         AllScore.loadScore();
@@ -582,30 +606,13 @@ public class ViewManager {
      * Creates the saves button.
      */
     private void createSavesButton() {
-        List<String> dialogData = new ArrayList<>();
-        dialogData.add("SAVE1");
-        dialogData.add("SAVE2");
-        MainMenuButton chooseLevelButton = new MainMenuButton("Saves");
-        chooseLevelButton.setOnAction(e -> {
-            if (dialogData.size() == 0) {
-                Text error = new Text("Error no saves found!");
-                error.setFont(Font.font("Arial", 25));
-                ninjaChooserSubScene.getPane().getChildren().set(1, error);
-            } else {
-                ChoiceDialog<String> dialog = new ChoiceDialog<>(dialogData.get(0), dialogData);
-                dialog.setTitle("Select save");
-                dialog.setHeaderText("Select your choice");
-                Optional<String> result = dialog.showAndWait();
-                String selected;
-                if (result.isPresent() && chosenNinja != null) {
-                    selected = result.get();
-
-                }
-                System.out.println("Save selection: " + currentPlayerProfile);
-            }
+        MainMenuButton savesButton = new MainMenuButton("Saves");
+        buttonPane.getChildren().add(savesButton);
+        savesButton.setOnAction(actionEvent -> {
+            chosenNinja = Ninja.BLACK;
+            GameViewManager gameManager = new GameViewManager();
+            gameManager.createNewGame(mainStage, chosenNinja, "/Levels/LastSave.txt", null);
         });
-
-        buttonPane.getChildren().add(chooseLevelButton);
     }
 
     /**

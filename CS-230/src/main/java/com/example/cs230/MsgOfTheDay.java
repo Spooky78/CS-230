@@ -9,11 +9,11 @@ import java.net.*;
  *
  * @author Everybody.
  */
-
 public class MsgOfTheDay {
     private String outputS;
+    //MsgOfTheDay is the stored output.
     private String msgOfTheDay = "Error, the message is not displayed.";
-    // MsgOfTheDay is the stored output.
+
 
     /**
      * Encode the puzzle into the solution of the message of the day.
@@ -22,14 +22,14 @@ public class MsgOfTheDay {
      * @return encoded puzzle.
      */
     public String encode(String str) {
-        final int STRING_LENGTH = 100;
-        final int ALPHABET_LENGTH = 26;
-        final String CS230 = "CS-230";
+        final int stringLength = 100;
+        final int alphabetLength = 26;
+        final String cs230 = "CS-230";
 
         //get the number of characters in the final result. And put it to outputS(String).
-        outputS = Integer.toString(CS230.length() + str.length());
+        outputS = Integer.toString(cs230.length() + str.length());
 
-        String[] out = new String[STRING_LENGTH];
+        String[] out = new String[stringLength];
         char[] letters = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I',
                 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q',
                 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
@@ -50,8 +50,8 @@ public class MsgOfTheDay {
             int shiftingVal;
 
             // to prevent overflowing past 25
-            if (characterPla > ALPHABET_LENGTH) {
-                characterPla %= ALPHABET_LENGTH;
+            if (characterPla > alphabetLength) {
+                characterPla %= alphabetLength;
             }
             //Check if the index of the character array is even or odd
             if (characterPla % 2 == 1) {
@@ -64,7 +64,7 @@ public class MsgOfTheDay {
                 shiftingVal = shiftingVal - letters.length;
             } else if (shiftingVal < 0) {
                 shiftingVal += letters.length;
-            } else if (shiftingVal == ALPHABET_LENGTH) {
+            } else if (shiftingVal == alphabetLength) {
                 shiftingVal = 0;
             }
             //change the value from integers to string
@@ -72,7 +72,7 @@ public class MsgOfTheDay {
             //put the results into outputS String.
             outputS = outputS + out[i];
         }
-        outputS += CS230;
+        outputS += cs230;
         //outputS would be number of characters + encoded puzzle + CS-230
         return sendSol();
     }

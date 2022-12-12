@@ -4,6 +4,10 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * All player profile already saved.
+ * @author Rex
+ */
 public class AllProfile {
     private static final String PROFILE_FILE_PATH = "CS-230/src/main/resources/Levels/Profile.txt";
     private static final int DEFAULT_LEVEL_UNLOCKED = 1;
@@ -15,7 +19,9 @@ public class AllProfile {
 
 
 
-    //When the game started, it loads all the profile in the file path.
+    /**
+     * When the game started, it loads all the profile in the file path.
+     */
     public static void loadProfile() {
         allProfile.clear();
         nameList.clear();
@@ -35,7 +41,10 @@ public class AllProfile {
         }
     }
 
-    //if not existed, add a name as well as the profile index
+    /**
+     * if not existed, add a name as well as the profile index.
+     * @param name player name
+     */
     public static void addName(String name) {
         if (!nameList.contains(name)) {
             allProfile.add(new PlayerProfile(name, DEFAULT_LEVEL_UNLOCKED));
@@ -51,10 +60,18 @@ public class AllProfile {
 
 
 
-    //return string array list of names to the game panel
+    /**
+     * return string array list of names to the game panel.
+     * @return name list
+     */
     public static ArrayList<String> getAllNamesInProfiles() {
         return nameList;
     }
+
+    /**
+     * deletes the current profile.
+     * @param name the profile name
+     */
     public static void deleteProfile(String name) {
         for (int i = 0; i < allProfile.size(); i++) {
             if (name.equals(allProfile.get(i).getName())) {
@@ -63,25 +80,21 @@ public class AllProfile {
             }
         }
         AllScore.deleteAllScoreCurrentName(name);
-/*
-        for (int i = 0; i < allScores.size(); i++) {
-            if (name.equals(allScores.get(i).getPlayerName())) {
-                allScores.remove(i);
-                scoreList.remove(i);
-            }
-        }
- */
         writeProfileInTxt();
     }
 
-    // a method to rewrite every profile
-    // when adding/deleting the method, writeTxt has to be run so the txt of the profile have all the profile names.
+
+    /**
+     * a method to rewrite every profile.
+     * when adding/deleting the method, writeTxt has to be run so the txt
+     * of the profile have all the profile names.
+     */
     public static void writeProfileInTxt() {
         try {
             FileWriter playerProfile = new FileWriter(PROFILE_FILE_PATH);
             for (int i = 0; i < allProfile.size(); i++) {
-                playerProfile.write(allProfile.get(i).getName() + ", " +
-                        allProfile.get(i).getIsLevelUnlocked() + "\n");
+                playerProfile.write(allProfile.get(i).getName() + ", "
+                        + allProfile.get(i).getIsLevelUnlocked() + "\n");
             }
             playerProfile.close();
         } catch (IOException ex) {
@@ -90,7 +103,11 @@ public class AllProfile {
     }
 
 
-    //the level is updated once the level is completed.
+    /**
+     * the level is updated once the level is completed.
+     * @param profileName the player profile
+     * @param currentLevelIndex the current level
+     */
     public static void updateLevel(String profileName, int currentLevelIndex) {
         int nextLevel = currentLevelIndex + 2;
         System.out.println(nextLevel + " ch " + currentLevelIndex);
@@ -106,11 +123,19 @@ public class AllProfile {
         }
     }
 
-
+    /**
+     * gets the name list.
+     * @return the name list
+     */
     public static ArrayList<String> getNameList() {
         return nameList;
     }
 
+    /**
+     * gets the list of levels.
+     * @param playerName the player name
+     * @return the list of levels
+     */
     public static ArrayList<String> getLevelSelection(String playerName) {
         stringOfLevelSelection.clear();
         for (int i = 0; i < allProfile.size(); i++) {

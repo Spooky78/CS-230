@@ -7,19 +7,22 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
 
-import java.util.ArrayList;
-import java.util.Objects;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
+/**
+ * Responsible for smart thief.
+ */
 public class SmartThief extends NPC {
     //no smart thief at the moment so just borrow one from flying assassin
     //can use reptile for smart thief now.
-    private static final int MILLS_DELAY_TILE = 1000;
+    private static final int MILLS_DELAY_TILE = 2000;
     private static final String SMARTTHIEF_DOWN_PATH = "/Reptile/ReptileDown.png";
     private static final String SMARTTHIEF_UP_PATH = "/Reptile/ReptileUp.png";
     private static final String SMARTTHIEF_LEFT_PATH = "/Reptile/ReptileLeft.png";
     private static final String SMARTTHIEF_RIGHT_PATH = "/Reptile/ReptileRight.png";
+    private static final int IMAGE_SIZE = 50;
+    private static final int DEFAULT_SHORTEST_DISTANCE = 1000;
+
     private ImageView sThief;
     private int[] coords;
     private StackPane sThiefStackPane;
@@ -27,15 +30,23 @@ public class SmartThief extends NPC {
     private GameViewManager manager;
     private Timer timer = new Timer();
     ArrayList<int[]> coordPath = new ArrayList<>();
-    //ArrayList<String> directions = new ArrayList<>();
     ArrayList<String> searchedTile = new ArrayList<>();
     ArrayList<Item> allCollectableItems = new ArrayList<>();
     int[] targetCoords = null;
     boolean isFound = false;
     private boolean isCollected = false;
     private boolean isReachedDoor = false;
+    private List<Node<int[]>> treeQueue = new ArrayList<>();
 
-    public SmartThief(Board board, int[] startCoords, StackPane stackPane, GameViewManager manager) {
+    /**
+     * Constructor for smart thief.
+     * @param board the board.
+     * @param startCoords the start coords.
+     * @param stackPane the stackpane.
+     * @param manager the game manager.
+     */
+    public SmartThief(Board board, int[] startCoords, StackPane stackPane,
+                      GameViewManager manager) {
         this.manager = manager;
         gameBoard = board;
         coords = startCoords;
@@ -44,58 +55,74 @@ public class SmartThief extends NPC {
         setAllCollectableItems(manager.getAllCollectableItems());
         move();
     }
+
+    /**
+     * stops timer.
+     */
     @Override
-    public void stopTimer(){
-        timer.cancel();
-        timer.purge();
+    public void stopTimer() {
+        if (timer != null) {
+            timer.cancel();
+            timer.purge();
+        }
     }
 
+    /**
+     * creates smart thief.
+     */
     @Override
     protected void createNPC() {
         Image assassinImage = new Image(
                 Objects.requireNonNull(getClass().getResourceAsStream(SMARTTHIEF_DOWN_PATH)));
         sThief = new ImageView(assassinImage);
-        sThief.setFitWidth(50);
-        sThief.setFitHeight(50);
+        sThief.setFitWidth(IMAGE_SIZE);
+        sThief.setFitHeight(IMAGE_SIZE);
         int tileSize = gameBoard.getTileSize();
         sThiefStackPane.setLayoutX((coords[0] * tileSize) - (tileSize / 2));
         sThiefStackPane.setLayoutY((coords[1] * tileSize) - (tileSize / 2));
     }
 
-    public void setAllCollectableItems(ArrayList<Item> items){
+    /**
+     * stes all collectable items.
+     * @param items all items.
+     */
+    public void setAllCollectableItems(ArrayList<Item> items) {
         allCollectableItems = items;
     }
+
+    /**
+     * move smart thief.
+     */
     public void move() {
         isCollected = false;
         isFound = false;
-        //System.out.println(allCollectableItems.size());
         int shortestIndex = findShortestDistance(allCollectableItems);
         targetCoords = allCollectableItems.get(shortestIndex).getCoords();
         Node<int[]> root = new Node<>(coords);
         searchedTile.clear();
-        searchedTile.add(root.getData()[0]+""+root.getData()[1]);
-        //System.out.println(root.getData()[0] + " "+root.getData()[1]);
-        makeTree(root, root.getData());
+        searchedTile.add(root.getData()[0] + "" + root.getData()[1]);
+        treeQueue.clear();
+        treeQueue.add(root);
+        makeTree();
         if (!isFound) {
-            System.out.println("COULD NOT FIND ITEM");
-            if (manager.getDoor().getCoords()[0] == coords[0] && manager.getDoor().getCoords()[1] == coords[1]) {
+            if (manager.getDoor().getCoords()[0] == coords[0]
+                    && manager.getDoor().getCoords()[1] == coords[1]) {
                 isReachedDoor = true;
             } else {
                 isCollected = true;
             }
         } else {
             System.out.println("FOUND ITEM");
-            //directions.clear();
             ArrayList<String> directions = findDirections();
-            for (int i=0; i<directions.size(); i++) {
-                //System.out.println(coordPath.get(i)[0]+" "+coordPath.get(i)[1]);
-                //System.out.println(directions.get(i));
-            }
-            //transitions(reverseArrayList(directions));
             animation(reverseArrayList(directions));
         }
     }
 
+    /**
+     * reverses an arraylist.
+     * @param inputList input array.
+     * @return the reversed array.
+     */
     public ArrayList<String> reverseArrayList(ArrayList<String> inputList) {
         ArrayList<String> revArrayList = new ArrayList<>();
         for (int i = inputList.size() - 1; i >= 0; i--) {
@@ -104,13 +131,18 @@ public class SmartThief extends NPC {
         return revArrayList;
     }
 
+    /**
+     * finds index of the closest item.
+     * @param items all items
+     * @return the index
+     */
     private int findShortestDistance(ArrayList<Item> items) {
-        double shortestDistance = 1000;
+        double shortestDistance = DEFAULT_SHORTEST_DISTANCE;
         int shortestIndex = -1;
         if (items.size() == 1 && items.get(0).getClass() == Door.class) {
             return 0;
         }
-        for (int i=0; i<items.size(); i++) {
+        for (int i = 0; i < items.size(); i++) {
             if (items.get(i).getClass() != Door.class) {
                 int distanceX = coords[0] - items.get(i).getCoords()[0];
                 int distanceY = coords[1] - items.get(i).getCoords()[1];
@@ -121,141 +153,159 @@ public class SmartThief extends NPC {
                 }
             }
         }
-        //System.out.println(items.get(shortestIndex).getCoords()[0]+" "+ items.get(shortestIndex).getCoords()[1]);
-        //System.out.println(shortestDistance);
         return shortestIndex;
     }
 
-    private void makeTree(Node<int[]> parent, int[] parentCoords) {
-        int[] offsetParents = new int[] {parentCoords[0]-1, parentCoords[1]-1};
+    /**
+     * makes tree until it reaches wanted tile or searches whole grid.
+     */
+    private void makeTree() {
+        while (treeQueue.size() > 0 && !isFound) {
+            Node<int[]> parent = treeQueue.get(0);
+            treeQueue.remove(0);
+            int[] parentCoords = parent.getData();
 
-        Node<int[]> rightChild = null;
-        int[] rightChildCoords = new int[]{parentCoords[0] + 1, parentCoords[1]};
-        int newXRight = parentCoords[0] + 1;
-        String searchRight = newXRight+""+parentCoords[1];
-        int[] offsetrightCoords = new int[]{parentCoords[0], parentCoords[1] - 1};
-        if (!searchedTile.contains(searchRight) && gameBoard.canMove(offsetParents, offsetrightCoords)  && !manager.checkNonSteppableTile(rightChildCoords)) {
-            //System.out.println(parentCoords[0] + " " + parentCoords[1] + "   " + rightChildCoords[0] + " " + rightChildCoords[1]);
-            rightChild = parent.addChild(new Node<>(rightChildCoords));
-            searchedTile.add(searchRight);
-            if (targetCoords[0] == rightChildCoords[0] && targetCoords[1] == rightChildCoords[1]) {
-                isFound = true;
-                findPathCoords(rightChild);
-                //System.out.println("FOND AT RIGHT" + rightChildCoords[0] + " " + rightChildCoords[1]);
+            Node<int[]> rightChild = null;
+            int[] rightChildCoords = new int[]{parentCoords[0] + 1, parentCoords[1]};
+            int newXRight = parentCoords[0] + 1;
+            String searchRight = newXRight + "" + parentCoords[1];
+            if (rightChildCoords[0] < gameBoard.getBoardSizeX()) {
+                if (!searchedTile.contains(searchRight)
+                        && gameBoard.canMoveNPC(parentCoords, rightChildCoords)
+                        && !manager.checkNonSteppableTile(rightChildCoords)) {
+                    rightChild = parent.addChild(new Node<>(rightChildCoords));
+                    searchedTile.add(searchRight);
+                    treeQueue.add(rightChild);
+                    if (targetCoords[0] == rightChildCoords[0]
+                            && targetCoords[1] == rightChildCoords[1]) {
+                        isFound = true;
+                        findPathCoords(rightChild);
+                    }
+                }
             }
-        }
 
-        Node<int[]> downChild = null;
-        int[] downChildCoords = new int[]{parentCoords[0], parentCoords[1] + 1};
-        int newYDown = parentCoords[1] + 1;
-        String searchDown = parentCoords[0]+""+newYDown;
-        int[] offsetDownCoods = new int[]{parentCoords[0] - 1, parentCoords[1]};
-        if (!searchedTile.contains(searchDown) && gameBoard.canMove(offsetParents, offsetDownCoods)  && !manager.checkNonSteppableTile(downChildCoords)) {
-            //System.out.println(parentCoords[0] + " " + parentCoords[1] + "   " + downChildCoords[0] + " " + downChildCoords[1]);
-            downChild = parent.addChild(new Node<>(downChildCoords));
-            searchedTile.add(searchDown);
-            if (targetCoords[0] == downChildCoords[0] && targetCoords[1] == downChildCoords[1]) {
-                isFound = true;
-                findPathCoords(downChild);
-                //System.out.println("FOND AT DOWN" + downChildCoords[0] + " " + downChildCoords[1]);
+            Node<int[]> downChild = null;
+            int[] downChildCoords = new int[]{parentCoords[0], parentCoords[1] + 1};
+            int newYDown = parentCoords[1] + 1;
+            String searchDown = parentCoords[0] + "" + newYDown;
+            if (downChildCoords[1] < gameBoard.getBoardSizeY()) {
+                if (!searchedTile.contains(searchDown)
+                        && gameBoard.canMoveNPC(parentCoords, downChildCoords)
+                        && !manager.checkNonSteppableTile(downChildCoords)) {
+                    downChild = parent.addChild(new Node<>(downChildCoords));
+                    searchedTile.add(searchDown);
+                    treeQueue.add(downChild);
+                    if (targetCoords[0] == downChildCoords[0]
+                            && targetCoords[1] == downChildCoords[1]) {
+                        isFound = true;
+                        findPathCoords(downChild);
+                    }
+                }
             }
-        }
 
             Node<int[]> leftChild = null;
             int[] leftChildCoords = new int[]{parentCoords[0] - 1, parentCoords[1]};
             int newXLeft = parentCoords[0] - 1;
-            String searchLeft = newXLeft+""+parentCoords[1];
-            int[] offsetLeftCoords = new int[]{parentCoords[0] - 2, parentCoords[1] - 1};
-            if (!searchedTile.contains(searchLeft) && gameBoard.canMove(offsetParents, offsetLeftCoords)  && !manager.checkNonSteppableTile(leftChildCoords)) {
-                //System.out.println(parentCoords[0] + " " + parentCoords[1] + "   " + leftChildCoords[0] + " " + leftChildCoords[1]);
-                leftChild = parent.addChild(new Node<>(leftChildCoords));
-                searchedTile.add(searchLeft);
-                if (targetCoords[0] == leftChildCoords[0] && targetCoords[1] == leftChildCoords[1]) {
-                    isFound = true;
-                    findPathCoords(leftChild);
-                    //System.out.println("FOND AT LEFT" + leftChildCoords[0] + " " + leftChildCoords[1]);
+            String searchLeft = newXLeft + "" + parentCoords[1];
+            if (leftChildCoords[0] > 1) {
+                if (!searchedTile.contains(searchLeft)
+                        && gameBoard.canMoveNPC(parentCoords, leftChildCoords)
+                        && !manager.checkNonSteppableTile(leftChildCoords)) {
+                    leftChild = parent.addChild(new Node<>(leftChildCoords));
+                    searchedTile.add(searchLeft);
+                    treeQueue.add(leftChild);
+                    if (targetCoords[0] == leftChildCoords[0]
+                            && targetCoords[1] == leftChildCoords[1]) {
+                        isFound = true;
+                        findPathCoords(leftChild);
+                    }
                 }
             }
 
             Node<int[]> upChild = null;
             int[] upChildCoords = new int[]{parentCoords[0], parentCoords[1] - 1};
             int newYUp = parentCoords[1] - 1;
-            String searchUp = parentCoords[0]+""+newYUp;
-            int[] offsetUpCoords = new int[]{parentCoords[0] - 1, parentCoords[1] - 2};
-            if (!searchedTile.contains(searchUp) && gameBoard.canMove(offsetParents, offsetUpCoords)  && !manager.checkNonSteppableTile(upChildCoords)) {
-                //System.out.println(parentCoords[0] + " " + parentCoords[1] + "   " + upChildCoords[0] + " " + upChildCoords[1]);
-                upChild = parent.addChild(new Node<>(upChildCoords));
-                searchedTile.add(searchUp);
-                if (targetCoords[0] == upChildCoords[0] && targetCoords[1] == upChildCoords[1]) {
-                    isFound = true;
-                    findPathCoords(upChild);
-                    //System.out.println("FOND AT UP" + upChildCoords[0] + " " + upChildCoords[1]);
+            String searchUp = parentCoords[0] + "" + newYUp;
+            if (upChildCoords[1] > 1) {
+                if (!searchedTile.contains(searchUp)
+                        && gameBoard.canMoveNPC(parentCoords, upChildCoords)
+                        && !manager.checkNonSteppableTile(upChildCoords)) {
+                    upChild = parent.addChild(new Node<>(upChildCoords));
+                    searchedTile.add(searchUp);
+                    treeQueue.add(upChild);
+                    if (targetCoords[0] == upChildCoords[0]
+                            && targetCoords[1] == upChildCoords[1]) {
+                        isFound = true;
+                        findPathCoords(upChild);
+                    }
                 }
             }
 
             boolean outsideRight = false;
-        boolean outsideLeft = false;
-        boolean outsideUp = false;
-        boolean outsideDown = false;
-        if (parentCoords[0] <= 1) {
-            outsideLeft = true;
-            //System.out.println("OUTSIDE GRID LEFT");
-        }
-        if (parentCoords[0] > 8) {
-            outsideRight = true;
-            //System.out.println("OUTSIDE GRID RIGHT");
-        }
-        if (parentCoords[1] <= 2) {
-            outsideUp = true;
-            //System.out.println("OUTSIDE GRID UP");
-        }
-        if (parentCoords[1] > 7) {
-            outsideDown = true;
-            //System.out.println("OUTSIDE GRID DOWN");
-        }
+            boolean outsideLeft = false;
+            boolean outsideUp = false;
+            boolean outsideDown = false;
+            if (parentCoords[0] <= 1) {
+                outsideLeft = true;
+            }
+            if (parentCoords[0] > gameBoard.getBoardSizeX() - 2) {
+                outsideRight = true;
+            }
+            if (parentCoords[1] <= 2) {
+                outsideUp = true;
+            }
+            if (parentCoords[1] > gameBoard.getBoardSizeY() - 2) {
+                outsideDown = true;
+            }
 
-        if (!isFound) {
-            if (upChild != null && !outsideUp) {
-                makeTree(upChild, upChildCoords);
-            }
-            if (downChild != null && !outsideDown) {
-                makeTree(downChild, downChildCoords);
-            }
-            if (rightChild != null && !outsideRight) {
-                makeTree(rightChild, rightChildCoords);
-            }
-            if (leftChild != null && !outsideLeft) {
-                makeTree(leftChild, leftChildCoords);
+            if (!isFound) {
+                if (upChild != null && !outsideUp) {
+                    makeTree();
+                }
+                if (downChild != null && !outsideDown) {
+                    makeTree();
+                }
+                if (rightChild != null && !outsideRight) {
+                    makeTree();
+                }
+                if (leftChild != null && !outsideLeft) {
+                    makeTree();
+                }
             }
         }
     }
-    private void print(Node<int[]> node, String appender) {
-        //System.out.println(appender + node.getData()[0] + " " + node.getData()[1]);
-        node.getChildren().forEach(each -> print(each, appender+appender));
-    }
+
+    /**
+     * finds path from target node to root and puts in arraylist.
+     * @param foundNode the target node.
+     */
     private void findPathCoords(Node<int[]> foundNode) {
         coordPath.clear();
         Node<int[]> currentNode = foundNode;
-        while (!(currentNode.getData()[0] == coords[0]) || !(currentNode.getData()[1] == coords[1])) {
-            //System.out.println(currentNode.getData()[0]+" "+currentNode.getData()[1]);
+        while (!(currentNode.getData()[0] == coords[0])
+                || !(currentNode.getData()[1] == coords[1])) {
             coordPath.add(currentNode.getData());
             currentNode = currentNode.getParent();
         }
         coordPath.add(new int[] {coords[0], coords[1]});
     }
 
+    /**
+     * finds the directions.
+     * @return the arraylist of directions.
+     */
     private ArrayList<String> findDirections() {
         ArrayList<String> directions = new ArrayList<>();
-        for(int i=0; i<coordPath.size()-1; i++) {
-            if (coordPath.get(i)[0] != coordPath.get(i+1)[0]) {
-                int sub = coordPath.get(i)[0] - coordPath.get(i+1)[0];
+        for (int i = 0; i < coordPath.size() - 1; i++) {
+            if (coordPath.get(i)[0] != coordPath.get(i + 1)[0]) {
+                int sub = coordPath.get(i)[0] - coordPath.get(i + 1)[0];
                 if (sub < 0) {
                     directions.add("LEFT");
                 } else if (sub > 0) {
                     directions.add("RIGHT");
                 }
-            } else if (coordPath.get(i)[1] != coordPath.get(i+1)[1]) {
-                int sub = coordPath.get(i)[1] - coordPath.get(i+1)[1];
+            } else if (coordPath.get(i)[1] != coordPath.get(i + 1)[1]) {
+                int sub = coordPath.get(i)[1] - coordPath.get(i + 1)[1];
                 if (sub < 0) {
                     directions.add("UP");
                 } else if (sub > 0) {
@@ -266,54 +316,64 @@ public class SmartThief extends NPC {
         return directions;
     }
 
+    /**
+     * makes sequential transition from the directions.
+     * @param directions the directions
+     * @return the sequential transition.
+     */
     private SequentialTransition transitions(ArrayList<String> directions) {
         SequentialTransition transition = new SequentialTransition();
-        //System.out.println(directions.size());
-        //System.out.println(directions.size());
-        for(int i=0; i<directions.size(); i++) {
-            //System.out.println(directions.get(i));
-            //transition.getChildren().add(moveDownTile());
+        for (int i = 0; i < directions.size(); i++) {
             if (directions.get(i).equals("RIGHT")) {
                 transition.getChildren().add(moveRightTile());
-            }
-            if (directions.get(i).equals("LEFT")) {
+            } else if (directions.get(i).equals("LEFT")) {
                 transition.getChildren().add(moveLeftTile());
-            }
-            if (directions.get(i).equals("UP")) {
+            } else if (directions.get(i).equals("UP")) {
                 transition.getChildren().add(moveUpTile());
-            }
-            if (directions.get(i).equals("DOWN")) {
+            } else if (directions.get(i).equals("DOWN")) {
                 transition.getChildren().add(moveDownTile());
             }
         }
-        //transition.play();
         return transition;
     }
 
+    /**
+     * move across tile to the right.
+     * @return the transition
+     */
     private TranslateTransition moveRightTile() {
         TranslateTransition moveRight = new TranslateTransition(Duration.millis(MILLS_DELAY_TILE));
         moveRight.setNode(sThief);
         moveRight.setByX(gameBoard.getTileSize());
-        //animationCoords[0] += 1;
         return moveRight;
     }
 
+    /**
+     * move across tile to the left.
+     * @return the transition
+     */
     private TranslateTransition moveLeftTile() {
         TranslateTransition moveLeft = new TranslateTransition(Duration.millis(MILLS_DELAY_TILE));
         moveLeft.setNode(sThief);
         moveLeft.setByX(-gameBoard.getTileSize());
-        //animationCoords[0] -= 1;
         return moveLeft;
     }
 
+    /**
+     * move across tile to the down.
+     * @return the transition
+     */
     private TranslateTransition moveDownTile() {
         TranslateTransition moveDown = new TranslateTransition(Duration.millis(MILLS_DELAY_TILE));
         moveDown.setNode(sThief);
         moveDown.setByY(gameBoard.getTileSize());
-        //animationCoords[1] += 1;
         return moveDown;
     }
 
+    /**
+     * move across tile to the up.
+     * @return the transition
+     */
     private TranslateTransition moveUpTile() {
         TranslateTransition moveUp = new TranslateTransition(Duration.millis(MILLS_DELAY_TILE));
         moveUp.setNode(sThief);
@@ -322,6 +382,10 @@ public class SmartThief extends NPC {
         return moveUp;
     }
 
+    /**
+     * does the coord and images transitions.
+     * @param directions the directions
+     */
     private void animation(ArrayList<String> directions) {
         SequentialTransition animation = transitions(directions);
         timer = new Timer();
@@ -330,14 +394,11 @@ public class SmartThief extends NPC {
         for (int i = 0; i < directions.size(); i++) {
             if (directions.get(i).equals("RIGHT")) {
                 moveRightTileAnimation(timer, schedualCount, animation, i, directions.size());
-            }
-            if (directions.get(i).equals("LEFT")) {
+            } else if (directions.get(i).equals("LEFT")) {
                 moveLeftTileAnimation(timer, schedualCount, animation, i, directions.size());
-            }
-            if (directions.get(i).equals("UP")) {
+            } else if (directions.get(i).equals("UP")) {
                 moveUpTileAnimation(timer, schedualCount, animation, i, directions.size());
-            }
-            if (directions.get(i).equals("DOWN")) {
+            } else if (directions.get(i).equals("DOWN")) {
                 moveDownTileAimation(timer, schedualCount, animation, i, directions.size());
             }
             schedualCount++;
@@ -345,121 +406,187 @@ public class SmartThief extends NPC {
         animation.play();
     }
 
-    private void moveRightTileAnimation(Timer timer, int scheduleCount, SequentialTransition animation, int cycle, int totalCycle) {
+    /**
+     * sets coords and image for right direction.
+     * @param timer timer
+     * @param scheduleCount schedule count
+     * @param animation sequential transition.
+     * @param cycle cycle count
+     * @param totalCycle total cycles
+     */
+    private void moveRightTileAnimation(Timer timer, int scheduleCount,
+                                        SequentialTransition animation,
+                                        int cycle, int totalCycle) {
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
                 animation.pause();
-                //setImage("RIGHT");
+                setImage("DOWN");
                 coords[0] += 1;
-                //System.out.println(coordsFinal[0] + " "+coordsFinal[1]);
                 animation.playFrom(String.valueOf(MILLS_DELAY_TILE * scheduleCount));
-                if (cycle == totalCycle-1){
+                if (cycle == totalCycle - 1) {
                     isCollected = true;
                     stopTimer();
                 }
             }
         };
-        timer.schedule(task, (long)MILLS_DELAY_TILE * scheduleCount);
+        timer.schedule(task, (long) MILLS_DELAY_TILE * scheduleCount);
 
     }
 
-    private void moveLeftTileAnimation(Timer timer, int scheduleCount, SequentialTransition animation, int cycle, int totalCycle) {
+    /**
+     * sets coords and image for left direction.
+     * @param timer timer
+     * @param scheduleCount schedule count
+     * @param animation sequential transition.
+     * @param cycle cycle count
+     * @param totalCycle total cycles
+     */
+    private void moveLeftTileAnimation(Timer timer, int scheduleCount,
+                                       SequentialTransition animation,
+                                       int cycle, int totalCycle) {
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
                 animation.pause();
-                //setImage("LEFT");
+                setImage("DOWN");
                 coords[0] -= 1;
                 animation.playFrom(String.valueOf(MILLS_DELAY_TILE * scheduleCount));
-                if (cycle == totalCycle-1){
+                if (cycle == totalCycle - 1) {
                     isCollected = true;
                     stopTimer();
                 }
             }
         };
-        timer.schedule(task, (long)MILLS_DELAY_TILE * scheduleCount);
+        timer.schedule(task, (long) MILLS_DELAY_TILE * scheduleCount);
     }
 
-    private void moveUpTileAnimation(Timer timer, int scheduleCount, SequentialTransition animation, int cycle, int totalCycle){
+    /**
+     * sets coords and image for up direction.
+     * @param timer timer
+     * @param scheduleCount schedule count
+     * @param animation sequential transition.
+     * @param cycle cycle count
+     * @param totalCycle total cycles
+     */
+    private void moveUpTileAnimation(Timer timer, int scheduleCount,
+                                     SequentialTransition animation,
+                                     int cycle, int totalCycle) {
 
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
                 animation.pause();
-                //setImage("UP");
+                setImage("DOWN");
                 coords[1] -= 1;
-                //System.out.println(coordsFinal[0] + " "+coordsFinal[1]);
                 animation.playFrom(String.valueOf(MILLS_DELAY_TILE * scheduleCount));
-                if (cycle == totalCycle-1){
+                if (cycle == totalCycle - 1) {
                     isCollected = true;
                     stopTimer();
                 }
             }
         };
-        timer.schedule(task, (long)MILLS_DELAY_TILE * scheduleCount);
+        timer.schedule(task, (long) MILLS_DELAY_TILE * scheduleCount);
     }
 
-    private void moveDownTileAimation(Timer timer, int scheduleCount, SequentialTransition animation, int cycle, int totalCycle){
+    /**
+     * sets coords and image for down direction.
+     * @param timer timer
+     * @param scheduleCount schedule count
+     * @param animation sequential transition.
+     * @param cycle cycle count
+     * @param totalCycle total cycles
+     */
+    private void moveDownTileAimation(Timer timer, int scheduleCount,
+                                      SequentialTransition animation,
+                                      int cycle, int totalCycle) {
 
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
                 animation.pause();
-                //setImage("DOWN");
+                setImage("DOWN");
                 coords[1] += 1;
-                //System.out.println(coordsFinal[0] + " "+coordsFinal[1]);
                 animation.playFrom(String.valueOf(MILLS_DELAY_TILE * scheduleCount));
-                if (cycle == totalCycle-1){
+                if (cycle == totalCycle - 1) {
                     isCollected = true;
                     stopTimer();
                 }
             }
         };
-        timer.schedule(task, (long)MILLS_DELAY_TILE * scheduleCount);
+        timer.schedule(task, (long) MILLS_DELAY_TILE * scheduleCount);
     }
 
+    /**
+     * sets image according to direction.
+     * @param direction the direction
+     */
     private void setImage(String direction) {
         Image ffThiefImage = null;
         switch (direction) {
             case "LEFT":
-                ffThiefImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream(SMARTTHIEF_LEFT_PATH)));
+                ffThiefImage = new Image(Objects.requireNonNull(
+                        getClass().getResourceAsStream(SMARTTHIEF_LEFT_PATH)));
                 break;
             case "RIGHT":
                 ffThiefImage = new Image(
-                        Objects.requireNonNull(getClass().getResourceAsStream(SMARTTHIEF_RIGHT_PATH)));
+                        Objects.requireNonNull(
+                                getClass().getResourceAsStream(SMARTTHIEF_RIGHT_PATH)));
                 break;
             case "UP":
                 ffThiefImage = new Image(
-                        Objects.requireNonNull(getClass().getResourceAsStream(SMARTTHIEF_UP_PATH)));
+                        Objects.requireNonNull(
+                                getClass().getResourceAsStream(SMARTTHIEF_UP_PATH)));
                 break;
             default:
                 ffThiefImage = new Image(
-                        Objects.requireNonNull(getClass().getResourceAsStream(SMARTTHIEF_DOWN_PATH)));
+                        Objects.requireNonNull(
+                                getClass().getResourceAsStream(SMARTTHIEF_DOWN_PATH)));
                 break;
         };
         sThief.setImage(ffThiefImage);
-        sThief.setFitWidth(50);
-        sThief.setFitHeight(50);
+        sThief.setFitWidth(IMAGE_SIZE);
+        sThief.setFitHeight(IMAGE_SIZE);
     }
+
+    /**
+     * checks if item is collected.
+     * @return if collected item.
+     */
     public boolean isCollected() {
         return isCollected;
     }
 
+    /**
+     * checks if door id reached.
+     * @return if reacked door.
+     */
     public boolean isReachedDoor() {
         return isReachedDoor;
     }
 
+    /**
+     * gets stack pane.
+     * @return the stackpane
+     */
     @Override
     protected StackPane getStackPane() {
         return sThiefStackPane;
     }
 
+    /**
+     * gets coords.
+     * @return the coords
+     */
     @Override
     public int[] getCoords() {
         return coords;
     }
 
+    /**
+     * gets image view.
+     * @return the image view
+     */
     public ImageView getSmartThief() {
         return sThief;
     }

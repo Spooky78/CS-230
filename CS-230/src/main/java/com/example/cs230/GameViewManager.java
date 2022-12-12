@@ -1,5 +1,6 @@
 package com.example.cs230;
 
+import java.io.IOException;
 import java.util.*;
 
 import javafx.animation.AnimationTimer;
@@ -34,6 +35,7 @@ public class GameViewManager {
     private final ArrayList<FlyingAssassin> allAssassins = new ArrayList<>();
     private ArrayList<NPC> allThieves = new ArrayList<>();
     private ArrayList<SmartThief> allSmartThieves = new ArrayList<>();
+    private ArrayList<FloorFollowingThief> allFFThieves = new ArrayList<>();
     private final ArrayList<Coin> allCoins = new ArrayList<>();
     private final ArrayList<Clock> allClock = new ArrayList<>();
     private final ArrayList<Lever> allLever = new ArrayList<>();
@@ -52,7 +54,6 @@ public class GameViewManager {
     private Player currentPlayer;
     private StackPane currentPlayerStack;
     private Board currentBoard;
-    private Board newBoard;
     private Door door;
     private Gate goldenGate;
     private Gate silverGate;
@@ -61,7 +62,6 @@ public class GameViewManager {
     private String level;
     private Time time;
     private boolean bombTImerStart = false;
-    private boolean bombTImerStart2 = false;
     private ArrayList<Bomb> bombsToRemove = new ArrayList<>();
     private String name;
 
@@ -83,7 +83,9 @@ public class GameViewManager {
         this.level = levelPath;
         this.chosenNinja = chosenNinja;
         this.menuStage = stage;
-        this.name = name;
+        if (name != null) {
+            this.name = name;
+        }
         this.menuStage.hide();
         gameOver = new GameOverViewManager();
         createBackground();
@@ -95,11 +97,19 @@ public class GameViewManager {
         createLever();
         createCoins();
         createBomb();
-        createAssassin();
-        //createFloorFollowingThief();
+        createFloorFollowingThief();
         createSmartThief();
+        createAssassin();
         createPlayer(chosenNinja);
-        //saves004.txt
+
+        if (currentBoard.getProfileName() != null) {
+            this.name = currentBoard.getProfileName();
+        }
+        if (levelPath.equals("/Levels/LastSave.txt")) {
+            int levelInt = currentBoard.getLevel();
+            level = "/Levels/Level0"+levelInt+".txt";
+        }
+       currentPlayer.setScore(currentBoard.getScore());
 
         time = new Time(currentBoard.getSeconds());
         updateTopRow();
@@ -110,29 +120,49 @@ public class GameViewManager {
         gameStage.show();
     }
 
+    /**
+     * Saving the game while middle leave.
+     * @throws IOException throws when can't red file.
+     */
+    public void saveGave() throws IOException {
+        if (currentPlayer.isSaveKeyPressed()) {
+            SaveFile saveFile = new SaveFile(currentPlayer, allAssassins, allFFThieves,
+                    allSmartThieves, allCoins, allLever, allGates, allBomb, allClock, door,
+                    time.getCurrentTime(), currentPlayer.getScore(), currentBoard, name, currentLevel);
+            saveFile.printAll();
+            allThieves.clear();
+            allSmartThieves.clear();
+            System.gc();
+            SaveViewManager saveViewManager = new SaveViewManager();
+            saveViewManager.createSave(gameStage, currentPlayer);
+            time.isKilled();
+            isLose = true;
+        }
+    }
+
+    /**
+     * Check if the tile can be stepped.
+     * @param coords the coords
+     * @return true if it is able to step
+     */
     public boolean checkNonSteppableTile(int[] coords) {
-        for (int i = 0; i < allGates.size(); i++) {
-            //System.out.println("TestCAN PASS");
-            if (allGates.get(i).getCoords()[0] == coords[0] && allGates.get(i).getCoords()[1] == coords[1]) {
+        for (Gate allGate : allGates) {
+            if (allGate.getCoords()[0] == coords[0] && allGate.getCoords()[1] == coords[1]) {
                 System.out.println("ON NON TILE GATE");
                 return true;
             }
         }
-        for (int i = 0; i < allBomb.size(); i++) {
-            if (allBomb.get(i).getCoords()[0] == coords[0] && allBomb.get(i).getCoords()[1] == coords[1]) {
+        for (Bomb bomb : allBomb) {
+            if (bomb.getCoords()[0] == coords[0] && bomb.getCoords()[1] == coords[1]) {
                 System.out.println("ON NON TILE");
                 return true;
             }
         }
-        if (door.getCoords()[0] == coords[0] && door.getCoords()[1] == coords[1] && (allCoins.size()>0 || allLever.size()>0)) {
-            return true;
-        }
-        //System.out.println("CAN PASS");
         return false;
     }
 
     /**
-     * Initializes the stage, scene, & pane.
+     * Initializes the stage, scene, and pane.
      */
     private void initializeStage() {
         gamePane = new VBox();
@@ -141,6 +171,9 @@ public class GameViewManager {
         gameStage.setScene(gameScene);
     }
 
+    /**
+     * Created game loop.
+     */
     private void createGameLoop() {
         gameTimer = new AnimationTimer() {
             @Override
@@ -156,191 +189,43 @@ public class GameViewManager {
                     time.isKilled();
                     isLose = true;
                 }
-                ArrayList<NPC> removeNPC = new ArrayList<>();
-                for (FlyingAssassin allAssassin : allAssassins) {
-                    if (allAssassin.collidedPlayer(currentPlayer.getPlayerCoords(),
-                            currentPlayerStack, gamePlayPane)) {
-                        gamePlayPane.getChildren().clear();
-                        time.isKilled();
-                        for (NPC allThieve : allThieves) {
-                            allThieve.stopTimer();
-                        }
-                        allThieves.clear();
-                        allSmartThieves.clear();
-                        System.gc();
-                        gameOver.createGameOver(gameStage, currentPlayer);
-                        allAssassin.setLose();
-                    }
-                    for (NPC allThieve : allThieves) {
-                        if (allAssassin.collidedThief(allThieve.getCoords(), allThieve.getStackPane(), gamePlayPane)) {
-                            removeNPC.add(allThieve);
-                        }
-                    }
-                }
 
-                for (NPC npc : removeNPC) {
-                    allThieves.remove(npc);
-                    if (npc.getClass() == SmartThief.class) {
-                        allSmartThieves.remove((SmartThief) npc);
-                    }
-                }
-
-                ArrayList<Coin> coinsToRemove = new ArrayList<>();
-                ArrayList<Clock> clockToRemove = new ArrayList<>();
-                ArrayList<Lever> leverToRemove = new ArrayList<>();
-                ArrayList<Gate> gateToRemove = new ArrayList<>();
-                for (Coin allCoin : allCoins) {
-                    if (allCoin.isCollisionPlayer(currentPlayer.getPlayerCoords())) {
-                        gamePlayPane.getChildren().remove(allCoin.getCoinStackPane());
-                        coinsToRemove.add(allCoin);
-                        currentPlayer.setScore(currentPlayer.getScore() + allCoin.getCoinScore());
-                    }
-                    for (NPC allThieve : allThieves) {
-                        if (allCoin.isCollisionNPC(allThieve.getCoords())) {
-                            gamePlayPane.getChildren().remove(allCoin.getCoinStackPane());
-                            coinsToRemove.add(allCoin);
-                        }
-                    }
-                }
-                for (Coin coin : coinsToRemove) {
-                    allCoins.remove(coin);
-                    allCollectableItems.remove(coin);
-                }
-                coinsToRemove.clear();
-
-                for (Clock allClocks : allClock) {
-
-                    if (allClocks.isCollectedByPlayer(currentPlayer.getPlayerCoords())) {
-
-                        time.currentTime += ADDED_TIME;
-                        gamePlayPane.getChildren().remove(allClocks.getClockPane());
-                        clockToRemove.add(allClocks);
-                    }
-                    for (NPC allThieve : allThieves) {
-                        if (allClocks.isClockCollisionNPC(allThieve.getCoords())) {
-                            time.currentTime -= ADDED_TIME;
-                            gamePlayPane.getChildren().remove(allClocks.getClockPane());
-                            clockToRemove.add(allClocks);
-                        }
-                    }
-                }
-                for (Clock clock : clockToRemove) {
-                    allClock.remove(clock);
-                    allCollectableItems.remove(clock);
-                }
-                clockToRemove.clear();
-
-
-                if (door.isCollectedByPlayer(currentPlayer.getPlayerCoords()) && allCoins.size() == 0 && allLever.size() == 0 ) {
-                    gamePlayPane.getChildren().remove(door.getDoorPane());
-                    currentLevel += 1;
-                    gamePlayPane.getChildren().clear();
-                    time.isKilled();
-                    for (NPC allThieve : allThieves) {
-                        allThieve.stopTimer();
-                    }
-                    WinScreenViewManager winScreen = new WinScreenViewManager();
-                    winScreen.createGameOver(gameStage, currentPlayer, chosenNinja, level, name, currentPlayer.getScore(), time.getCurrentTime());
-                }
-
-                for (Gate goldenGate : allGates) {
-                    if (goldenGate.getCanPass() &&
-                            goldenGate.isCollisionPlayer(currentPlayer.getPlayerCoords())) {
-                        currentPlayer.canMove = false;
-                        System.out.println("Error");
-                    }
-                }
-
-                for (Lever currentLever : allLever) {
-                    for (int i = 0; i < allGates.size(); i++) {
-                        if (Objects.equals(currentLever.getLeverColour(), "GOLD") && (Objects.equals(allGates.get(i).getColour(), "GOLD"))
-                                && currentLever.isCollectedByPlayer(currentPlayer.getPlayerCoords())) {
-                            gamePlayPane.getChildren().remove(currentLever.getStackPane());
-                            gamePlayPane.getChildren().remove(goldenGate.getStackPane());
-                            leverToRemove.add(currentLever);
-                            gateToRemove.add(goldenGate);
-
-                        }
-                        if (Objects.equals(currentLever.getLeverColour(), "SILVER") && (Objects.equals(allGates.get(i).getColour(), "SILVER"))
-                                && currentLever.isCollectedByPlayer(currentPlayer.getPlayerCoords())) {
-                            gamePlayPane.getChildren().remove(currentLever.getStackPane());
-                            gamePlayPane.getChildren().remove(silverGate.getStackPane());
-                            leverToRemove.add(currentLever);
-                            gateToRemove.add(silverGate);
-                        }
-                        for (int j = 0; j < allThieves.size(); j++) {
-                            if (Objects.equals(currentLever.getLeverColour(), "GOLD") && (Objects.equals(allGates.get(i).getColour(), "GOLD"))
-                                    && currentLever.isLeverCollisionNPC(allThieves.get(j).getCoords())) {
-                                gamePlayPane.getChildren().remove(currentLever.getStackPane());
-                                gamePlayPane.getChildren().remove(goldenGate.getStackPane());
-                                leverToRemove.add(currentLever);
-                                gateToRemove.add(goldenGate);
-                            }
-
-                            if (Objects.equals(currentLever.getLeverColour(), "SILVER") && (Objects.equals(allGates.get(i).getColour(), "SILVER"))
-                                    && currentLever.isLeverCollisionNPC(allThieves.get(j).getCoords())) {
-                                gamePlayPane.getChildren().remove(currentLever.getStackPane());
-                                gamePlayPane.getChildren().remove(silverGate.getStackPane());
-                                leverToRemove.add(currentLever);
-                                gateToRemove.add(silverGate);
-                            }
-                        }
-                    }
-
-                }
-
-                for (Gate silverGate : gateToRemove) {
-                    System.out.println("DELETED GATE!");
-                    allGates.remove(silverGate);
-                }
-                gateToRemove.clear();
-
-                for (Lever lever : leverToRemove) {
-                    allLever.remove(lever);
-                    allCollectableItems.remove(lever);
-                }
-                leverToRemove.clear();
+                updateAssassinCollission();
+                updateCoinCollission();
+                updateClockCollission();
+                updateDoorCollission();
+                updateGateLeverCollision();
 
                 for (Bomb allBombs : allBomb) {
                     if (allBombs.isCollisionPlayer(currentPlayer.getPlayerCoords())) {
                         allBombs.countdown();
                         bombTImerStart = true;}
-                        if (bombTImerStart){
-                            bombExplode(allBombs);
-                        }
+                    if (bombTImerStart){
+                        bombExplode(allBombs);
+                    }
                 }
-
-                for (int i = 0; i < bombsToRemove.size(); i++) {
-                    allBomb.remove(bombsToRemove.get(i));
+                for (Bomb bomb : bombsToRemove) {
+                    allBomb.remove(bomb);
                 }
                 bombsToRemove.clear();
 
-
-                for (int i = 0; i < allSmartThieves.size(); i++) {
-                    if (allSmartThieves.get(i).isReachedDoor()) {
-                        for (NPC allThieve : allThieves) {
-                            allThieve.stopTimer();
-                        }
-                        allThieves.clear();
-                        allSmartThieves.clear();
-                        System.gc();
-                        gameOver.createGameOver(gameStage, currentPlayer);
-                        time.isKilled();
-                        isLose = true;
-                    }
-                    if (allSmartThieves.size() != 0) {
-                        if (allSmartThieves.get(i).isCollected()) {
-                            allSmartThieves.get(i).setAllCollectableItems(allCollectableItems);
-                            allSmartThieves.get(i).move();
-                        }
+                for (FloorFollowingThief allFFThieve : allFFThieves) {
+                    if (allFFThieve.isFinishDirection()) {
+                        allFFThieve.move();
                     }
                 }
+
+                updateSmartThiefMovement();
                 updateTopRow();
             }
         };
         gameTimer.start();
     }
 
+    /**
+     * Bomb is exploded and remove all adjacent items.
+     * @param allBombs the current exploding bomb.
+     */
     private void bombExplode(Bomb allBombs) {
         bombDestroyCanDestroy.remove(allBombs);
         int[] currentBomb = allBombs.getCoords();
@@ -371,8 +256,214 @@ public class GameViewManager {
         }
     }
 
+    /**
+     * Updates if something interacts with lever, meaning that gates of same colour are destroyed.
+     */
+    private void updateGateLeverCollision() {
+        ArrayList<Lever> leverToRemove = new ArrayList<>();
+        ArrayList<Gate> gateToRemove = new ArrayList<>();
+        for (Gate goldenGate : allGates) {
+            if (goldenGate.getCanPass() &&
+                    goldenGate.isCollisionPlayer(currentPlayer.getPlayerCoords())) {
+                currentPlayer.canMove = false;
+                System.out.println("Error");
+            }
+        }
 
+        for (Lever currentLever : allLever) {
+            for (Gate allGate : allGates) {
+                if (Objects.equals(currentLever.getLeverColour(), "GOLD")
+                        && (Objects.equals(allGate.getColour(), "GOLD"))
+                        && currentLever.isCollectedByPlayer(currentPlayer.getPlayerCoords())) {
+                    gamePlayPane.getChildren().remove(currentLever.getStackPane());
+                    gamePlayPane.getChildren().remove(allGate.getStackPane());
+                    leverToRemove.add(currentLever);
+                    gateToRemove.add(allGate);
 
+                }
+                if (Objects.equals(currentLever.getLeverColour(), "SILVER")
+                        && (Objects.equals(allGate.getColour(), "SILVER"))
+                        && currentLever.isCollectedByPlayer(currentPlayer.getPlayerCoords())) {
+                    gamePlayPane.getChildren().remove(currentLever.getStackPane());
+                    gamePlayPane.getChildren().remove(allGate.getStackPane());
+                    leverToRemove.add(currentLever);
+                    gateToRemove.add(allGate);
+                }
+                for (NPC allThieve : allThieves) {
+                    if (Objects.equals(currentLever.getLeverColour(), "GOLD")
+                            && (Objects.equals(allGate.getColour(), "GOLD"))
+                            && currentLever.isLeverCollisionNPC(allThieve.getCoords())) {
+                        gamePlayPane.getChildren().remove(currentLever.getStackPane());
+                        gamePlayPane.getChildren().remove(allGate.getStackPane());
+                        leverToRemove.add(currentLever);
+                        gateToRemove.add(allGate);
+                    }
+
+                    if (Objects.equals(currentLever.getLeverColour(), "SILVER")
+                            && (Objects.equals(allGate.getColour(), "SILVER"))
+                            && currentLever.isLeverCollisionNPC(allThieve.getCoords())) {
+                        gamePlayPane.getChildren().remove(currentLever.getStackPane());
+                        gamePlayPane.getChildren().remove(allGate.getStackPane());
+                        leverToRemove.add(currentLever);
+                        gateToRemove.add(allGate);
+                    }
+                }
+            }
+
+        }
+
+        for (Gate silverGate : gateToRemove) {
+            System.out.println("DELETED GATE!");
+            allGates.remove(silverGate);
+        }
+        gateToRemove.clear();
+
+        for (Lever lever : leverToRemove) {
+            allLever.remove(lever);
+            allCollectableItems.remove(lever);
+        }
+        leverToRemove.clear();
+    }
+
+    /**
+     * Updates if anything has interacted with door.
+     */
+    private void updateDoorCollission() {
+        if (door.isCollectedByPlayer(currentPlayer.getPlayerCoords()) && allCoins.size() == 0
+                && allLever.size() == 0 ) {
+            door.setPicked();
+            gamePlayPane.getChildren().remove(door.getDoorPane());
+            currentLevel += 1;
+            gamePlayPane.getChildren().clear();
+            time.isKilled();
+            for (NPC allThieve : allThieves) {
+                allThieve.stopTimer();
+            }
+            WinScreenViewManager winScreen = new WinScreenViewManager();
+            winScreen.createGameOver(gameStage, currentPlayer, chosenNinja, level, name,
+                    currentPlayer.getScore(), time.getCurrentTime());
+        }
+    }
+
+    /**
+     * Updates if there has been interaction with clock object.
+     */
+    private void updateClockCollission() {
+        ArrayList<Clock> clockToRemove = new ArrayList<>();
+        for (Clock allClocks : allClock) {
+            if (allClocks.isCollectedByPlayer(currentPlayer.getPlayerCoords())) {
+
+                time.currentTime += ADDED_TIME;
+                gamePlayPane.getChildren().remove(allClocks.getClockPane());
+                clockToRemove.add(allClocks);
+            }
+            for (NPC allThieve : allThieves) {
+                if (allClocks.isClockCollisionNPC(allThieve.getCoords())) {
+                    time.currentTime -= ADDED_TIME;
+                    gamePlayPane.getChildren().remove(allClocks.getClockPane());
+                    clockToRemove.add(allClocks);
+                }
+            }
+        }
+        for (Clock clock : clockToRemove) {
+            allClock.remove(clock);
+            allCollectableItems.remove(clock);
+        }
+        clockToRemove.clear();
+    }
+
+    /**
+     * Updates if anything has interacted with coin.
+     */
+    private void updateCoinCollission() {
+        ArrayList<Coin> coinsToRemove = new ArrayList<>();
+        for (Coin allCoin : allCoins) {
+            if (allCoin.isCollisionPlayer(currentPlayer.getPlayerCoords())) {
+                gamePlayPane.getChildren().remove(allCoin.getCoinStackPane());
+                coinsToRemove.add(allCoin);
+                currentPlayer.setScore(currentPlayer.getScore() + allCoin.getCoinScore());
+            }
+            for (NPC allThieve : allThieves) {
+                if (allCoin.isCollisionNPC(allThieve.getCoords())) {
+                    gamePlayPane.getChildren().remove(allCoin.getCoinStackPane());
+                    coinsToRemove.add(allCoin);
+                }
+            }
+        }
+        for (Coin coin : coinsToRemove) {
+            allCoins.remove(coin);
+            allCollectableItems.remove(coin);
+        }
+        coinsToRemove.clear();
+    }
+
+    /**
+     * Updates smart thief movement.
+     */
+    private void updateSmartThiefMovement() {
+        for (int i = 0; i < allSmartThieves.size(); i++) {
+            if (allSmartThieves.get(i).isReachedDoor()) {
+                for (NPC allThieve : allThieves) {
+                    allThieve.stopTimer();
+                }
+                allThieves.clear();
+                allSmartThieves.clear();
+                System.gc();
+                gameOver.createGameOver(gameStage, currentPlayer);
+                time.isKilled();
+                isLose = true;
+            }
+            if (allSmartThieves.size() != 0) {
+                if (allSmartThieves.get(i).isCollected()) {
+                    allSmartThieves.get(i).setAllCollectableItems(allCollectableItems);
+                    allSmartThieves.get(i).move();
+                }
+            }
+        }
+    }
+
+    /**
+     * It anything touches assassin they die.
+     */
+    private void updateAssassinCollission() {
+        ArrayList<NPC> removeNPC = new ArrayList<>();
+        for (FlyingAssassin allAssassin : allAssassins) {
+            if (allAssassin.collidedPlayer(currentPlayer.getPlayerCoords(),
+                    currentPlayerStack, gamePlayPane)) {
+                gamePlayPane.getChildren().clear();
+                time.isKilled();
+                for (NPC allThieve : allThieves) {
+                    allThieve.stopTimer();
+                }
+                allThieves.clear();
+                allSmartThieves.clear();
+                System.gc();
+                gameOver.createGameOver(gameStage, currentPlayer);
+                allAssassin.setLose();
+            }
+            for (NPC allThieve : allThieves) {
+                if (allAssassin.collidedThief(allThieve.getCoords(),
+                        allThieve.getStackPane(), gamePlayPane)) {
+                    removeNPC.add(allThieve);
+                }
+            }
+        }
+
+        for (NPC npc : removeNPC) {
+            allThieves.remove(npc);
+            if (npc.getClass() == SmartThief.class) {
+                allSmartThieves.remove((SmartThief) npc);
+            }
+            if (npc.getClass() == FloorFollowingThief.class) {
+                allFFThieves.remove((FloorFollowingThief) npc);
+            }
+        }
+    }
+
+    /**
+     * Create player on the board.
+     * @param chosenNinja the chosen ninja
+     */
     private void createPlayer(Ninja chosenNinja) {
         currentPlayer = new Player(gameScene, chosenNinja, currentBoard, this);
         currentPlayerStack = currentPlayer.getPlayerStack();
@@ -388,6 +479,9 @@ public class GameViewManager {
         gamePlayPane.getChildren().add(currentPlayerStack);
     }
 
+    /**
+     * Create smart thief.
+     */
     private void createSmartThief() {
         ArrayList<Integer> coords = currentBoard.getSmartThiefStartCoords();
         for (int i = 0; i < coords.size(); i += 2) {
@@ -404,6 +498,9 @@ public class GameViewManager {
         }
     }
 
+    /**
+     * Create floor following thief.
+     */
     private void createFloorFollowingThief() {
         ArrayList<String> colours = currentBoard.getFloorFollowingThiefColours();
         ArrayList<Integer> coords = currentBoard.getFloorFollowingThiefStartCoords();
@@ -414,10 +511,14 @@ public class GameViewManager {
                     new FloorFollowingThief(currentBoard, currentCoords, ffThiefStack, i, this);
             ffThiefStack.getChildren().add(currentThief.getffThief());
             allThieves.add(currentThief);
+            allFFThieves.add(currentThief);
             gamePlayPane.getChildren().add(ffThiefStack);
         }
     }
 
+    /**
+     * Create Assassin.
+     */
     private void createAssassin() {
         ArrayList<String> direction = currentBoard.getAssassinStartDirection();
         ArrayList<Integer> coords = currentBoard.getAssassinStartCoords();
@@ -426,7 +527,7 @@ public class GameViewManager {
             int[] currentCoords = {coords.get(i * 2), coords.get(i * 2 + 1)};
             StackPane currentStackPane = new StackPane();
             FlyingAssassin currentAssassin =
-                    new FlyingAssassin(currentBoard, currentCoords, currentStackPane, this, i);
+                    new FlyingAssassin(currentBoard, currentCoords, currentStackPane, i);
             allAssassinStacks.add(currentStackPane);
             allAssassins.add(currentAssassin);
             currentStackPane.getChildren().add(currentAssassin.getAssassin());
@@ -434,6 +535,9 @@ public class GameViewManager {
         }
     }
 
+    /**
+     * Create coins on board.
+     */
     private void createCoins() {
         ArrayList<String> coinColor = currentBoard.getCoinColor();
         ArrayList<Integer> coords = currentBoard.getCoinCoords();
@@ -448,6 +552,9 @@ public class GameViewManager {
         }
     }
 
+    /**
+     * Create lever.
+     */
     private void createLever() {
         ArrayList<String> colours = currentBoard.getLeverColours();
         ArrayList<Integer> positionCoords = currentBoard.getLeverCoords();
@@ -461,7 +568,9 @@ public class GameViewManager {
         }
     }
 
-
+    /**
+     * Create the door(exit to level.
+     */
     private void createDoor() {
         int[] positionCoords = currentBoard.getDoorCoords();
         door = new Door(currentBoard, positionCoords);
@@ -469,6 +578,9 @@ public class GameViewManager {
         gamePlayPane.getChildren().add(door.getDoorPane());
     }
 
+    /**
+     * Create clock.
+     */
     private void createClock() {
         ArrayList<Integer> positionCoords = currentBoard.getClockCoords();
         for (int i = 0; i < positionCoords.size(); i += 2) {
@@ -481,6 +593,9 @@ public class GameViewManager {
         }
     }
 
+    /**
+     * Create gold gate.
+     */
     private void createGoldenGate() {
         ArrayList<Integer> positionCoords = currentBoard.getGate1Coords();
         for (int i = 0; i < positionCoords.size(); i += 2) {
@@ -491,6 +606,9 @@ public class GameViewManager {
         }
     }
 
+    /**
+     * Create silver gate.
+     */
     private void createSilverGate() {
         ArrayList<Integer> positionCoords = currentBoard.getGate2Coords();
         for (int i = 0; i < positionCoords.size(); i += 2) {
@@ -502,6 +620,9 @@ public class GameViewManager {
         }
     }
 
+    /**
+     * Create bomb.
+     */
     private void createBomb() {
         ArrayList<Integer> positionCoords = currentBoard.getBombCoords();
         for (int i = 0; i < positionCoords.size(); i += 2) {
@@ -509,10 +630,13 @@ public class GameViewManager {
             Bomb bomb = new Bomb(currentBoard, positionCoords2);
             allBomb.add(bomb);
             bombDestroyCanDestroy.add(bomb);
-            gamePlayPane.getChildren().add(bomb.getBombPane());
+            gamePlayPane.getChildren().add(bomb.getStackPane());
         }
     }
 
+    /**
+     * Create board.
+     */
     private void createBoard() {
         currentLevel = 0;
         currentBoard = new Board(level, GAME_WIDTH);
@@ -546,14 +670,18 @@ public class GameViewManager {
         gamePane.setBackground(background);
     }
 
-    public boolean isLose() {
-        return isLose;
-    }
-
+    /**
+     *
+     * @return array lists of all collectable items.
+     */
     public ArrayList<Item> getAllCollectableItems() {
         return allCollectableItems;
     }
 
+    /**
+     * print door to the screen.
+     * @return door object.
+     */
     public Door getDoor() {
         return door;
     }

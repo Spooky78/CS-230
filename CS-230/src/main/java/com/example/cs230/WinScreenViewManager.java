@@ -15,6 +15,7 @@ import java.io.FileNotFoundException;
 import java.net.URISyntaxException;
 
 public class WinScreenViewManager {
+    private static final int MAX_LEVEL = 4;
     private static final int TIME_FACTOR = 3;
     private static final int GAME_WIDTH = 600;
     private static final int GAME_HEIGHT = 350;
@@ -29,6 +30,7 @@ public class WinScreenViewManager {
             throw new RuntimeException(e);
         }
     }
+
     private VBox gameOverPane;
     private Scene gameOverScene;
     private Stage gameOverStage;
@@ -47,7 +49,7 @@ public class WinScreenViewManager {
     }
 
     /**
-     * Initializes the stage, scene, & pane.
+     * Initializes the stage, scene, and pane.
      */
     private void initializeStage() {
         gameOverPane = new VBox();
@@ -59,37 +61,41 @@ public class WinScreenViewManager {
     /**
      * Creates a new game.
      *
-     * @param stage       The previous stage (usually menuStage).
+     * @param stage        The previous stage (usually menuStage).
+     * @param player       player
+     * @param chosenNinja  ninja already chosen
+     * @param name         profile name
+     * @param score        scoreboard
+     * @param currentLevel level already reached
+     * @param timeRemain   time remains
      */
     public void createGameOver(Stage stage, Player player, Ninja chosenNinja, String currentLevel,
-                               String name, int score, int timeLeft) {
+                               String name, int score, int timeRemain) {
         ninja = chosenNinja;
         profileName = name;
         this.score = score;
-        this.timeLeft = timeLeft;
-        //   /Levels/Level00.txt
-        //   /Saves/Level000.txt
+        this.timeLeft = timeRemain;
         char levelChar = currentLevel.charAt(14);
-        System.out.println(levelChar);
         int level = Integer.parseInt(String.valueOf(levelChar));
-        System.out.println(level);
-        int nextLevel = level +1;
+        int nextLevel = level + 1;
         newLevel = "/Levels/Level0" + nextLevel + ".txt";
 
         AllProfile.loadProfile();
-        AllProfile.updateLevel(name,level);
+        AllProfile.updateLevel(name, level);
         AllScore.loadScore();
-        AllScore.updateScore(name, score*timeLeft*TIME_FACTOR,level);
+        AllScore.updateScore(name, score * timeLeft * TIME_FACTOR, level);
 
         this.menuOverStage = stage;
         this.menuOverStage.hide();
         createBackground();
-        createText(player);
+        createText();
         HBox buttonsPane = new HBox();
         buttonsPane.setSpacing(20);
         buttonsPane.setAlignment(Pos.CENTER);
         createMainMenuButton(buttonsPane);
-        createNextLevelButton(buttonsPane);
+        if (level < MAX_LEVEL) {
+            createNextLevelButton(buttonsPane);
+        }
         createExitButton(buttonsPane);
 
         gameOverPane.getChildren().add(buttonsPane);
@@ -98,7 +104,10 @@ public class WinScreenViewManager {
         gameOverStage.show();
     }
 
-    private void createText(Player player) {
+    /**
+     * create text file.
+     */
+    private void createText() {
         Text gameOverText = new Text("COMPLETED!");
         try {
             gameOverText.setFont(Font.loadFont(new FileInputStream(FONT_PATH), FONT_SIZE));
@@ -106,10 +115,10 @@ public class WinScreenViewManager {
             gameOverText.setFont(Font.font("Verdana", FONT_SIZE));
         }
         gameOverPane.getChildren().add(gameOverText);
-        Text  profilePlayerName = new Text("Your Name:" + profileName);
-        Text  scoreText = new Text("Your Score:" + score);
-        Text  timeRemaining = new Text("Remaining time:" + timeLeft);
-        Text  totalScore = new Text("Your Score:" + score * timeLeft * TIME_FACTOR);
+        Text profilePlayerName = new Text("Your Name:" + profileName);
+        Text scoreText = new Text("Your Score:" + score);
+        Text timeRemaining = new Text("Remaining time:" + timeLeft);
+        Text totalScore = new Text("Your Score:" + score * timeLeft * TIME_FACTOR);
 
         try {
             profilePlayerName.setFont(Font.loadFont(new FileInputStream(FONT_PATH), 20));
@@ -128,6 +137,11 @@ public class WinScreenViewManager {
         gameOverPane.getChildren().add(totalScore);
     }
 
+    /**
+     * create main menu.
+     *
+     * @param buttonsPane
+     */
     private void createMainMenuButton(HBox buttonsPane) {
         MainMenuButton mainMenuButton = new MainMenuButton("Menu");
         mainMenuButton.setOnAction(actionEvent -> {
@@ -141,6 +155,11 @@ public class WinScreenViewManager {
         buttonsPane.getChildren().add(mainMenuButton);
     }
 
+    /**
+     * create next level button.
+     *
+     * @param buttonsPane button
+     */
     private void createNextLevelButton(HBox buttonsPane) {
         MainMenuButton mainMenuButton = new MainMenuButton("Next");
         mainMenuButton.setOnAction(actionEvent -> {
@@ -167,5 +186,4 @@ public class WinScreenViewManager {
                 Color.SANDYBROWN, CornerRadii.EMPTY, Insets.EMPTY));
         gameOverPane.setBackground(background);
     }
-
 }
